@@ -6,6 +6,7 @@ import { readFile } from 'node:fs/promises';
 import publication from '../src/content/publication.json';
 import { launchSchema } from '../src/lib/publication';
 import { siteConfig } from '../site.config.mjs';
+import policyPublication from '../src/content/policy-publication.json';
 
 test('initial publication facts fail closed without owner confirmations', async () => {
   const incomplete = {
@@ -69,7 +70,12 @@ test('deployment workflow has trusted push and default-disabled gates with immut
   }
 });
 
-test('review uses repository subpath without approving final policies', async () => {
+test('policy text approval is separate from app release and final domain gates', () => {
+  assert.equal(policyPublication.policyTextApproved, true);
+  assert.equal(launchSchema.safeParse(publication).success, false);
+});
+
+test('review uses repository subpath without enabling final domain publication', async () => {
   assert.deepEqual(siteConfig('review'), {
     mode: 'review',
     site: 'https://caschwllc.github.io',
@@ -87,7 +93,7 @@ test('review uses repository subpath without approving final policies', async ()
     ['--import', 'tsx', 'scripts/check-launch.ts', '--review'],
     { env: { ...process.env, WEBSITE_MODE: 'review' } },
   );
-  assert.match(result.stdout, /policies remain drafts/);
+  assert.match(result.stdout, /policy text is owner-approved/);
   await assert.rejects(
     run(
       process.execPath,

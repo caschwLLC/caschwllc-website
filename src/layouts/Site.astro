@@ -9,8 +9,15 @@ interface Props {
   description: string;
   appSlug?: string;
   noindex?: boolean;
+  policy?: boolean;
 }
-const { title, description, appSlug, noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  appSlug,
+  noindex = false,
+  policy = false,
+} = Astro.props;
 const apps = await getApps();
 const groups = navigation(apps);
 const base = import.meta.env.BASE_URL;
@@ -107,10 +114,9 @@ const discovery = {
         )}
       </nav>
     </header>
-    {review && (
+    {review && !policy && (
       <aside class="review-banner" aria-label="Website review status">
-        Public review preview. Apps retain their stated availability. Privacy
-        policies are drafts, not final published policies.
+        Public review preview. Apps retain their stated availability.
       </aside>
     )}
     <main id="main" tabindex="-1">

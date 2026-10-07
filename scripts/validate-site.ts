@@ -101,11 +101,26 @@ for (const route of [...routes, '/404.html']) {
     ),
     'Internal policy notes rendered',
   );
+  const policy = route.endsWith('/privacy/');
+  if (policy) {
+    assert.ok(
+      !/Public review preview|Website review status|Draft policy|polic(?:y|ies) (?:are|is|remain) drafts|unapproved|approvals remain unconfirmed|policy-draft/i.test(
+        html,
+      ),
+      `${route}: policy status must not be confused with app availability`,
+    );
+    if (route === '/apps/feelory/privacy/') {
+      assert.ok(html.includes('Feelory is coming soon.'));
+      assert.ok(
+        html.includes(
+          'This policy describes how Feelory handles your information.',
+        ),
+      );
+    }
+  }
   if (target.mode === 'review') {
-    assert.ok(html.includes('Public review preview.'));
+    assert.equal(html.includes('Public review preview.'), !policy);
     assert.ok(html.includes('noindex, follow'));
-    if (route.endsWith('/privacy/'))
-      assert.ok(html.includes('Draft policy for review.'));
   }
   assert.ok(
     !/<form|<iframe|<script[^>]+src=|fonts\.googleapis|gtag|analytics\.js/.test(

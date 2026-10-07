@@ -48,7 +48,8 @@ for (const [name, path] of selected) {
   });
 }
 const layers = [];
-for (const name of ['Spark', 'Cool', 'Warm']) {
+// Icon Composer lists foreground first; Sharp paints the last layer on top.
+for (const name of ['Warm', 'Cool', 'Spark']) {
   const input = await readFile(join(icon, `Assets/${name}.svg`));
   await mkdir('src/assets/icon', { recursive: true });
   await writeFile(`src/assets/icon/${name}.svg`, input);

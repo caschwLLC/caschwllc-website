@@ -3,7 +3,8 @@
 An image-led, static software showroom for [caschwllc.org](https://caschwllc.org).
 Built with Astro and TypeScript. **Prepared for user-authorized public review**
 at `https://caschwllc.github.io/caschwllc-website/`; hosting setup and push are
-handled separately by the parent session. Policies remain clearly labeled drafts.
+handled separately by the parent session. Policy text is owner-approved;
+policy publication status is separate from the app's availability.
 Feelory is marketed
 as **Coming soon**; no public store listing or release date is assumed.
 

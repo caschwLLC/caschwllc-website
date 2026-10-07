@@ -27,5 +27,7 @@ disclosures, domain ownership or first publication. Incomplete final content gat
 and a default-disabled production repository variable both fail closed.
 The user subsequently authorized a public review preview: a separate review
 variable and repository-subpath target allow that narrow publication with
-visible policy draft labels, without approving final policy facts. GitHub settings
+separate deployment gates. The owner subsequently approved policy text and
+removed its draft labeling: only app availability is Coming soon. Unknown
+publisher/date and final-domain gates remain separate. GitHub settings
 and DNS remain owner actions. Prepared workflows are not active deployment.

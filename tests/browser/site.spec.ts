@@ -35,6 +35,24 @@ for (const route of routes) {
     await expect(page.locator('footer')).toContainText('Feelory support');
     await expect(page.locator('a[href*="apps.apple.com"]')).toHaveCount(0);
     await expect(page.locator('form, iframe')).toHaveCount(0);
+    if (route.endsWith('/privacy/')) {
+      await expect(page.locator('.review-banner, .policy-draft')).toHaveCount(
+        0,
+      );
+      await expect(page.locator('body')).not.toContainText(
+        /Draft policy|unapproved|approvals remain unconfirmed/i,
+      );
+      expect(await page.locator('head').innerHTML()).not.toMatch(
+        /draft policy|public review|unapproved/i,
+      );
+      if (route === '/apps/feelory/privacy/') {
+        await expect(page.locator('.policy-availability')).toHaveText(
+          'Feelory is coming soon. This policy describes how Feelory handles your information.',
+        );
+      } else {
+        await expect(page.locator('.policy-availability')).toHaveCount(0);
+      }
+    }
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth > window.innerWidth,
     );

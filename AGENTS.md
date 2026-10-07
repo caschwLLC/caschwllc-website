@@ -46,5 +46,8 @@ commit/push and deployment setup. Preserve dirty user-owned work.
 `src/content/review-publication.json` records that narrow authorization;
 `PAGES_REVIEW_APPROVED=true` admits only the repository-URL review build.
 `src/content/publication.json`, production mode and `PAGES_LAUNCH_APPROVED`
-remain independent final-publication barriers. Never infer final policy approval
-or store release from review publication.
+remain independent final-domain publication barriers. Owner-approved policy
+text is recorded in `src/content/policy-publication.json`; never label it draft
+or under review because the app is unreleased or domain gates are incomplete.
+Privacy pages omit the shared review banner. Never infer store release, legal
+identity or an effective date from policy approval.

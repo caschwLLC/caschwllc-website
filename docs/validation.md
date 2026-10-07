@@ -12,7 +12,7 @@ App Store availability validation has been performed by this implementation.
 | ----------------------- | ------------------------------------------------------------------------ |
 | `npm run check`         | 0 errors, warnings or hints                                              |
 | `npm run lint`          | ESLint and Prettier pass                                                 |
-| `npm test`              | 10 unit/build/launch-contract tests pass                                 |
+| `npm test`              | 12 unit/build/launch/icon-contract tests pass                            |
 | `npm run build`         | 6 static pages plus sitemap/robots                                       |
 | `npm run validate:site` | 5 public routes + 404; links, metadata, discovery and media budgets pass |
 | `npm run test:browser`  | 17 pass, 1 intentional desktop skip for mobile-only performance lab      |
@@ -28,9 +28,17 @@ the user's source catalog is never edited by the tests.
 These checks do not commit a future product.
 
 Both `npm run verify` (default review) and `WEBSITE_MODE=production npm run verify`
-passed after the user-authorized review change. Review routes/assets/canonical
-and sitemap use `/caschwllc-website/` on the normal Pages host. Review has a
-site-wide banner and noindex; policies explicitly remain drafts.
+passed after the owner-approved policy and icon corrections. Review routes/assets/canonical
+and sitemap use `/caschwllc-website/` on the normal Pages host. Review has
+noindex and a banner on non-policy pages only. Policy text is owner-approved.
+Rendered policy HTML and browser checks reject policy draft/unapproved labels,
+public-review banners and review metadata in both modes; legitimate journal
+draft and correspondence review descriptions remain part of the policy.
+Feelory privacy displays the app's Coming soon notice separately.
+The icon test compares the complete 192px PNG pixels to the unchanged genuine SVG
+layers in back-to-front order and checks the pale center. All three copied SVG
+SHA-256 hashes match the allowed Feelory icon resources. Direct image inspection
+confirmed the neutral middle is visible; generated screenshot files were unchanged.
 `npx tsx scripts/check-launch.ts --review` passes only for authorized review;
 `npx tsx scripts/check-launch.ts` still exits 1 while final confirmations are
 missing. Deployment gate/pin tests pass; this is not a real Actions run.
@@ -64,10 +72,10 @@ per opening route, no interaction or scrolling during measurement.
 
 | Route                       | LCP range | Median LCP | CLS | Initial transfer | Combined selected heroes |
 | --------------------------- | --------- | ---------- | --- | ---------------- | ------------------------ |
-| Review `/`                  | 432–436ms | 432ms      | 0   | 107,682 bytes    | 91,170 bytes             |
-| Review `/apps/feelory/`     | 428–448ms | 436ms      | 0   | 162,404 bytes    | 91,170 bytes             |
-| Production `/`              | 408–428ms | 424ms      | 0   | 107,550 bytes    | 91,170 bytes             |
-| Production `/apps/feelory/` | 440–460ms | 456ms      | 0   | 162,273 bytes    | 91,170 bytes             |
+| Review `/`                  | 412–428ms | 412ms      | 0   | 108,603 bytes    | 91,170 bytes             |
+| Review `/apps/feelory/`     | 416–432ms | 420ms      | 0   | 163,330 bytes    | 91,170 bytes             |
+| Production `/`              | 404–412ms | 412ms      | 0   | 108,500 bytes    | 91,170 bytes             |
+| Production `/apps/feelory/` | 432–452ms | 436ms      | 0   | 163,223 bytes    | 91,170 bytes             |
 
 Limits: LCP ≤2.5s, CLS ≤0.1, initial transfer ≤1,500,000 bytes, combined hero
 images ≤500,000 bytes. All twelve trials passed. These are localhost laboratory

@@ -1,8 +1,10 @@
-# Policy review and launch gates
+# Policy approval and deployment gates
 
-Public Markdown in `src/content/policies/` is adapted from owner-authorized draft
-copy, with internal preparation notes removed. It is **not a legally confirmed
-published policy**. No legal identity, effective date, postal address, universal
+The owner explicitly approved the public policy text and directed removal of
+policy draft/review notifications on 2026-10-07. Approval is recorded separately
+in `src/content/policy-publication.json`. The app is still **Coming soon**:
+policy approval does not release it or activate download links.
+No legal identity, effective date, postal address, universal
 deletion guarantee or artificial deletion deadline has been invented.
 
 Confirmed support address: **apps@caschw.com**, hosted by Outlook.com/Microsoft.
@@ -10,10 +12,10 @@ The different email domain is intentional. Correspondence is kept only while
 needed to resolve requests, with regular review/deletion of resolved mail.
 Provider-held copies follow provider controls and retention policies.
 
-## Owner confirmations before launch
+## Remaining facts and final-domain confirmations
 
 - Confirm the responsible publisher's exact identity, not just the display brand.
-- Set the actual effective date and approve final copy, assets and providers.
+- Supply the actual effective date; verify remaining asset/provider confirmations.
 - Confirm Outlook.com/Microsoft, TestFlight/Apple, iCloud and actual hosting
   disclosures and retention practice.
 - Verify deletion/permission instructions on supported devices. Individual
@@ -33,13 +35,16 @@ Final production also requires separately authorized `PAGES_LAUNCH_APPROVED=true
 content confirmations cannot themselves activate it. The user separately
 authorized a public **review** site at the repository Pages URL, admitted through
 `PAGES_REVIEW_APPROVED=true` in review mode. Review pages are noindex and carry a
-site-wide review banner; policies explicitly say **Draft policy for review**.
-Missing publisher/date are not invented, and no final facts are marked approved.
+review banner on non-policy pages only. Privacy pages have no review banner or
+policy draft label in either build mode. The Feelory policy instead states:
+**Feelory is coming soon. This policy describes how Feelory handles your information.**
+Website privacy carries no app availability notice. Unknown publisher/date values
+remain omitted rather than invented; separate final-domain facts are unchanged.
 `check-launch.ts --review` validates only this narrow review authorization.
 
 ## Out-of-scope app follow-up
 
-After policies are approved and live, a separate Feelory change must expose
+After the approved policy correction is deployed, a separate Feelory change must expose
 `https://caschwllc.org/apps/feelory/privacy/` and
 `https://caschwllc.org/apps/feelory/support/` inside the app and in App Store
 Connect as appropriate. The website implementation does not modify Feelory.

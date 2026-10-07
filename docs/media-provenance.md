@@ -48,6 +48,14 @@ Feelory `App/Resources/AppIcon.icon/Assets/`. `feelory-icon.png` is a flat,
 192px composition of those layers on the resource's light background color.
 It is a marketing rendition, **not** a claim to reproduce Icon Composer's
 glass/specular output. No private source code is required to produce it.
+The genuine resource's `icon.json` lists foreground `Spark` above the `Heart`
+group (`Cool`, `Warm`). Sharp composites back-to-front, so the script paints
+`Warm`, then `Cool`, then `Spark`. Painting the resource's foreground-first list
+directly previously hid the pale neutral middle under the warm lobe.
+The original SVG geometry, gradients and clip path are unchanged. All product
+icon uses share the generated PNG; the website's separate caschw LLC favicon
+is not the Feelory icon. `tests/icon.test.ts` checks the complete rendered
+pixels against the genuine layer composition and checks the neutral middle.
 
 ## Device and typography rights
 

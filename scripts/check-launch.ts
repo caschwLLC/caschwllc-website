@@ -15,7 +15,7 @@ if (process.argv.includes('--review')) {
     );
   }
   console.log(
-    'User-authorized public review only; policies remain drafts and final launch gates are unchanged.',
+    'User-authorized public review only; policy text is owner-approved and final launch gates are unchanged.',
   );
   process.exit(0);
 }

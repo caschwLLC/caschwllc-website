@@ -16,11 +16,14 @@ blocker**. Parent setup:
    Leave `PAGES_LAUNCH_APPROVED` unset/false and final publication facts unchanged.
 3. Commit/push the user-authorized reviewed source. Successful trusted main CI
    triggers deployment at `https://caschwllc.github.io/caschwllc-website/`.
-4. Verify links, assets, sitemap/canonical and 404 beneath that subpath. Policies
-   must retain draft labels and the site must retain the public-review banner.
+4. Verify links, assets, sitemap/canonical and 404 beneath that subpath. Privacy
+   pages must not describe the owner-approved policy as draft or under review.
+   Feelory privacy states that the app is coming soon; policy pages omit the
+   public-review banner. Non-policy pages retain the site review banner.
 
-The review build defaults to the repository subpath, noindex and honest draft
-policies. `npx tsx scripts/check-launch.ts --review` passes only in review mode;
+The review build defaults to the repository subpath and noindex. Policy text
+approval is independent of build mode, domain approval and app release status.
+`npx tsx scripts/check-launch.ts --review` passes only in review mode;
 the ordinary final launch check still fails. CI verifies **both** review and
 production mode. Review approval cannot admit a production build.
 The dependency advisories remain documented; this narrow review authorization

@@ -40,8 +40,9 @@ Code is MIT; copy, branding and artwork are reserved rights.
 Responsible publisher, policy effective date, provider disclosures and final
 publication approval are launch gates. The user separately authorized public review at the temporary repository Pages
 URL. The parent owns publication setup; this implementation does not commit,
-push or change permissions/DNS. Review authorization does not approve final
-policies, custom-domain publication or store release.
+push or change permissions/DNS. The owner subsequently approved the policy text and removed policy draft labels.
+That approval does not invent publisher/date facts or authorize custom-domain
+publication or store release. Feelory remains Coming soon.
 
 ## Accessibility
 

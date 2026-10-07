@@ -2,7 +2,7 @@
 import Site from './Site.astro';
 import { localPath } from '../lib/catalog';
 import publication from '../content/publication.json';
-import { launchSchema } from '../lib/publication';
+import { getApps } from '../lib/content';
 interface Props {
   title: string;
   description: string;
@@ -10,12 +10,16 @@ interface Props {
   policy?: boolean;
 }
 const { title, description, appSlug, policy = false } = Astro.props;
+const app = appSlug
+  ? (await getApps()).find((app) => app.slug === appSlug)
+  : undefined;
 ---
 
 <Site
   title={`${title} · caschw LLC`}
   description={description}
   appSlug={appSlug}
+  policy={policy}
 >
   <article class="reading">
     <a
@@ -29,11 +33,10 @@ const { title, description, appSlug, policy = false } = Astro.props;
       {appSlug ? 'Back to Feelory' : 'Back to home'}
     </a>
     <h1>{title}</h1>
-    {policy && !launchSchema.safeParse(publication).success && (
-      <p class="policy-draft">
-        <strong>Draft policy for review.</strong> Responsible publisher,
-        effective date and final approvals remain unconfirmed. This draft is not
-        a final published policy.
+    {policy && app?.status === 'coming-soon' && (
+      <p class="policy-availability">
+        {app.name} is coming soon. This policy describes how {app.name} handles
+        your information.
       </p>
     )}
     {policy && publication.responsiblePublisher && (
