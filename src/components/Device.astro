@@ -1,0 +1,38 @@
+---
+import type { Media } from '../lib/catalog';
+import { localPath } from '../lib/catalog';
+interface Props {
+  media: Media;
+  priority?: boolean;
+}
+const { media, priority = false } = Astro.props;
+const widths = media.device === 'tablet' ? [480, 960, 1440] : [320, 640, 960];
+const base = import.meta.env.BASE_URL;
+const src = localPath(`/media/${media.name}-${widths[1]}.webp`, base);
+const srcset = widths
+  .map(
+    (width) =>
+      `${localPath(`/media/${media.name}-${width}.webp`, base)} ${width}w`,
+  )
+  .join(', ');
+---
+
+<div class:list={['device', media.device]}>
+  <img
+    src={src}
+    srcset={srcset}
+    sizes={
+      media.device === 'tablet'
+        ? '(max-width: 700px) 80vw, 480px'
+        : priority
+          ? '(max-width: 700px) 42vw, 300px'
+          : '(max-width: 700px) 270px, 300px'
+    }
+    width={media.width}
+    height={media.height}
+    alt={media.alt}
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : 'auto'}
+    decoding="async"
+  />
+</div>

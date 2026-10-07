@@ -1,0 +1,26 @@
+---
+import { render } from 'astro:content';
+import Reading from '../../../layouts/Reading.astro';
+import { getApps, policyFor } from '../../../lib/content';
+import type { App } from '../../../lib/catalog';
+export async function getStaticPaths() {
+  return (await getApps()).map((app) => ({
+    params: { slug: app.slug },
+    props: { app },
+  }));
+}
+interface Props {
+  app: App;
+}
+const { app } = Astro.props;
+const entry = await policyFor(app.slug, 'support');
+const { Content } = await render(entry);
+---
+
+<Reading
+  title={entry.data.title}
+  description={entry.data.description}
+  appSlug={app.slug}
+>
+  <Content />
+</Reading>

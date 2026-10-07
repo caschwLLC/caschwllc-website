@@ -1,0 +1,23 @@
+---
+import Site from '../layouts/Site.astro';
+import { localPath } from '../lib/catalog';
+---
+
+<Site
+  title="Page not found · caschw LLC"
+  description="This page could not be found. Return to the caschw LLC app showroom."
+  noindex
+>
+  <section class="not-found wrap">
+    <p>404</p>
+    <h1>
+      This page
+      <br />
+      isn’t here.
+    </h1>
+    <p>The address may have changed, or the link may be incomplete.</p>
+    <a class="button" href={localPath('/', import.meta.env.BASE_URL)}>
+      Back to home <span aria-hidden="true">↗</span>
+    </a>
+  </section>
+</Site>

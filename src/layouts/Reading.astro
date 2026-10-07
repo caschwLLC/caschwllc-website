@@ -1,0 +1,54 @@
+---
+import Site from './Site.astro';
+import { localPath } from '../lib/catalog';
+import publication from '../content/publication.json';
+import { launchSchema } from '../lib/publication';
+interface Props {
+  title: string;
+  description: string;
+  appSlug?: string;
+  policy?: boolean;
+}
+const { title, description, appSlug, policy = false } = Astro.props;
+---
+
+<Site
+  title={`${title} · caschw LLC`}
+  description={description}
+  appSlug={appSlug}
+>
+  <article class="reading">
+    <a
+      class="back-link"
+      href={localPath(
+        appSlug ? `/apps/${appSlug}/` : '/',
+        import.meta.env.BASE_URL,
+      )}
+    >
+      <span aria-hidden="true">← </span>
+      {appSlug ? 'Back to Feelory' : 'Back to home'}
+    </a>
+    <h1>{title}</h1>
+    {policy && !launchSchema.safeParse(publication).success && (
+      <p class="policy-draft">
+        <strong>Draft policy for review.</strong> Responsible publisher,
+        effective date and final approvals remain unconfirmed. This draft is not
+        a final published policy.
+      </p>
+    )}
+    {policy && publication.responsiblePublisher && (
+      <p>Responsible publisher: {publication.responsiblePublisher}</p>
+    )}
+    {policy && publication.effectiveDate && (
+      <p>
+        Effective:{' '}
+        <time datetime={publication.effectiveDate}>
+          {publication.effectiveDate}
+        </time>
+      </p>
+    )}
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</Site>

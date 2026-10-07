@@ -1,0 +1,18 @@
+---
+import type { App } from '../lib/catalog';
+import { storeAction } from '../lib/catalog';
+interface Props {
+  app: App;
+}
+const { app } = Astro.props;
+const action = storeAction(app);
+---
+
+{action.href ? (
+  <a class="button" href={action.href} rel="noopener noreferrer">
+    {action.label}
+    <span aria-hidden="true"> ↗</span>
+  </a>
+) : (
+  <span class="status">{action.label}</span>
+)}

@@ -1,0 +1,141 @@
+---
+import '../styles/site.css';
+import { getApps } from '../lib/content';
+import { localPath, navigation } from '../lib/catalog';
+import { siteConfig } from '../../site.config.mjs';
+const review = siteConfig().mode === 'review';
+interface Props {
+  title: string;
+  description: string;
+  appSlug?: string;
+  noindex?: boolean;
+}
+const { title, description, appSlug, noindex = false } = Astro.props;
+const apps = await getApps();
+const groups = navigation(apps);
+const base = import.meta.env.BASE_URL;
+const href = (path: string) => localPath(path, base);
+const canonical = new URL(
+  noindex ? href('/404.html') : Astro.url.pathname,
+  Astro.site,
+);
+const activeApp = apps.find((app) => app.slug === appSlug);
+const supportApp = activeApp ?? apps[0];
+const socialIcon = activeApp?.icon ?? apps[0]?.icon;
+const discovery = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: canonical.href,
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {(noindex || review) && <meta name="robots" content="noindex, follow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={href('/favicon.svg')} />
+    <meta name="theme-color" content="#f5f5f2" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="caschw LLC" />
+    {socialIcon && (
+      <meta
+        property="og:image"
+        content={new URL(href(socialIcon), Astro.site)}
+      />
+    )}
+    {socialIcon && (
+      <meta
+        property="og:image:alt"
+        content={`${activeApp?.name ?? apps[0]?.name} app artwork`}
+      />
+    )}
+    <meta name="twitter:card" content="summary" />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(discovery).replace(/</g, '\\u003c')}
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <header class="site-header">
+      <a class="wordmark" href={href('/')} aria-label="caschw LLC home">
+        caschw <span>LLC</span>
+      </a>
+      <nav aria-label="Main navigation">
+        {groups.map((group) => (
+          <div class="nav-group">
+            {group.label && <span class="nav-group-label">{group.label}</span>}
+            {group.apps.map((app) => (
+              <a
+                href={href(`/apps/${app.slug}/`)}
+                aria-current={
+                  Astro.url.pathname === href(`/apps/${app.slug}/`)
+                    ? 'page'
+                    : undefined
+                }
+              >
+                {app.name}
+              </a>
+            ))}
+          </div>
+        ))}
+        {supportApp ? (
+          <a
+            href={href(`/apps/${supportApp.slug}/support/`)}
+            aria-current={
+              Astro.url.pathname === href(`/apps/${supportApp.slug}/support/`)
+                ? 'page'
+                : undefined
+            }
+          >
+            Support
+          </a>
+        ) : (
+          <a href="mailto:apps@caschw.com">Contact</a>
+        )}
+      </nav>
+    </header>
+    {review && (
+      <aside class="review-banner" aria-label="Website review status">
+        Public review preview. Apps retain their stated availability. Privacy
+        policies are drafts, not final published policies.
+      </aside>
+    )}
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div>
+        <a class="wordmark" href={href('/')}>
+          caschw <span>LLC</span>
+        </a>
+        <p>Software for everyday moments.</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="mailto:apps@caschw.com">apps@caschw.com</a>
+        <a href={href('/privacy/')}>Website privacy</a>
+        {(activeApp ? [activeApp] : apps).map((app) => (
+          <>
+            <a href={href(`/apps/${app.slug}/privacy/`)}>{app.name} privacy</a>
+            <a href={href(`/apps/${app.slug}/support/`)}>{app.name} support</a>
+          </>
+        ))}
+      </nav>
+      <small>
+        © {new Date().getUTCFullYear()} caschw LLC. All rights reserved.
+      </small>
+    </footer>
+  </body>
+</html>

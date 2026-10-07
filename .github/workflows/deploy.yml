@@ -1,0 +1,106 @@
+name: Deploy approved website
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: github-pages-production
+  cancel-in-progress: false
+
+env:
+  ASTRO_TELEMETRY_DISABLED: 1
+  WEBSITE_MODE: ${{ vars.WEBSITE_MODE || 'review' }}
+
+jobs:
+  prepare:
+    if: >-
+      ((vars.WEBSITE_MODE == 'production' && vars.PAGES_LAUNCH_APPROVED == 'true') ||
+       ((vars.WEBSITE_MODE == '' || vars.WEBSITE_MODE == 'review') && vars.PAGES_REVIEW_APPROVED == 'true')) &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Reject a stale successful CI run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          LATEST_SHA=$(gh api "repos/$REPOSITORY/git/ref/heads/main" --jq '.object.sha')
+          if [ "$LATEST_SHA" != "$EXPECTED_SHA" ]; then
+            echo "::error::This validated commit is no longer main; wait for the newer CI run."
+            exit 1
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Enforce mode-specific publication permission
+        run: |
+          if [ "$WEBSITE_MODE" = "review" ]; then
+            npx tsx scripts/check-launch.ts --review
+          else
+            npx tsx scripts/check-launch.ts
+          fi
+      - run: npm run build && npm run validate:site
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: dist
+  deploy:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Confirm main has not advanced during preparation
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          LATEST_SHA=$(gh api "repos/$REPOSITORY/git/ref/heads/main" --jq '.object.sha')
+          if [ "$LATEST_SHA" != "$EXPECTED_SHA" ]; then
+            echo "::error::Main advanced; refuse to replace newer content with a stale build."
+            exit 1
+          fi
+      - name: Read existing Pages configuration without enabling it
+        id: pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+        with:
+          enablement: false
+      - name: Require the domain appropriate to this publication mode
+        env:
+          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
+        run: |
+          EXPECTED_URL="https://caschwllc.github.io/caschwllc-website"
+          if [ "$WEBSITE_MODE" = "production" ]; then
+            EXPECTED_URL="https://caschwllc.org"
+          fi
+          if [ "${PAGES_BASE_URL%/}" != "$EXPECTED_URL" ]; then
+            echo "::error::Pages URL must match the configured review or production target."
+            exit 1
+          fi
+      - name: Deploy validated artifact
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

@@ -1,0 +1,146 @@
+[
+  {
+    "name": "phone-emotion",
+    "source": "iphone/light/06-emotion.png",
+    "sha256": "1a63c51a56757dde550541735c8692a79471a6fccb6524580ff748d283ccbf77",
+    "width": 1320,
+    "height": 2868,
+    "outputs": [
+      {
+        "file": "phone-emotion-320.webp",
+        "width": 320,
+        "bytes": 23922
+      },
+      {
+        "file": "phone-emotion-640.webp",
+        "width": 640,
+        "bytes": 60084
+      },
+      {
+        "file": "phone-emotion-960.webp",
+        "width": 960,
+        "bytes": 98276
+      }
+    ]
+  },
+  {
+    "name": "phone-reflection",
+    "source": "iphone/light/02-reflection.png",
+    "sha256": "cde69a9c856dd1e0d995fc0c29be9fdb4165cd419f7c2e9712488ed45e216f7a",
+    "width": 1320,
+    "height": 2868,
+    "outputs": [
+      {
+        "file": "phone-reflection-320.webp",
+        "width": 320,
+        "bytes": 12750
+      },
+      {
+        "file": "phone-reflection-640.webp",
+        "width": 640,
+        "bytes": 31086
+      },
+      {
+        "file": "phone-reflection-960.webp",
+        "width": 960,
+        "bytes": 50612
+      }
+    ]
+  },
+  {
+    "name": "phone-explore",
+    "source": "iphone/light/05-explore.png",
+    "sha256": "c3ac1ff62a959a3d36b63756a8a8d0ac25be41bcd9e813e2f8a10c5f926b250c",
+    "width": 1320,
+    "height": 2868,
+    "outputs": [
+      {
+        "file": "phone-explore-320.webp",
+        "width": 320,
+        "bytes": 22092
+      },
+      {
+        "file": "phone-explore-640.webp",
+        "width": 640,
+        "bytes": 53020
+      },
+      {
+        "file": "phone-explore-960.webp",
+        "width": 960,
+        "bytes": 85034
+      }
+    ]
+  },
+  {
+    "name": "tablet-reflection",
+    "source": "ipad/light/02-reflection.png",
+    "sha256": "6862e431b20dc13aacc7e4b54c1368bf433b457d60b69b76863f2eb998b3d046",
+    "width": 2064,
+    "height": 2752,
+    "outputs": [
+      {
+        "file": "tablet-reflection-480.webp",
+        "width": 480,
+        "bytes": 16958
+      },
+      {
+        "file": "tablet-reflection-960.webp",
+        "width": 960,
+        "bytes": 47574
+      },
+      {
+        "file": "tablet-reflection-1440.webp",
+        "width": 1440,
+        "bytes": 79580
+      }
+    ]
+  },
+  {
+    "name": "phone-practice",
+    "source": "iphone/light/04-practice.png",
+    "sha256": "d4025329ac523c115f7ef07f1e40d919a3d725898290e87a45efabae05c8d6d7",
+    "width": 1320,
+    "height": 2868,
+    "outputs": [
+      {
+        "file": "phone-practice-320.webp",
+        "width": 320,
+        "bytes": 11638
+      },
+      {
+        "file": "phone-practice-640.webp",
+        "width": 640,
+        "bytes": 28088
+      },
+      {
+        "file": "phone-practice-960.webp",
+        "width": 960,
+        "bytes": 44562
+      }
+    ]
+  },
+  {
+    "name": "phone-insights",
+    "source": "iphone/dark/03-insights.png",
+    "sha256": "afb25d0a8b735797b558be3a97f84a0c60b1e319a6749f61165bf3b5b85aabe5",
+    "width": 1320,
+    "height": 2868,
+    "outputs": [
+      {
+        "file": "phone-insights-320.webp",
+        "width": 320,
+        "bytes": 17220
+      },
+      {
+        "file": "phone-insights-640.webp",
+        "width": 640,
+        "bytes": 43060
+      },
+      {
+        "file": "phone-insights-960.webp",
+        "width": 960,
+        "bytes": 68234
+      }
+    ]
+  }
+]
