@@ -26,7 +26,7 @@ Not a medical device, diagnosis, treatment or substitute for professional care.
 
 ## Brand and evidence
 
-The display brand is exactly **caschw LLC**, not a verified legal identity.
+The display brand is exactly **caschw LLC**; the owner confirmed it as the legal publisher name.
 Approved direction: crisp software showroom with neutral studio chrome,
 confident typography, large genuine screen compositions and product color.
 Approved PNG captures contain synthetic writing, including a saved AI-tag
@@ -38,7 +38,10 @@ No analytics, tracking, forms, newsletters or external font requests.
 Email support is apps@caschw.com, hosted by Outlook.com/Microsoft.
 Code is MIT; copy, branding and artwork are reserved rights.
 Responsible publisher, policy effective date, provider disclosures and final
-publication approval are launch gates. The user separately authorized public review at the temporary repository Pages
+publication approval are launch gates. The owner confirmed the publication facts
+in `src/content/publication.json`, including effective date 2026-10-08.
+The owner separately authorized completion of production publication on 2026-10-08.
+The user separately authorized public review at the temporary repository Pages
 URL. The parent owns publication setup; this implementation does not commit,
 push or change permissions/DNS. The owner subsequently approved the policy text and removed policy draft labels.
 That approval does not invent publisher/date facts or authorize custom-domain

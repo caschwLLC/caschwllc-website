@@ -12,23 +12,22 @@ The different email domain is intentional. Correspondence is kept only while
 needed to resolve requests, with regular review/deletion of resolved mail.
 Provider-held copies follow provider controls and retention policies.
 
-## Remaining facts and final-domain confirmations
+## Owner-confirmed publication facts
 
-- Confirm the responsible publisher's exact identity, not just the display brand.
-- Supply the actual effective date; verify remaining asset/provider confirmations.
-- Confirm Outlook.com/Microsoft, TestFlight/Apple, iCloud and actual hosting
-  disclosures and retention practice.
-- Verify deletion/permission instructions on supported devices. Individual
-  entry deletion is not erase-all; check-ins, practice and settings are separate.
-- Verify iCloud offline/deletion/restart behavior, Health samples, backups and
-  export limitations. Do not promise developer deletion of private Apple data.
-- If hosted on GitHub Pages, convert conditional hosting wording to the verified
-  present-tense disclosure. GitHub IP security logs are separate from Feelory's
-  no-developer-collection design.
+On 2026-10-08 the owner confirmed **caschw LLC** as the legal publisher and
+directed that the remaining publication flags be true, using that day as the
+effective date. These confirmations are recorded in
+`src/content/publication.json`: content/assets, provider disclosures, deletion
+guidance, domain/hosting, and dependency-risk review. GitHub Pages hosting has
+also been checked directly, and the website policy now states it in the present
+tense. These confirmations do not authorize deployment or release Feelory.
 
-Record confirmations in `src/content/publication.json` via a reviewed change.
-Review the build dependency findings in [dependencies.md](dependencies.md);
-`dependencyRiskReviewed` is an additional explicit first-launch gate.
+The owner accepted the remaining build-tool dependency risk and requested a
+mitigation investigation, tracked in
+[issue #1](https://github.com/caschwLLC/caschwllc-website/issues/1).
+The unresolved advisory remains documented in [dependencies.md](dependencies.md);
+approval does not mean the advisory is fixed.
+The owner separately authorized completing production publication on 2026-10-08.
 The reading layout shows publisher/date only when values are supplied.
 `npx tsx scripts/check-launch.ts` must fail while these gates remain incomplete.
 Final production also requires separately authorized `PAGES_LAUNCH_APPROVED=true`;

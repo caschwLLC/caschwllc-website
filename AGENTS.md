@@ -15,7 +15,7 @@ Astro telemetry is disabled for CI; use `ASTRO_TELEMETRY_DISABLED=1` locally.
 
 ## Invariants
 
-- Brand exactly **caschw LLC**. This display brand is not a verified legal name.
+- Brand exactly **caschw LLC**. The owner confirmed this as the legal publisher name.
 - One validated app catalog drives all marketed routes, navigation and sitemap.
   Draft apps must not publish. A public repository does not make draft content
   confidential: never add confidential future-product data.

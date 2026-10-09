@@ -14,7 +14,7 @@ third-party media. We do not send app journal content to the website.
 
 ## Hosting
 
-When this website is hosted on GitHub Pages, GitHub logs visitors’ IP addresses
+This website is hosted on GitHub Pages. GitHub logs visitors’ IP addresses
 for security purposes. GitHub operates that hosting service under its
 [privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
 Hosting logs are separate from on-device app data. An app’s no-developer-

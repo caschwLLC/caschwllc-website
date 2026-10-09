@@ -72,7 +72,10 @@ test('deployment workflow has trusted push and default-disabled gates with immut
 
 test('policy text approval is separate from app release and final domain gates', () => {
   assert.equal(policyPublication.policyTextApproved, true);
-  assert.equal(launchSchema.safeParse(publication).success, false);
+  assert.equal(
+    launchSchema.safeParse({ policyTextApproved: true }).success,
+    false,
+  );
 });
 
 test('review uses repository subpath without enabling final domain publication', async () => {

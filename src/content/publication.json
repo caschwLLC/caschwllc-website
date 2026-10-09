@@ -1,9 +1,9 @@
 {
-  "contentAndAssetsApproved": false,
-  "responsiblePublisher": null,
-  "effectiveDate": null,
-  "providerDisclosuresApproved": false,
-  "deletionGuidanceVerified": false,
-  "domainAndHostingVerified": false,
-  "dependencyRiskReviewed": false
+  "contentAndAssetsApproved": true,
+  "responsiblePublisher": "caschw LLC",
+  "effectiveDate": "2026-10-08",
+  "providerDisclosuresApproved": true,
+  "deletionGuidanceVerified": true,
+  "domainAndHostingVerified": true,
+  "dependencyRiskReviewed": true
 }
