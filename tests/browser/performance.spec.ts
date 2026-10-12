@@ -64,7 +64,9 @@ test('mobile cold-load LCP, CLS, hero and initial transfer budgets', async ({
         ...window.siteMetrics,
         heroBytes: performance
           .getEntriesByType('resource')
-          .filter((entry) => /phone-(emotion|reflection)-/.test(entry.name))
+          .filter((entry) =>
+            /(phone-journal|tablet-reflection)-/.test(entry.name),
+          )
           .reduce(
             (sum, entry) =>
               sum +

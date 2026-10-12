@@ -15,24 +15,48 @@ const srcset = widths
       `${localPath(`/media/${media.name}-${width}.webp`, base)} ${width}w`,
   )
   .join(', ');
+const darkSrcset = media.darkName
+  ? widths
+      .map(
+        (width) =>
+          `${localPath(`/media/${media.darkName}-${width}.webp`, base)} ${width}w`,
+      )
+      .join(', ')
+  : undefined;
 ---
 
 <div class:list={['device', media.device]}>
-  <img
-    src={src}
-    srcset={srcset}
-    sizes={
-      media.device === 'tablet'
-        ? '(max-width: 700px) 80vw, 480px'
-        : priority
-          ? '(max-width: 700px) 42vw, 300px'
-          : '(max-width: 700px) 270px, 300px'
-    }
-    width={media.width}
-    height={media.height}
-    alt={media.alt}
-    loading={priority ? 'eager' : 'lazy'}
-    fetchpriority={priority ? 'high' : 'auto'}
-    decoding="async"
-  />
+  <picture>
+    {darkSrcset && (
+      <source
+        media="(prefers-color-scheme: dark)"
+        type="image/webp"
+        srcset={darkSrcset}
+        sizes={
+          media.device === 'tablet'
+            ? '(max-width: 700px) 80vw, 480px'
+            : priority
+              ? '(max-width: 700px) 42vw, 300px'
+              : '(max-width: 700px) 270px, 300px'
+        }
+      />
+    )}
+    <img
+      src={src}
+      srcset={srcset}
+      sizes={
+        media.device === 'tablet'
+          ? '(max-width: 700px) 80vw, 480px'
+          : priority
+            ? '(max-width: 700px) 42vw, 300px'
+            : '(max-width: 700px) 270px, 300px'
+      }
+      width={media.width}
+      height={media.height}
+      alt={media.alt}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding="async"
+    />
+  </picture>
 </div>

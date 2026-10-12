@@ -1,25 +1,30 @@
 # Media provenance and rights
 
-Only approved Feelory captures with synthetic content and public-safe icon
-artwork were imported. No app code, real journal writing, internal planning
+Only owner-approved Feelory captures with synthetic content and public-safe
+icon artwork are used here. The recaptured screenshots came from
+`caschwLLC/Feelory`, branch `z-02/app-store-readiness`, under
+`docs/assets/app-store/`. No app code, real journal writing, internal planning
 documents or model response transcripts are included.
 
 ## Captures
 
-The approved source set contains 24 PNGs: six scenes each for iPhone/iPad in
-light/dark appearance under `docs/assets/app-store/` in the separate Feelory
-project. This site uses **six** of those captures, not all 24. SHA-256 source
-hashes, relative names, natural dimensions and output bytes are recorded in
+The approved source set contains 28 PNGs: seven scenes each for iPhone/iPad in
+light/dark appearance. The captures are from iPhone 18 Pro and iPad Pro
+13-inch. This site uses iPhone captures except for the iPad reflection; the
+matching dark capture is selected when the visitor prefers dark appearance.
+SHA-256 source hashes, relative names, natural dimensions and output bytes are
+recorded in
 [`public/media/manifest.json`](../public/media/manifest.json).
 
-| Site name         | Approved source                | Natural dimensions |
-| ----------------- | ------------------------------ | ------------------ |
-| phone-emotion     | iphone/light/06-emotion.png    | 1320 × 2868        |
-| phone-reflection  | iphone/light/02-reflection.png | 1320 × 2868        |
-| phone-explore     | iphone/light/05-explore.png    | 1320 × 2868        |
-| tablet-reflection | ipad/light/02-reflection.png   | 2064 × 2752        |
-| phone-practice    | iphone/light/04-practice.png   | 1320 × 2868        |
-| phone-insights    | iphone/dark/03-insights.png    | 1320 × 2868        |
+| Site name         | Light source                 | Dark source                 | Natural dimensions |
+| ----------------- | ---------------------------- | --------------------------- | ------------------ |
+| phone-journal     | iphone/light/01-journal.png  | iphone/dark/01-journal.png  | 1206 × 2622        |
+| tablet-reflection | ipad/light/02-reflection.png | ipad/dark/02-reflection.png | 2064 × 2752        |
+| phone-insights    | iphone/light/03-insights.png | iphone/dark/03-insights.png | 1206 × 2622        |
+| phone-practice    | iphone/light/04-practice.png | iphone/dark/04-practice.png | 1206 × 2622        |
+| phone-explore     | iphone/light/05-explore.png  | iphone/dark/05-explore.png  | 1206 × 2622        |
+| phone-wheel       | iphone/light/06-wheel.png    | iphone/dark/06-wheel.png    | 1206 × 2622        |
+| phone-emotion     | iphone/light/07-emotion.png  | iphone/dark/07-emotion.png  | 1206 × 2622        |
 
 Reflection text, multiple tags, check-ins and chart data are synthetic fixture
 content. The AI sparkle/dashed tag styling demonstrates a **saved AI-tag
@@ -28,17 +33,18 @@ Visible site captions and alt text preserve this distinction. Product AI copy
 describes optional on-device behavior without suggesting the fixture is proof
 of live inference.
 
-`scripts/prepare-media.mjs` resizes and encodes without cropping, retouching,
-changing screen features or compositing fake UI. iPhone variants: 320/640/960px;
-iPad: 480/960/1440px. WebP quality 82, natural proportions preserved. Originals
-are not stored here. Reproduction requires a separately authorized copy of the
-approved directories:
+`scripts/prepare-media.mjs` reads only the listed screenshot files, then resizes
+and encodes without cropping, retouching, changing screen features or
+compositing fake UI. iPhone variants: 320/640/960px; iPad: 480/960/1440px. WebP
+quality 82, natural proportions preserved. Originals are not stored here.
+Reproduction requires a separately authorized copy of the approved screenshot
+directory:
 
 ```sh
-node scripts/prepare-media.mjs /approved/Feelory/docs/assets/app-store /approved/Feelory/App/Resources/AppIcon.icon
+node scripts/prepare-media.mjs /approved/Feelory/docs/assets/app-store
 ```
 
-The script reads only the six named PNGs and three named SVG icon layers.
+The Feelory icon artwork is unchanged by the screenshot preparation script.
 Review resulting source hashes before accepting changed media.
 
 ## Icon
@@ -74,9 +80,9 @@ not an unrestricted reuse license.
 
 ## Budgets
 
-All 18 WebP files total 793,790 bytes. Largest single variant: 98,276 bytes.
-Default 640px two-screen hero: 91,170 bytes combined. Even the largest two hero
-variants total 148,888 bytes, below the 500,000-byte combined hero ceiling.
+The 42 WebP files total 1,978,964 bytes. File sizes are recorded in the manifest
+and checked by the site validator. The default 640px two-screen hero and each
+larger responsive variant remain below the 500,000-byte combined hero ceiling.
 The build validates every recorded file size, metadata/proportion, and budget.
 Browser measurements include actual responsive selection and all initial
 network requests; see [validation](validation.md).

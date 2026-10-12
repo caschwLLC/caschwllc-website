@@ -19,18 +19,25 @@ private iCloud database to your devices. We do not have access to that private
 database. Apple operates iCloud under its own
 [privacy policy](https://www.apple.com/legal/privacy/).
 
-Optional AI features use Apple Intelligence on your device. Feelory does not
-send your writing to a remote AI service. Accepted AI feeling tags are saved
-with your entry, including their AI source and confidence information.
+Optional on-device AI suggestions are included in Feelory. They appear only on
+a supported device when Apple Intelligence is available, run entirely on your
+device, and have no remote fallback. Feelory does not send your writing to a
+remote AI service. Accepted AI feeling tags are saved with your entry,
+including their AI source and confidence information.
 
-If you enable Apple Health logging, Feelory writes a State of Mind sample for
-the primary feeling when you finish an eligible journal entry, using its
-pleasantness, intensity, and matching Health labels. It does not read Health
-data or write your journal text to Health. Autosaved drafts are not sent to
-Health.
+If you enable Apple Health logging, Feelory writes one State of Mind sample
+when you finish a journal entry by tapping **Done**. It uses the entry’s first
+feeling tag, never an autosaved draft. The sample includes a pleasantness
+(valence) value and Apple Health labels that match that specific feeling—for
+example, Guilt maps to Guilty, Jealousy to Jealous, and Relief to Relieved.
+Broader feelings use labels for their emotion family and intensity. When there
+is no honest Health match, such as Curiosity or Confusion, the sample has
+pleasantness only and no label. Accepting an on-device AI suggestion counts as
+your choice, so a resulting sample is marked as user-entered. Feelory never
+reads Health data or writes journal text to Health.
 
-Reflection reminders use notifications. App lock uses your device’s
-authentication system; Feelory does not collect your biometric information.
+Reflection reminders use notifications. App lock uses Face ID or Touch ID on
+your device; Feelory does not collect your biometric information.
 You can choose not to enable these features.
 
 ## Retention and deletion
@@ -39,39 +46,61 @@ Feelory keeps saved reflections, unfinished drafts, check-ins, practice progress
 and settings until you remove or replace them using the available app or device
 controls. There is no automatic expiry of saved reflections.
 
-You can delete a journal entry from its menu or detail screen. Its feeling tags
-are also deleted; a brief Undo option lets you restore it immediately afterward.
-With iCloud sync enabled, saved deletions sync to other connected devices when
-sync succeeds. Keep sync enabled until the deletion has reached your devices;
-offline devices may continue to show older copies until they sync.
+### Feelory’s iCloud data
 
-Turning off iCloud sync is not a deletion request: it does not erase your local
-data or previously synced iCloud data. Turn off **Sync with iCloud** in Feelory’s
-Settings and restart the app to stop that installation syncing. Other devices
-have their own sync setting. To manage previously stored iCloud data, use
-Apple’s iCloud storage controls where available. We cannot access or delete your
-private iCloud database on your behalf.
+You can delete Feelory’s data from your private iCloud database in Feelory.
+First turn off **Sync with iCloud** in Settings on every device that uses
+Feelory, then restart Feelory on each device so it stops syncing. On the device
+where you will delete the data, tap **Delete iCloud Data…** and confirm after
+the restart. The button stays disabled until that restart because Feelory keeps
+syncing until then.
 
-Deleting a journal entry, turning off Health logging, or removing Feelory does
-not delete State of Mind samples already written to Apple Health. Review or
-delete those samples separately in the Health app. Their storage and any Health
-sync or backup are controlled by your Apple settings.
+This removes Feelory’s data from your private iCloud database only; entries on
+this device are not touched. Another device that still syncs can upload its copy
+again, which is why sync must be turned off on every device first. If you turn
+sync back on later, this device’s data is uploaded again. Apple’s iCloud storage
+controls are another way to manage this data. We, the developer, never have
+access to your private iCloud database; you run the deletion from your own
+device.
+
+Turning off iCloud sync is not deletion. It does not erase data stored on your
+device or previously synced to iCloud.
+
+### Local data on your device
+
+Journal entries, drafts, feeling tags, quick check-ins, practice progress, and
+settings are stored locally. You can delete an individual journal entry from
+its menu or detail screen; a brief Undo is available. There is no in-app
+“erase everything” control. To remove all local Feelory data, delete Feelory
+from your device.
+
+Deleting Feelory’s iCloud data does not erase local data. Deleting Feelory from
+your device does not erase its iCloud data.
+
+### Apple Health data
+
+Deleting a journal entry, deleting Feelory’s iCloud data, turning off Health
+logging, or deleting Feelory from your device does not remove State of Mind
+samples already written to Apple Health. Delete those samples in the Health
+app. Their storage and any Health sync or backup are controlled by your Apple
+settings.
 
 When you export a backup or PDF, you choose where it goes. Anyone with access
 to that exported file may be able to read it, so store and share it carefully.
 Deleting data in Feelory does not remove exported files or copies held by their
-recipients. Delete those separately at their destinations. Device backups may
-also retain earlier app data according to your Apple backup settings; restoring
-an earlier backup can restore previously deleted data.
-
-Feelory does not have an in-app erase-all control. Deleting an individual journal
-entry does not also clear check-ins, practice progress, or settings.
+recipients. Delete those separately at their destinations. Device or iCloud
+backups may retain earlier app data according to your Apple
+backup settings; restoring one can restore previously deleted data.
 
 ## Your choices and permissions
 
 Optional features are not required for core journaling or exploring feelings:
 
 - Stop iCloud sync using the toggle and restart described above.
+- Delete Feelory’s iCloud data using **Delete iCloud Data…** after turning sync
+  off on every device and restarting Feelory on each one.
+- Delete an individual journal entry from its menu or detail screen. To remove
+  all local Feelory data, delete the app from your device.
 - Turn off **Log primary feeling** in Feelory’s Settings to stop new Health
   writes. You can also revoke Feelory’s Health write permission in Apple Health
   or system Settings.

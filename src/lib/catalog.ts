@@ -29,6 +29,10 @@ export const httpsUrl = z
 
 export const mediaSchema = z.object({
   name: z.string().regex(/^[a-z][a-z0-9-]+$/),
+  darkName: z
+    .string()
+    .regex(/^[a-z][a-z0-9-]+$/)
+    .optional(),
   alt: z.string().trim().min(12),
   device: z.enum(['phone', 'tablet']),
   width: z.number().int().positive(),

@@ -15,6 +15,12 @@ remain available locally while sync catches up.
 Turning sync off does not delete local or previously synced data. See
 [Feelory privacy](../privacy/) for deletion and permission choices.
 
+To delete Feelory’s iCloud data, turn off sync on every device and restart
+Feelory on each one. Then, on the device where you will perform the deletion,
+tap **Delete iCloud Data…** and confirm. The button stays disabled until that
+restart. This removes the iCloud copy only, not entries on the device. A device
+that still syncs can upload its copy again.
+
 ## Backups and exports
 
 Before installing an update or restoring data, export a JSON backup from
@@ -26,9 +32,18 @@ backups. Manage those separately where you stored them.
 
 ## Optional AI
 
-AI features need a supported device with Apple Intelligence available.
-You can explore, write, check in, and practice without AI. Suggestions are a
-second perspective, not an assessment of what you should feel.
+Optional on-device AI suggestions are included in Feelory. They appear only on
+a supported device when Apple Intelligence is available, run entirely on your
+device, and have no remote fallback. You can explore, write, check in, and
+practice without AI. Suggestions are a second perspective, not an assessment
+of what you should feel.
+
+## Reminders
+
+By default, Feelory sends one gentle reminder each evening at 8 PM local time.
+In Settings, you can choose reminder days and times and schedule up to eight
+reminders a day. Turn reminders off in Feelory or revoke notification
+permission in system Settings.
 
 ## Report a problem
 

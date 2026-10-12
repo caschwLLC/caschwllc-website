@@ -39,7 +39,8 @@ Email support is apps@caschw.com, hosted by Outlook.com/Microsoft.
 Code is MIT; copy, branding and artwork are reserved rights.
 Responsible publisher, policy effective date, provider disclosures and final
 publication approval are launch gates. The owner confirmed the publication facts
-in `src/content/publication.json`, including effective date 2026-10-08.
+in `src/content/publication.json`, including effective date 2026-10-12 after the
+owner-requested Feelory retention and deletion update.
 The owner separately authorized completion of production publication on 2026-10-08.
 The user separately authorized public review at the temporary repository Pages
 URL. The parent owns publication setup; this implementation does not commit,

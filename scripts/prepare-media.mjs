@@ -1,33 +1,48 @@
 import sharp from 'sharp';
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, unlink } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve, join } from 'node:path';
 
 const source = resolve(process.argv[2] ?? '');
-const icon = resolve(process.argv[3] ?? '');
-if (
-  !source.endsWith('/docs/assets/app-store') ||
-  !icon.endsWith('/App/Resources/AppIcon.icon')
-) {
+if (!source.endsWith('/docs/assets/app-store')) {
   throw new Error(
-    'Supply the approved screenshot directory and AppIcon.icon resource directory',
+    'Supply the approved docs/assets/app-store screenshot directory',
   );
 }
 const selected = [
-  ['phone-emotion', 'iphone/light/06-emotion.png'],
-  ['phone-reflection', 'iphone/light/02-reflection.png'],
-  ['phone-explore', 'iphone/light/05-explore.png'],
+  ['phone-journal', 'iphone/light/01-journal.png'],
+  ['phone-journal-dark', 'iphone/dark/01-journal.png'],
   ['tablet-reflection', 'ipad/light/02-reflection.png'],
+  ['tablet-reflection-dark', 'ipad/dark/02-reflection.png'],
+  ['phone-insights', 'iphone/light/03-insights.png'],
+  ['phone-insights-dark', 'iphone/dark/03-insights.png'],
   ['phone-practice', 'iphone/light/04-practice.png'],
-  ['phone-insights', 'iphone/dark/03-insights.png'],
+  ['phone-practice-dark', 'iphone/dark/04-practice.png'],
+  ['phone-explore', 'iphone/light/05-explore.png'],
+  ['phone-explore-dark', 'iphone/dark/05-explore.png'],
+  ['phone-wheel', 'iphone/light/06-wheel.png'],
+  ['phone-wheel-dark', 'iphone/dark/06-wheel.png'],
+  ['phone-emotion', 'iphone/light/07-emotion.png'],
+  ['phone-emotion-dark', 'iphone/dark/07-emotion.png'],
 ];
+
+let previous = [];
+try {
+  previous = JSON.parse(await readFile('public/media/manifest.json', 'utf8'));
+} catch (error) {
+  if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT'))
+    throw error;
+}
+
 await mkdir('public/media', { recursive: true });
 const manifest = [];
 for (const [name, path] of selected) {
   const input = await readFile(join(source, path));
   const metadata = await sharp(input).metadata();
+  if (!metadata.width || !metadata.height)
+    throw new Error(`Missing screenshot dimensions: ${path}`);
   const outputs = [];
-  for (const width of name.startsWith('tablet')
+  for (const width of name.startsWith('tablet-')
     ? [480, 960, 1440]
     : [320, 640, 960]) {
     const file = `${name}-${width}.webp`;
@@ -47,29 +62,37 @@ for (const [name, path] of selected) {
     outputs,
   });
 }
-const layers = [];
-// Icon Composer lists foreground first; Sharp paints the last layer on top.
-for (const name of ['Warm', 'Cool', 'Spark']) {
-  const input = await readFile(join(icon, `Assets/${name}.svg`));
-  await mkdir('src/assets/icon', { recursive: true });
-  await writeFile(`src/assets/icon/${name}.svg`, input);
-  layers.push({ input });
+
+const currentFiles = new Set(
+  manifest.flatMap((entry) => entry.outputs.map(({ file }) => file)),
+);
+for (const entry of previous) {
+  for (const { file } of entry.outputs ?? []) {
+    if (
+      !currentFiles.has(file) &&
+      /^(?:phone|tablet)-[a-z0-9-]+-(?:320|480|640|960|1440)\.webp$/.test(file)
+    ) {
+      await unlink(`public/media/${file}`).catch((error) => {
+        if (!(
+          error instanceof Error &&
+          'code' in error &&
+          error.code === 'ENOENT'
+        ))
+          throw error;
+      });
+    }
+  }
 }
-const artwork = await sharp({
-  create: { width: 1024, height: 1024, channels: 4, background: '#fff8ee' },
-})
-  .composite(layers)
-  .png()
-  .toBuffer();
-await sharp(artwork).resize(192).png().toFile('public/media/feelory-icon.png');
+
 await writeFile(
   'public/media/manifest.json',
   `${JSON.stringify(manifest, null, 2)}\n`,
 );
 console.log(
   JSON.stringify(
-    manifest.map(({ name, width, height, outputs }) => ({
+    manifest.map(({ name, source, width, height, outputs }) => ({
       name,
+      source,
       width,
       height,
       outputs,

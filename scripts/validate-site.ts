@@ -47,33 +47,34 @@ for (const app of apps.filter((app) => app.visibility === 'marketed')) {
     app.secondaryHero,
     ...app.features.map((feature) => feature.media),
   ]) {
-    const record = manifest.find((item) => item.name === media.name);
-    assert.ok(record, `Missing image manifest: ${media.name}`);
-    assert.equal(
-      media.width,
-      record.width,
-      `Source width mismatch: ${media.name}`,
-    );
-    assert.equal(
-      media.height,
-      record.height,
-      `Source height mismatch: ${media.name}`,
-    );
-    for (const output of record.outputs) {
-      const file = await stat(`public/media/${output.file}`);
-      const info = await sharp(`public/media/${output.file}`).metadata();
-      assert.equal(file.size, output.bytes);
-      assert.equal(info.width, output.width);
-      assert.ok(
-        info.height &&
-          Math.abs(info.width / info.height - media.width / media.height) <
-            0.002,
-        'Screen proportions changed',
+    for (const name of [
+      media.name,
+      ...(media.darkName ? [media.darkName] : []),
+    ]) {
+      const record = manifest.find((item) => item.name === name);
+      assert.ok(record, `Missing image manifest: ${name}`);
+      assert.equal(media.width, record.width, `Source width mismatch: ${name}`);
+      assert.equal(
+        media.height,
+        record.height,
+        `Source height mismatch: ${name}`,
       );
-      assert.ok(
-        output.bytes <= 500_000,
-        `Image exceeds hero budget: ${output.file}`,
-      );
+      for (const output of record.outputs) {
+        const file = await stat(`public/media/${output.file}`);
+        const info = await sharp(`public/media/${output.file}`).metadata();
+        assert.equal(file.size, output.bytes);
+        assert.equal(info.width, output.width);
+        assert.ok(
+          info.height &&
+            Math.abs(info.width / info.height - media.width / media.height) <
+              0.002,
+          'Screen proportions changed',
+        );
+        assert.ok(
+          output.bytes <= 500_000,
+          `Image exceeds hero budget: ${output.file}`,
+        );
+      }
     }
   }
   for (const draft of apps.filter((item) => item.visibility === 'draft')) {

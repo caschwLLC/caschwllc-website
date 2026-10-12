@@ -548,7 +548,11 @@
     width: 100%;
     max-width: 300px;
   }
+  .device picture {
+    display: block;
+  }
   .device img {
+    display: block;
     border-radius: 24px;
     width: 100%;
   }

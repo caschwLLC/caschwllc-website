@@ -15,8 +15,9 @@ Provider-held copies follow provider controls and retention policies.
 ## Owner-confirmed publication facts
 
 On 2026-10-08 the owner confirmed **caschw LLC** as the legal publisher and
-directed that the remaining publication flags be true, using that day as the
-effective date. These confirmations are recorded in
+directed that the remaining publication flags be true. The owner subsequently
+directed a Feelory retention and deletion update; the revised policy effective
+date is 2026-10-12. These facts are recorded in
 `src/content/publication.json`: content/assets, provider disclosures, deletion
 guidance, domain/hosting, and dependency-risk review. GitHub Pages hosting has
 also been checked directly, and the website policy now states it in the present

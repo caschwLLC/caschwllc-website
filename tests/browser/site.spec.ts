@@ -49,6 +49,19 @@ for (const route of routes) {
         await expect(page.locator('.policy-availability')).toHaveText(
           'Feelory is coming soon. This policy describes how Feelory handles your information.',
         );
+        await expect(page.locator('body')).toContainText(
+          'Effective: 2026-10-12',
+        );
+        await expect(page.locator('body')).toContainText('Delete iCloud Data…');
+        await expect(page.locator('body')).toContainText(
+          'Guilt maps to Guilty, Jealousy to Jealous, and Relief to Relieved.',
+        );
+        await expect(page.locator('body')).toContainText(
+          'Deleting Feelory’s iCloud data does not erase local data.',
+        );
+        await expect(page.locator('body')).toContainText(
+          'Deleting Feelory from your device does not erase its iCloud data.',
+        );
       } else {
         await expect(page.locator('.policy-availability')).toHaveCount(0);
       }
@@ -115,8 +128,43 @@ test('product anchors, honest availability and reduced motion', async ({
       .evaluate((element) => getComputedStyle(element).animationName),
   ).toBe('none');
   await expect(
-    page.getByText('This is not a live AI result.', { exact: false }),
+    page.getByText('screen examples use synthetic content', { exact: false }),
   ).toBeVisible();
+});
+
+test('Feelory marketing and support describe current features and screenshot variants', async ({
+  page,
+}) => {
+  await page.goto(pathFor('/apps/feelory/'));
+  await expect(page.locator('.device img')).toHaveCount(7);
+  await expect(page.locator('main')).toContainText(
+    '128 emotions across eight families',
+  );
+  await expect(page.locator('main')).toContainText(
+    'one gentle reminder each evening at 8 PM local time',
+  );
+  await expect(page.locator('main')).toContainText('no remote fallback');
+  await expect(page.locator('main')).toContainText('Face ID or Touch ID');
+  for (const image of await page.locator('.device img').all()) {
+    await expect(image).toHaveAttribute('alt', /.+/);
+  }
+  const firstImage = page.locator('.device img').first();
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await expect
+    .poll(() =>
+      firstImage.evaluate((image: HTMLImageElement) => image.currentSrc),
+    )
+    .toContain('phone-journal-dark-');
+
+  await page.goto(pathFor('/apps/feelory/support/'));
+  await expect(page.locator('main')).toContainText('apps@caschw.com');
+  await expect(page.locator('main')).toContainText(
+    'turn off sync on every device',
+  );
+  await expect(page.locator('main')).toContainText(
+    'one gentle reminder each evening at 8 PM local time',
+  );
+  await expect(page.locator('main')).toContainText('no remote fallback');
 });
 
 test('unknown routes return the accessible 404, including at narrow width', async ({

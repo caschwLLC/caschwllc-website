@@ -4,88 +4,110 @@
   "visibility": "marketed",
   "status": "coming-soon",
   "platforms": ["apple"],
-  "summary": "Explore what you feel, make room to reflect, and build a richer emotional vocabulary. Personal by design, local by default.",
+  "summary": "Journal with feeling tags and intensity, make quick check-ins, and explore 128 emotions. Personal by design, local by default.",
   "headline": "Find words for what you feel.",
   "compatibility": "Made for iPhone and iPad, with support for compatible Macs through Designed for iPad.",
   "icon": "/media/feelory-icon.png",
   "hero": {
-    "name": "phone-emotion",
-    "alt": "Feelory's Serenity definition, with everyday examples and body sensations in the emotion explorer.",
+    "name": "phone-journal",
+    "darkName": "phone-journal-dark",
+    "alt": "Feelory journal screen with a written entry and its selected feeling tags.",
     "device": "phone",
-    "width": 1320,
-    "height": 2868
+    "width": 1206,
+    "height": 2622
   },
   "secondaryHero": {
-    "name": "phone-reflection",
-    "alt": "A synthetic journal entry with Serenity and Relief tags; Relief has saved AI sparkle styling.",
-    "device": "phone",
-    "width": 1320,
-    "height": 2868
+    "name": "tablet-reflection",
+    "darkName": "tablet-reflection-dark",
+    "alt": "Feelory on iPad showing a journal reflection and selected feeling tags.",
+    "device": "tablet",
+    "width": 2064,
+    "height": 2752
   },
   "features": [
     {
-      "title": "There is more to a feeling than its name.",
+      "title": "Notice patterns, not scores.",
       "paragraphs": [
-        "Explore 128 emotions across eight families. Find definitions, everyday examples, body sensations, and nearby feelings.",
-        "Search by a word or a sensation. Begin with the emotion wheel when you know the shape of a feeling before its name."
+        "Insights help you notice which emotion families appear in your reflections, how pleasantness varies, and when feelings tend to show up.",
+        "These patterns are invitations to reflect, not diagnoses or judgments."
       ],
       "media": {
-        "name": "phone-explore",
-        "alt": "Feelory's emotion explorer with family filters, a feeling of the day, and definitions.",
+        "name": "phone-insights",
+        "darkName": "phone-insights-dark",
+        "alt": "Feelory Insights charts showing feeling patterns across synthetic reflections.",
         "device": "phone",
-        "width": 1320,
-        "height": 2868
+        "width": 1206,
+        "height": 2622
       },
-      "tone": "lavender",
-      "caption": "Explore by name, emotion family, or body sensation."
+      "tone": "ink",
+      "caption": "Illustrative patterns from synthetic reflections, not an assessment."
     },
     {
-      "title": "Make room for the whole thought.",
-      "paragraphs": [
-        "Write a little or a lot. Choose multiple feeling tags and add intensity when it helps. Your writing saves as a draft while you go.",
-        "Optional on-device AI can suggest tags and prompts on supported devices with Apple Intelligence available. It never decides how you feel. Core journaling works without it."
-      ],
-      "media": {
-        "name": "tablet-reflection",
-        "alt": "Feelory on iPad with synthetic journal entries and multiple tags, including saved AI-tag sparkle styling.",
-        "device": "tablet",
-        "width": 2064,
-        "height": 2752
-      },
-      "tone": "mint",
-      "caption": "Synthetic writing and saved AI-tag provenance are shown. This is not a live AI result."
-    },
-    {
-      "title": "A little practice. A richer vocabulary.",
+      "title": "Practice a little at a time.",
       "paragraphs": [
         "Flashcards and quizzes help you get to know nearby feelings. There is no need to get your own emotions \"right\".",
-        "A quick check-in can be just a feeling and an optional note. Reflection reminders, widgets, Shortcuts, and a Control Center control make it easier to pause when the moment is right."
+        "Quick check-ins can be just a feeling and an optional note. The default is one gentle reminder each evening at 8 PM local time; choose reminder days and times in Settings, up to eight a day. Widgets, Shortcuts, and a Control Center control help you pause when the moment is right."
       ],
       "media": {
         "name": "phone-practice",
-        "alt": "A Feelory flashcard describing Acceptance through a definition, body sensations and an everyday example.",
+        "darkName": "phone-practice-dark",
+        "alt": "Feelory practice screen with a flashcard about an emotion.",
         "device": "phone",
-        "width": 1320,
-        "height": 2868
+        "width": 1206,
+        "height": 2622
       },
       "tone": "sky",
       "caption": "Learn a little at a time with flashcards and quizzes."
     },
     {
-      "title": "Patterns, not scores.",
+      "title": "Find a feeling by name or family.",
       "paragraphs": [
-        "Notice which emotion families appear in your reflections, how pleasantness varies, and when feelings tend to show up.",
-        "Insights are invitations to reflect, not diagnoses or judgments. Light and dark appearances make room for different moments."
+        "Explore 128 emotions across eight families. Read definitions, everyday examples, and body sensations, then compare nearby feelings.",
+        "Search by a word or sensation when you know what you notice but not what to call it."
       ],
       "media": {
-        "name": "phone-insights",
-        "alt": "Feelory in dark appearance, showing emotion-family and pleasantness charts based on synthetic reflections.",
+        "name": "phone-explore",
+        "darkName": "phone-explore-dark",
+        "alt": "Feelory Explore screen listing emotions and family filters.",
         "device": "phone",
-        "width": 1320,
-        "height": 2868
+        "width": 1206,
+        "height": 2622
       },
-      "tone": "ink",
-      "caption": "Illustrative patterns from synthetic reflections, not an assessment."
+      "tone": "lavender",
+      "caption": "Explore emotions by name, family, or body sensation."
+    },
+    {
+      "title": "Start with the shape of a feeling.",
+      "paragraphs": [
+        "The emotion wheel helps you explore feelings when you have a sense of the emotion but not its name. Matching feelings appear beneath the wheel."
+      ],
+      "media": {
+        "name": "phone-wheel",
+        "darkName": "phone-wheel-dark",
+        "alt": "Feelory emotion wheel with matching feelings listed beneath it.",
+        "device": "phone",
+        "width": 1206,
+        "height": 2622
+      },
+      "tone": "mint",
+      "caption": "The wheel connects a broad emotion to matching feelings."
+    },
+    {
+      "title": "Get to know each emotion.",
+      "paragraphs": [
+        "Open an emotion to explore its meaning and related details. Keep journaling with multiple feeling tags and add intensity when it helps; your writing saves as a draft while you go.",
+        "Optional on-device AI suggestions are included when Apple Intelligence is available on a supported device. They run entirely on your device with no remote fallback. Feelory works without them."
+      ],
+      "media": {
+        "name": "phone-emotion",
+        "darkName": "phone-emotion-dark",
+        "alt": "Feelory emotion detail screen with a feeling description and related feelings.",
+        "device": "phone",
+        "width": 1206,
+        "height": 2622
+      },
+      "tone": "lavender",
+      "caption": "Explore an emotion in context; screen examples use synthetic content."
     }
   ]
 }
