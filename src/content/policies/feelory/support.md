@@ -6,6 +6,13 @@ description: Get help with Feelory, iCloud sync, backups, optional on-device AI,
 Need help with Feelory? Email [apps@caschw.com](mailto:apps@caschw.com).
 Feelory is coming soon; there is no announced release date.
 
+## Accessibility
+
+The Feelory accessibility page describes VoiceOver, larger text, Reduce Motion,
+and ways to report an accessibility problem.
+
+[Read the Feelory accessibility page](../accessibility/)
+
 ## iCloud sync
 
 Use the same Apple Account on your devices, enable sync in Feelory’s Settings,

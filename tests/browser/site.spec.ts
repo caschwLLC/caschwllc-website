@@ -9,6 +9,7 @@ const routes = [
   '/apps/feelory/',
   '/apps/feelory/privacy/',
   '/apps/feelory/support/',
+  '/apps/feelory/accessibility/',
   '/privacy/',
   '/404.html',
 ];
@@ -33,6 +34,7 @@ for (const route of routes) {
     ).not.toContainText('Apple');
     await expect(page.locator('footer')).toContainText('Feelory privacy');
     await expect(page.locator('footer')).toContainText('Feelory support');
+    await expect(page.locator('footer')).toContainText('Feelory accessibility');
     await expect(page.locator('a[href*="apps.apple.com"]')).toHaveCount(0);
     await expect(page.locator('form, iframe')).toHaveCount(0);
     if (route.endsWith('/privacy/')) {
@@ -74,6 +76,9 @@ for (const route of routes) {
     await expect(page.locator('.skip-link')).toBeFocused();
     await page.keyboard.press('Enter');
     await expect(page.locator('#main')).toBeFocused();
+    if (route === '/apps/feelory/accessibility/') {
+      await expect(page.locator('#main')).toHaveCSS('outline-style', 'solid');
+    }
     for (const link of await page
       .locator('a[href^="/"]')
       .evaluateAll((links) =>
@@ -91,7 +96,8 @@ for (const route of routes) {
     if (
       route === '/' ||
       route === '/apps/feelory/' ||
-      route === '/apps/feelory/privacy/'
+      route === '/apps/feelory/privacy/' ||
+      route === '/apps/feelory/accessibility/'
     ) {
       for (const image of await page.locator('.device img').all()) {
         await image.scrollIntoViewIfNeeded();
@@ -145,6 +151,9 @@ test('Feelory marketing and support describe current features and screenshot var
   );
   await expect(page.locator('main')).toContainText('no remote fallback');
   await expect(page.locator('main')).toContainText('Face ID or Touch ID');
+  await expect(
+    page.getByRole('link', { name: 'Feelory accessibility information' }),
+  ).toHaveAttribute('href', pathFor('/apps/feelory/accessibility/'));
   for (const image of await page.locator('.device img').all()) {
     await expect(image).toHaveAttribute('alt', /.+/);
   }
@@ -165,6 +174,110 @@ test('Feelory marketing and support describe current features and screenshot var
     'one gentle reminder each evening at 8 PM local time',
   );
   await expect(page.locator('main')).toContainText('no remote fallback');
+  await expect(
+    page.getByRole('link', { name: 'Read the Feelory accessibility page' }),
+  ).toHaveJSProperty('pathname', pathFor('/apps/feelory/accessibility/'));
+});
+
+test('Feelory accessibility page covers assistive use and adapts to viewport, text, and appearance', async ({
+  page,
+}, testInfo) => {
+  await page.goto(pathFor('/apps/feelory/accessibility/'));
+  const screenshot = page.locator('.a11y-example img');
+  await screenshot.scrollIntoViewIfNeeded();
+  await expect(screenshot).toHaveJSProperty('complete', true);
+
+  if (process.env.CAPTURE_VISUAL_REVIEW === '1') {
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.screenshot({
+      path: testInfo.outputPath(
+        `accessibility-light-${testInfo.project.name}.png`,
+      ),
+      fullPage: true,
+      animations: 'disabled',
+    });
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.screenshot({
+      path: testInfo.outputPath(
+        `accessibility-dark-${testInfo.project.name}.png`,
+      ),
+      fullPage: true,
+      animations: 'disabled',
+    });
+    await page.emulateMedia({ colorScheme: 'light' });
+  }
+
+  await page.setViewportSize({ width: 320, height: 720 });
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Feelory accessibility',
+  );
+  await expect(page.locator('time')).toHaveAttribute('datetime', '2026-10-12');
+  await expect(page.locator('.a11y-updated')).toContainText(
+    'Last updated: 2026-10-12',
+  );
+  await expect(page.locator('main')).toContainText('VoiceOver');
+  await expect(page.locator('main')).toContainText('Dynamic Type');
+  await expect(page.locator('main')).toContainText('Reduce Motion');
+  await expect(page.locator('.a11y-example')).toContainText(
+    'An AX5 example from the emotion detail card for Serenity, not a journal entry.',
+  );
+  await expect(
+    page.getByRole('heading', { name: 'Voice Control' }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole('heading', { name: 'Contrast', exact: true }),
+  ).toHaveCount(0);
+  expect(
+    await screenshot.evaluate((image: HTMLImageElement) => image.naturalWidth),
+  ).toBeGreaterThan(0);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth,
+    ),
+  ).toBe(false);
+
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await expect
+    .poll(() =>
+      screenshot.evaluate((image: HTMLImageElement) => image.currentSrc),
+    )
+    .toContain('feelory-serenity-detail-ax5-dark.webp');
+  await expect(page.locator('body')).toHaveCSS(
+    'background-color',
+    'rgb(23, 24, 26)',
+  );
+  const darkAccessibility = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+    .analyze();
+  expect(darkAccessibility.violations).toEqual([]);
+
+  await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+  const zoomOverflow = await page.evaluate(() =>
+    [...document.querySelectorAll('body *')]
+      .map((element) => {
+        const bounds = element.getBoundingClientRect();
+        return {
+          tag: element.tagName,
+          className: String(element.className),
+          right: bounds.right,
+          width: bounds.width,
+          scrollWidth: element.scrollWidth,
+          clientWidth: element.clientWidth,
+        };
+      })
+      .filter(
+        (element) =>
+          element.right > window.innerWidth + 1 ||
+          element.scrollWidth > element.clientWidth + 1,
+      )
+      .slice(0, 15),
+  );
+  expect(zoomOverflow).toEqual([]);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth,
+    ),
+  ).toBe(false);
 });
 
 test('unknown routes return the accessible 404, including at narrow width', async ({

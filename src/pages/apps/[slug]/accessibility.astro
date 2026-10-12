@@ -1,0 +1,144 @@
+---
+import Site from '../../../layouts/Site.astro';
+import { getApps } from '../../../lib/content';
+import { localPath } from '../../../lib/catalog';
+import type { App } from '../../../lib/catalog';
+
+const voiceControlVerified = false;
+const lastUpdated = '2026-10-12';
+
+export async function getStaticPaths() {
+  return (await getApps())
+    .filter((app) => app.slug === 'feelory')
+    .map((app) => ({
+      params: { slug: app.slug },
+      props: { app },
+    }));
+}
+
+interface Props {
+  app: App;
+}
+
+const { app } = Astro.props;
+const href = (path: string) => localPath(path, import.meta.env.BASE_URL);
+---
+
+<Site
+  title="Feelory accessibility"
+  description="Accessibility features and support information for Feelory."
+  appSlug={app.slug}
+  adaptiveColorScheme
+>
+  <article class="reading accessibility-page">
+    <a class="back-link" href={href(`/apps/${app.slug}/`)}>
+      <span aria-hidden="true">← </span>Back to Feelory
+    </a>
+    <h1>Feelory accessibility</h1>
+    <p class="a11y-updated">
+      Last updated: <time datetime={lastUpdated}>{lastUpdated}</time>
+    </p>
+    <p class="a11y-intro">
+      Feelory is designed to be usable without relying on color, motion, perfect
+      vision, or a single input style.
+    </p>
+
+    <div class="prose accessibility-copy">
+      <section aria-labelledby="voiceover">
+        <h2 id="voiceover">VoiceOver</h2>
+        <ul>
+          <li>
+            Feelory provides accessibility labels, values, traits, and hints for
+            its main interactive features.
+          </li>
+          <li>
+            Emotion cards identify the feeling, its family, intensity, and
+            definition. Family chips expose the family name and selected state.
+          </li>
+          <li>
+            The emotion wheel is one adjustable VoiceOver control. Swipe up or
+            down to move across family and intensity, then choose a feeling
+            below it.
+          </li>
+          <li>
+            Journal, check-in, backup, and PDF export confirmations announce
+            when their work finishes.
+          </li>
+          <li>
+            Insights charts provide audio graph descriptions and a written
+            summary before the visual chart.
+          </li>
+        </ul>
+      </section>
+
+      {voiceControlVerified && (
+        <section aria-labelledby="voice-control">
+          <h2 id="voice-control">Voice Control</h2>
+          <p>
+            Feelory supports Voice Control for navigating and using its
+            controls.
+          </p>
+        </section>
+      )}
+
+      <section aria-labelledby="larger-text">
+        <h2 id="larger-text">Larger text</h2>
+        <p>
+          Feelory uses system text styles that follow Dynamic Type, including
+          accessibility text sizes up to AX5. Definitions wrap, cards grow
+          vertically, and practice and Insights use roomier layouts at larger
+          sizes.
+        </p>
+        <figure class="a11y-example">
+          <picture>
+            <source
+              srcset={href('/media/feelory-serenity-detail-ax5-dark.webp')}
+              media="(prefers-color-scheme: dark)"
+            />
+            <img
+              src={href('/media/feelory-serenity-detail-ax5-light.webp')}
+              width="620"
+              height="1348"
+              alt="Feelory’s Serenity detail screen at the largest text size, showing two example phrases in large text."
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <figcaption>
+            An AX5 example from the emotion detail card for Serenity, not a
+            journal entry.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section aria-labelledby="color-and-appearance">
+        <h2 id="color-and-appearance">Color and visual cues</h2>
+        <p>
+          Color is not the only way to understand a feeling or status. Feelory
+          pairs family colors with names, labels, icons, selected states, and
+          intensity text. AI suggestions use text, a sparkle, and a dashed
+          outline as additional cues.
+        </p>
+      </section>
+
+      <section aria-labelledby="reduce-motion">
+        <h2 id="reduce-motion">Reduce Motion</h2>
+        <p>
+          Feelory responds to the system’s Reduce Motion setting. Decorative
+          animation is removed or replaced with a simpler transition when Reduce
+          Motion is enabled.
+        </p>
+      </section>
+
+      <section aria-labelledby="support">
+        <h2 id="support">Accessibility feedback</h2>
+        <p>
+          Please tell us about clipped text, an unlabeled control, motion that
+          does not respect Reduce Motion, or another accessibility barrier.
+          Email <a href="mailto:apps@caschw.com">apps@caschw.com</a>. Please do
+          not include private journal entries or Health information.
+        </p>
+      </section>
+    </div>
+  </article>
+</Site>

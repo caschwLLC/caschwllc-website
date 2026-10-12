@@ -4,7 +4,8 @@ export const slugSchema = z
   .string()
   .regex(/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/)
   .refine(
-    (slug) => !['privacy', 'support', '404', 'index'].includes(slug),
+    (slug) =>
+      !['privacy', 'support', 'accessibility', '404', 'index'].includes(slug),
     'Reserved slug',
   );
 
@@ -159,6 +160,7 @@ export function publicRoutes(apps: App[]): string[] {
       `/apps/${app.slug}/`,
       `/apps/${app.slug}/privacy/`,
       `/apps/${app.slug}/support/`,
+      ...(app.slug === 'feelory' ? [`/apps/${app.slug}/accessibility/`] : []),
     ]),
   ];
 }

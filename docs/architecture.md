@@ -15,10 +15,13 @@ not an available store product. No invented price, rating or review fields.
 - `getApps()` filters marketed products before homepage, routes and navigation.
   `publicRoutes()` supplies sitemap discovery. Slugs, metadata, platform/store
   invariants and unsafe URLs fail loudly.
-- Catalog-driven `getStaticPaths()` generates product/privacy/support routes.
+- Catalog-driven `getStaticPaths()` generates product/privacy/support routes;
+  Feelory's accessibility page is available only while Feelory is marketed.
+  Voice Control content remains absent until that capability is verified.
   404 is accessible, noindex, and excluded from sitemap. Robots points to sitemap.
 - `Site.astro`: shared brand, navigation, footer, canonical/social metadata.
-  Product routes explicitly pass app context for their privacy/support footer.
+  Product routes explicitly pass app context for their privacy/support and
+  accessibility footer links.
 - `Reading.astro`: bounded reading measure and optional confirmed publisher/date.
 - `Device.astro`: genuine proportional media in original illustrative surrounds.
 - `src/content/publication.json`: independent, default-incomplete launch facts.

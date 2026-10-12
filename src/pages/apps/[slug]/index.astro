@@ -43,6 +43,14 @@ const href = (path: string) => localPath(path, import.meta.env.BASE_URL);
         </a>
       </div>
       <p class="compatibility">{app.compatibility}</p>
+      {app.slug === 'feelory' && (
+        <a
+          class="text-link accessibility-link"
+          href={href(`/apps/${app.slug}/accessibility/`)}
+        >
+          Feelory accessibility information <span aria-hidden="true">↗</span>
+        </a>
+      )}
     </div>
     <div class="device-pair">
       <Device media={app.hero} priority />
