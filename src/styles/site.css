@@ -649,7 +649,7 @@
     color: var(--accent);
   }
   .accessibility-link {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     min-height: 44px;
   }

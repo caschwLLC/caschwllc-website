@@ -92,8 +92,10 @@ Paired opening screens lean ±5 degrees without changing their content.
 The header exposes home, Feelory and support; platform headings are data-derived.
 Primary links use a dark pill and a directional arrow. Coming soon is a
 noninteractive outlined text status, never a disabled download button.
-Footer links name app privacy/support explicitly. Product features use semantic
-figures, descriptions and honest synthetic-content captions.
+The footer links to email support and website privacy. App-specific privacy,
+support and accessibility links live on the relevant product pages. Product
+features use semantic figures, descriptions and honest synthetic-content
+captions.
 
 One 850ms device-composition settle animation runs only with no motion preference;
 the default remains visible. Reduced motion removes it. Focus rings are 3px,

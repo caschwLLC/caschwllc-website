@@ -150,17 +150,6 @@ const discovery = {
       <nav aria-label="Footer navigation">
         <a href="mailto:apps@caschw.com">apps@caschw.com</a>
         <a href={href('/privacy/')}>Website privacy</a>
-        {(activeApp ? [activeApp] : apps).map((app) => (
-          <>
-            <a href={href(`/apps/${app.slug}/privacy/`)}>{app.name} privacy</a>
-            <a href={href(`/apps/${app.slug}/support/`)}>{app.name} support</a>
-            {app.slug === 'feelory' && (
-              <a href={href(`/apps/${app.slug}/accessibility/`)}>
-                Feelory accessibility
-              </a>
-            )}
-          </>
-        ))}
       </nav>
       <small>
         © {new Date().getUTCFullYear()} caschw LLC. All rights reserved.
