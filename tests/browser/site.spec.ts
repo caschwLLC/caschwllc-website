@@ -218,6 +218,9 @@ test('Feelory accessibility page covers assistive use and adapts to viewport, te
   await expect(page.locator('main')).toContainText('VoiceOver');
   await expect(page.locator('main')).toContainText('Dynamic Type');
   await expect(page.locator('main')).toContainText('Reduce Motion');
+  await expect(page.locator('.a11y-example')).toContainText(
+    'An AX5 example from the emotion detail card for Serenity, not a journal entry.',
+  );
   await expect(
     page.getByRole('heading', { name: 'Voice Control' }),
   ).toHaveCount(0);
