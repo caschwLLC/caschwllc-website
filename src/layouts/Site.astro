@@ -10,6 +10,7 @@ interface Props {
   appSlug?: string;
   noindex?: boolean;
   policy?: boolean;
+  adaptiveColorScheme?: boolean;
 }
 const {
   title,
@@ -17,6 +18,7 @@ const {
   appSlug,
   noindex = false,
   policy = false,
+  adaptiveColorScheme = false,
 } = Astro.props;
 const apps = await getApps();
 const groups = navigation(apps);
@@ -48,7 +50,23 @@ const discovery = {
     {(noindex || review) && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={href('/favicon.svg')} />
-    <meta name="theme-color" content="#f5f5f2" />
+    {adaptiveColorScheme ? (
+      <>
+        <meta
+          name="theme-color"
+          content="#f5f5f2"
+          media="(prefers-color-scheme: light)"
+        />
+        <meta
+          name="theme-color"
+          content="#17181a"
+          media="(prefers-color-scheme: dark)"
+        />
+        <meta name="color-scheme" content="light dark" />
+      </>
+    ) : (
+      <meta name="theme-color" content="#f5f5f2" />
+    )}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -72,7 +90,7 @@ const discovery = {
       set:html={JSON.stringify(discovery).replace(/</g, '\\u003c')}
     />
   </head>
-  <body>
+  <body class:list={[adaptiveColorScheme && 'theme-adaptive']}>
     <a class="skip-link" href="#main">
       Skip to content
     </a>
@@ -136,6 +154,11 @@ const discovery = {
           <>
             <a href={href(`/apps/${app.slug}/privacy/`)}>{app.name} privacy</a>
             <a href={href(`/apps/${app.slug}/support/`)}>{app.name} support</a>
+            {app.slug === 'feelory' && (
+              <a href={href(`/apps/${app.slug}/accessibility/`)}>
+                Feelory accessibility
+              </a>
+            )}
           </>
         ))}
       </nav>

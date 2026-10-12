@@ -47,6 +47,27 @@ node scripts/prepare-media.mjs /approved/Feelory/docs/assets/app-store
 The Feelory icon artwork is unchanged by the screenshot preparation script.
 Review resulting source hashes before accepting changed media.
 
+## Accessibility illustration
+
+The optional AX5 illustration comes from the owner-authorized light and dark
+simulator captures
+`feelory-serenity-detail-ax5-light.png` and
+`feelory-serenity-detail-ax5-dark.png` in the approved
+`website-a11y-candidate` session artifact directory. The raw screenshots were
+captured on iPhone 18 Pro at 1206 × 2622, with synthetic bundled catalog
+phrases and an empty in-memory store; they contain no journal entries or
+account data. Each was resized proportionally to 620 × 1348 and encoded as
+WebP without cropping or retouching. The page selects the matching appearance
+using `prefers-color-scheme`.
+
+| Source appearance | Source SHA-256                                                     | Website file                             | Output bytes |
+| ----------------- | ------------------------------------------------------------------ | ---------------------------------------- | ------------ |
+| Light             | `d38899bb95428d03062feda2c76b6854ef0826e0be74403f38b1f081499d13a7` | `feelory-serenity-detail-ax5-light.webp` | 54,298       |
+| Dark              | `0db23a0c05e669c61df6a5cf82c1f3b64d075c2bce6842e770e9d0958e43d23f` | `feelory-serenity-detail-ax5-dark.webp`  | 53,816       |
+
+The screenshot demonstrates larger-text wrapping only. It is not evidence of
+VoiceOver, Voice Control, or contrast behavior.
+
 ## Icon
 
 `src/assets/icon/{Spark,Cool,Warm}.svg` are the genuine public-safe layers from

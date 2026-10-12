@@ -24,6 +24,7 @@ test('coming soon is marketed without a download or store badge', () => {
     '/apps/feelory/',
     '/apps/feelory/privacy/',
     '/apps/feelory/support/',
+    '/apps/feelory/accessibility/',
   ]);
 });
 
@@ -93,7 +94,16 @@ test('available state requires a verified platform store URL; coming soon forbid
 });
 
 test('invalid and missing catalog fields fail loudly', () => {
-  for (const slug of ['../secret', 'UPPER', 'a/b', 'privacy', '', 'x--x'])
+  for (const slug of [
+    '../secret',
+    'UPPER',
+    'a/b',
+    'privacy',
+    'support',
+    'accessibility',
+    '',
+    'x--x',
+  ])
     assert.throws(() => appSchema.parse({ ...feelory, slug }));
   for (const key of [
     'name',

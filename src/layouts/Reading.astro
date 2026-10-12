@@ -8,8 +8,15 @@ interface Props {
   description: string;
   appSlug?: string;
   policy?: boolean;
+  adaptiveColorScheme?: boolean;
 }
-const { title, description, appSlug, policy = false } = Astro.props;
+const {
+  title,
+  description,
+  appSlug,
+  policy = false,
+  adaptiveColorScheme = false,
+} = Astro.props;
 const app = appSlug
   ? (await getApps()).find((app) => app.slug === appSlug)
   : undefined;
@@ -20,6 +27,7 @@ const app = appSlug
   description={description}
   appSlug={appSlug}
   policy={policy}
+  adaptiveColorScheme={adaptiveColorScheme}
 >
   <article class="reading">
     <a

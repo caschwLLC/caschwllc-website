@@ -45,12 +45,23 @@ missing. Deployment gate/pin tests pass; this is not a real Actions run.
 
 ## Browser and accessibility
 
+The Feelory accessibility page was added and revalidated on 2026-10-12 with
+`CAPTURE_VISUAL_REVIEW=1 ASTRO_TELEMETRY_DISABLED=1 npm run verify`: 12
+unit/build-contract tests passed, 6 public routes plus 404 passed site
+validation, and browser tests reported 23 passed with 1 intentional desktop
+performance-test skip. Axe found zero violations across all route checks at
+desktop and mobile sizes and on the accessibility page in dark appearance.
+The new page also passed checks at 320px width, 200% text scaling, keyboard
+skip/focus, and light/dark screenshot selection. These automated checks are not
+a certification of WCAG conformance.
+
 Chromium desktop: 1440×1000. Mobile: iPhone 13 emulation at 390×844.
-All six page bodies passed axe WCAG 2/2.1/2.2 A/AA tagged checks with **zero
-violations**, no horizontal overflow, no page errors and **zero external
-requests**. Keyboard skip-link activation, navigation/footer paths,
-product anchor and reduced motion were exercised. Lazy captures were scrolled
-into view and checked for successful loading before final full-page screenshots.
+In the 2026-10-07 browser run, all six page bodies passed axe WCAG 2/2.1/2.2
+A/AA tagged checks with **zero violations**, no horizontal overflow, no page
+errors and **zero external requests**. Keyboard skip-link activation,
+navigation/footer paths, product anchor and reduced motion were exercised.
+Lazy captures were scrolled into view and checked for successful loading
+before final full-page screenshots.
 Unknown routes return an actual local 404 response with the accessible custom
 body, including a 320px-wide check.
 

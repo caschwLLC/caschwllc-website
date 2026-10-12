@@ -648,6 +648,11 @@
   .prose a {
     color: var(--accent);
   }
+  .accessibility-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
   @media (max-width: 700px) {
     .wordmark {
       font-size: 1.5rem;
@@ -668,6 +673,78 @@
     }
     .feature .device.phone {
       max-width: 270px;
+    }
+  }
+}
+@layer accessibility {
+  body.theme-adaptive {
+    min-height: 100vh;
+    color: var(--ink);
+    background: var(--paper);
+    color-scheme: light dark;
+  }
+  .accessibility-page .a11y-updated {
+    color: var(--secondary);
+  }
+  .accessibility-page .a11y-intro {
+    max-width: 58ch;
+  }
+  .a11y-example {
+    width: min(100%, 21rem);
+    margin: 2rem auto 3rem;
+  }
+  .a11y-example img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .a11y-example figcaption {
+    margin-top: 0.75rem;
+    color: var(--secondary);
+  }
+  body.theme-adaptive .site-header .wordmark,
+  body.theme-adaptive .site-header nav a,
+  body.theme-adaptive .site-footer .wordmark,
+  body.theme-adaptive .site-footer nav a,
+  body.theme-adaptive .back-link,
+  body.theme-adaptive .accessibility-page a,
+  body.theme-adaptive #main:focus,
+  .prose p:has(> a:only-child) a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+  body.theme-adaptive #main:focus {
+    display: block;
+    outline: 3px solid var(--accent);
+    outline-offset: -3px;
+  }
+  @media (max-width: 700px) {
+    body.theme-adaptive .site-header {
+      flex-wrap: wrap;
+    }
+    body.theme-adaptive .site-header nav {
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 0.5rem 1rem;
+    }
+    body.theme-adaptive .nav-group {
+      flex-wrap: wrap;
+    }
+    body.theme-adaptive .accessibility-page h1 {
+      font-size: min(2.75rem, 12vw);
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    body.theme-adaptive {
+      --paper: #17181a;
+      --ink: #f5f5f2;
+      --secondary: #c4c6cb;
+      --line: #51535a;
+      --accent: #c8bcff;
     }
   }
 }
