@@ -32,9 +32,11 @@ for (const route of routes) {
     await expect(
       page.locator('nav[aria-label="Main navigation"]'),
     ).not.toContainText('Apple');
-    await expect(page.locator('footer')).toContainText('Feelory privacy');
-    await expect(page.locator('footer')).toContainText('Feelory support');
-    await expect(page.locator('footer')).toContainText('Feelory accessibility');
+    await expect(page.locator('footer')).not.toContainText('Feelory privacy');
+    await expect(page.locator('footer')).not.toContainText('Feelory support');
+    await expect(page.locator('footer')).not.toContainText(
+      'Feelory accessibility',
+    );
     await expect(page.locator('a[href*="apps.apple.com"]')).toHaveCount(0);
     await expect(page.locator('form, iframe')).toHaveCount(0);
     if (route.endsWith('/privacy/')) {
@@ -152,8 +154,26 @@ test('Feelory marketing and support describe current features and screenshot var
   await expect(page.locator('main')).toContainText('no remote fallback');
   await expect(page.locator('main')).toContainText('Face ID or Touch ID');
   await expect(
-    page.getByRole('link', { name: 'Feelory accessibility information' }),
+    page
+      .locator('.privacy-feature')
+      .getByRole('link', { name: 'Feelory accessibility information' }),
   ).toHaveAttribute('href', pathFor('/apps/feelory/accessibility/'));
+  const privacyLink = page.getByRole('link', {
+    name: 'Read the full privacy policy',
+  });
+  const accessibilityLink = page.getByRole('link', {
+    name: 'Feelory accessibility information',
+  });
+  const privacyBounds = await privacyLink.boundingBox();
+  const accessibilityBounds = await accessibilityLink.boundingBox();
+  expect(privacyBounds).not.toBeNull();
+  expect(accessibilityBounds).not.toBeNull();
+  expect(accessibilityBounds!.y).toBeGreaterThan(privacyBounds!.y);
+  await expect(
+    page.locator('.hero-copy').getByRole('link', {
+      name: 'Feelory accessibility information',
+    }),
+  ).toHaveCount(0);
   for (const image of await page.locator('.device img').all()) {
     await expect(image).toHaveAttribute('alt', /.+/);
   }
