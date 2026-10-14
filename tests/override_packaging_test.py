@@ -56,6 +56,43 @@ class PackagingTests(unittest.TestCase):
         self.assertNotIn("/fixture/file.dmg", str(failure.exception))
         run.assert_called_once()
 
+    def test_stapler_retries_only_observed_transient_connection_loss(self):
+        lost = subprocess.CompletedProcess(
+            [], 68, 'Error Domain=NSURLErrorDomain Code=-1005 "The network connection was lost."', "")
+        accepted = subprocess.CompletedProcess([], 0, "The validate action worked!", "")
+        for action in ("staple", "validate"):
+            with self.subTest(action=action), tempfile.TemporaryDirectory() as directory:
+                reports = Path(directory)
+                with patch.object(packaging, "run", side_effect=[lost, lost, accepted]) as run, \
+                        patch.object(packaging.time, "sleep") as sleep:
+                    packaging.stapler(action, reports / "fixture.dmg", reports, "dmg")
+                    self.assertEqual(run.call_count, 3)
+                    self.assertEqual([call.args[0] for call in sleep.call_args_list], [10, 30])
+                    for call in run.call_args_list:
+                        self.assertEqual(call.args,
+                                         ("xcrun", "stapler", action, "-v", str(reports / "fixture.dmg")))
+                        self.assertEqual(call.kwargs, {"check": False})
+                self.assertEqual(len(list(reports.glob("stapler-*.json"))), 3)
+                self.assertEqual(json.loads(
+                    (reports / f"stapler-dmg-{action}-3.json").read_text())["exit_code"], 0)
+
+    def test_stapler_stops_on_permanent_errors_and_retry_exhaustion(self):
+        for code, message, attempts in [
+            (68, "The path has not been previously notarized", 1),
+            (65, "The ticket data is invalid", 1),
+            (77, "The ticket has been revoked", 1),
+            (68, "NSURLErrorDomain Code=-1005 connection lost", 3),
+        ]:
+            with self.subTest(code=code, message=message), tempfile.TemporaryDirectory() as directory:
+                reports = Path(directory)
+                result = subprocess.CompletedProcess([], code, message, "")
+                with patch.object(packaging, "run", return_value=result) as run, \
+                        patch.object(packaging.time, "sleep") as sleep:
+                    with self.assertRaisesRegex(RuntimeError, message):
+                        packaging.stapler("validate", reports / "fixture.dmg", reports, "dmg")
+                    self.assertEqual(run.call_count, attempts)
+                    self.assertEqual(sleep.call_count, attempts - 1)
+
     def test_valid_nested_export_and_framework_links(self):
         with self.archive(
             ["Export/Override.app/Contents/Info.plist",
@@ -162,6 +199,7 @@ class PackagingTests(unittest.TestCase):
     def test_notarization_pipeline_and_upload_gates(self):
         for failure in (None, "app-staple", "no-identity", "wrong-identity",
                         "Invalid", "In Progress", "dmg-staple",
+                        "dmg-connection-lost", "dmg-invalid-ticket",
                         "draft-changed"):
             with self.subTest(failure=failure), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
@@ -243,14 +281,21 @@ class PackagingTests(unittest.TestCase):
                         stdout = json.dumps({"status": failure if failure in
                                              ("Invalid", "In Progress") else "Accepted"})
                     elif args[:3] == ("xcrun", "stapler", "staple"):
+                        if failure == "dmg-connection-lost" and args[-1].endswith(".dmg"):
+                            return subprocess.CompletedProcess(
+                                args, 68, "NSURLErrorDomain Code=-1005 connection lost", "")
                         if ((failure == "app-staple" and args[-1].endswith(".app"))
                                 or (failure == "dmg-staple" and args[-1].endswith(".dmg"))):
                             raise RuntimeError("stapling fixture failure")
+                    elif (args[:3] == ("xcrun", "stapler", "validate")
+                          and failure == "dmg-invalid-ticket" and args[-1].endswith(".dmg")):
+                        return subprocess.CompletedProcess(args, 65, "The ticket data is invalid", "")
                     return subprocess.CompletedProcess(args, 0, stdout, stderr)
 
                 with patch.dict(os.environ, environment), \
                         patch.object(packaging, "api", side_effect=fake_api), \
                         patch.object(packaging, "run", side_effect=fake_run), \
+                        patch.object(packaging.time, "sleep"), \
                         patch.object(packaging.subprocess, "run", side_effect=fake_download):
                     if failure:
                         with self.assertRaises((ValueError, RuntimeError)):
