@@ -1,5 +1,9 @@
 # GitHub Pages and Hover runbook
 
+Override's separately gated binary packaging process is documented in
+[Override installer packaging](override-installer.md); it does not publish Pages
+or change website download links.
+
 **User-authorized public review is prepared.** This child implementation has
 made no Pages settings, deployments, protections, permissions or DNS writes.
 The parent owns commit/push and hosting setup. Final production/custom-domain

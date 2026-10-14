@@ -1,0 +1,63 @@
+name: Package Override installer
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing draft release tag (for example override-v0.1.0)
+        required: true
+        type: string
+      input_asset:
+        description: Exact Xcode Cloud Developer ID ZIP asset name
+        required: true
+        default: Override.0.1.0.developer-id.zip
+        type: string
+
+permissions: {}
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+concurrency:
+  group: override-installer
+  cancel-in-progress: false
+
+jobs:
+  package:
+    if: github.ref == 'refs/heads/main' && github.repository == 'caschwLLC/caschwllc-website'
+    runs-on: macos-15
+    timeout-minutes: 45
+    environment: override-release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Validate packaging contracts without credentials
+        run: python3 -m unittest discover -s tests -p 'override_packaging_test.py' -v
+      - name: Package, notarize, staple and attach to the existing draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          INPUT_ASSET: ${{ inputs.input_asset }}
+          DEVELOPER_ID_CERTIFICATE_P12_BASE64: ${{ secrets.DEVELOPER_ID_CERTIFICATE_P12_BASE64 }}
+          DEVELOPER_ID_CERTIFICATE_PASSWORD: ${{ secrets.DEVELOPER_ID_CERTIFICATE_PASSWORD }}
+          RELEASE_KEYCHAIN_PASSWORD: ${{ secrets.RELEASE_KEYCHAIN_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_P8_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_P8_BASE64 }}
+          DEVELOPER_ID_APPLICATION: ${{ vars.DEVELOPER_ID_APPLICATION }}
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+          APP_STORE_CONNECT_KEY_ID: ${{ vars.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_ISSUER_ID }}
+        run: python3 scripts/package-override.py
+      - name: Remove temporary signing material even after failure
+        if: always()
+        run: python3 scripts/package-override.py --cleanup
+      - name: Preserve notarization submission and diagnostics (no binaries or credentials)
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: override-notarization-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/override-reports/
+          if-no-files-found: ignore
+          retention-days: 14
