@@ -89,13 +89,21 @@ Paired opening screens lean ±5 degrees without changing their content.
 
 ## Components
 
-The header exposes home, Feelory and support; platform headings are data-derived.
+The header exposes home, marketed products and contextual support; platform
+headings are data-derived.
 Primary links use a dark pill and a directional arrow. Coming soon is a
 noninteractive outlined text status, never a disabled download button.
 The footer links to email support and website privacy. App-specific privacy,
 support and accessibility links live on the relevant product pages. Product
 features use semantic figures, descriptions and honest synthetic-content
 captions.
+
+Override extends the showroom with a text-led sky field, an open capability
+index and separated reading sections, not simulated application windows or
+placeholder media. Its beta label and versioned DMG action remain explicit on
+the homepage, product page and support page. No unapproved icon or screenshot
+is used. Utility pages do not inherit Feelory's screen or privacy chapters.
+The header wraps on narrow screens to accommodate multiple product links.
 
 One 850ms device-composition settle animation runs only with no motion preference;
 the default remains visible. Reduced motion removes it. Focus rings are 3px,

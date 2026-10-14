@@ -3,8 +3,8 @@ title: Website privacy
 description: Website hosting logs, email support, and the distinction between this site and on-device app data.
 ---
 
-This policy covers the caschw LLC information website. Each marketed app has a
-separate policy accessible from its product page.
+This policy covers the caschw LLC information website. Published app-specific
+privacy policies are linked above and from their product pages.
 
 ## A simple information site
 

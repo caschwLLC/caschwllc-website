@@ -4,10 +4,12 @@ import Reading from '../../../layouts/Reading.astro';
 import { getApps, policyFor } from '../../../lib/content';
 import type { App } from '../../../lib/catalog';
 export async function getStaticPaths() {
-  return (await getApps()).map((app) => ({
-    params: { slug: app.slug },
-    props: { app },
-  }));
+  return (await getApps())
+    .filter((app) => app.pages.privacy)
+    .map((app) => ({
+      params: { slug: app.slug },
+      props: { app },
+    }));
 }
 interface Props {
   app: App;

@@ -1,0 +1,49 @@
+{
+  "slug": "override",
+  "name": "Override",
+  "presentation": "utility",
+  "visibility": "marketed",
+  "status": "available",
+  "platforms": ["apple"],
+  "pages": {
+    "privacy": false,
+    "support": true,
+    "accessibility": true
+  },
+  "headline": "Your windows. Your way.",
+  "summary": "A macOS menu bar app for configurable window management. Choose how windows hide, minimize, fill your display, and snap into place. Available as a beta.",
+  "compatibility": "For Apple silicon Macs running macOS 27 or later.",
+  "distribution": {
+    "kind": "github-dmg",
+    "repository": "caschwLLC/caschwllc-website",
+    "version": "0.1.0",
+    "tag": "override-v0.1.0",
+    "asset": "Override-0.1.0.dmg",
+    "channel": "beta",
+    "draft": false,
+    "verifiedOn": "2026-10-14"
+  },
+  "features": [
+    {
+      "title": "Choose what your window controls do.",
+      "paragraphs": [
+        "Optionally make the close button request that an app quit, make minimize stash a window, or make zoom fill the usable display without entering macOS full screen. The app still controls its own save prompts and whether it quits.",
+        "Configure hide and minimize behavior globally or give individual applications their own rules. A stashed window is minimized and remembered so you can restore it from Override."
+      ]
+    },
+    {
+      "title": "Make room for the task at hand.",
+      "paragraphs": [
+        "Snap windows into halves, thirds, quarters, or a fill-display layout from the menu bar. Enable drag-to-edge snapping, adjust the gap between windows, or create custom grid layouts.",
+        "Directional keyboard shortcuts move or grow the focused window. Supported snapped neighbours can resize together along a shared edge. Results depend on the window controls and size limits exposed by each app."
+      ]
+    },
+    {
+      "title": "Keep native behaviour within reach.",
+      "paragraphs": [
+        "Optional overrides start off. Grant Accessibility access, then enable only the behaviours you want. Pause all overrides from the menu bar or exclude particular applications.",
+        "Restore stashed windows and undo the last supported window action when its target is still available. Interception is best-effort; unsupported or unsafe targets can retain native macOS behaviour."
+      ]
+    }
+  ]
+}

@@ -15,15 +15,26 @@ not an available store product. No invented price, rating or review fields.
 - `getApps()` filters marketed products before homepage, routes and navigation.
   `publicRoutes()` supplies sitemap discovery. Slugs, metadata, platform/store
   invariants and unsafe URLs fail loudly.
-- Catalog-driven `getStaticPaths()` generates product/privacy/support routes;
-  Feelory's accessibility page is available only while Feelory is marketed.
+- Catalog-driven `getStaticPaths()` generates products and their explicitly
+  declared privacy/support/accessibility routes. Feelory retains its dedicated
+  accessibility presentation; Override uses a permission-guidance document.
+  Override privacy is intentionally absent until its separate text is approved.
   Voice Control content remains absent until that capability is verified.
   404 is accessible, noindex, and excluded from sitemap. Robots points to sitemap.
 - `Site.astro`: shared brand, navigation, footer, canonical/social metadata.
-  Product routes explicitly pass app context for their privacy/support and
-  accessibility footer links.
+  Product routes explicitly pass app context for metadata and the header's
+  contextual Support link. The shared footer remains email and website privacy;
+  app-specific reading links live on product pages.
 - `Reading.astro`: bounded reading measure and optional confirmed publisher/date.
 - `Device.astro`: genuine proportional media in original illustrative surrounds.
+- `ScreenProduct.astro`: the existing Feelory screen-led product surface.
+  `UtilityProduct.astro`: Override's text-led beta surface without borrowed
+  media or Feelory claims. The schema discriminates these presentations.
+- Availability supports verified store listings and the narrowly validated
+  Override GitHub beta DMG. URLs are derived from version-matched release
+  metadata, never arbitrary catalog URLs. Draft releases cannot expose a
+  download href. Release visibility is checked by a maintainer, not by runtime
+  requests or a network-dependent build.
 - `src/content/publication.json`: independent, default-incomplete launch facts.
 
 Catalog data and content are English initially; fields and separate documents

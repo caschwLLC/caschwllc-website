@@ -30,7 +30,9 @@ const canonical = new URL(
 );
 const activeApp = apps.find((app) => app.slug === appSlug);
 const supportApp = activeApp ?? apps[0];
-const socialIcon = activeApp?.icon ?? apps[0]?.icon;
+const socialApp = appSlug ? activeApp : apps[0];
+const socialIcon =
+  socialApp?.presentation === 'screens' ? socialApp.icon : undefined;
 const discovery = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
@@ -81,7 +83,7 @@ const discovery = {
     {socialIcon && (
       <meta
         property="og:image:alt"
-        content={`${activeApp?.name ?? apps[0]?.name} app artwork`}
+        content={`${socialApp?.name} app artwork`}
       />
     )}
     <meta name="twitter:card" content="summary" />

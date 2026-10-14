@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import feelory from '../src/content/apps/feelory.json';
+import override from '../src/content/apps/override.json';
 import {
   appSchema,
   parseCatalog,
@@ -10,6 +11,7 @@ import {
   storeAction,
   httpsUrl,
   localPath,
+  appMedia,
 } from '../src/lib/catalog';
 
 const app = appSchema.parse(feelory);
@@ -26,6 +28,82 @@ test('coming soon is marketed without a download or store badge', () => {
     '/apps/feelory/support/',
     '/apps/feelory/accessibility/',
   ]);
+});
+
+test('Override exposes a verified beta DMG, not a store listing or borrowed media', () => {
+  const beta = appSchema.parse(override);
+  assert.deepEqual(storeAction(beta), {
+    label: 'Download beta 0.1.0',
+    href: 'https://github.com/caschwLLC/caschwllc-website/releases/download/override-v0.1.0/Override-0.1.0.dmg',
+  });
+  assert.deepEqual(appMedia(beta), []);
+  assert.deepEqual(publicRoutes([beta]), [
+    '/',
+    '/privacy/',
+    '/apps/override/',
+    '/apps/override/support/',
+    '/apps/override/accessibility/',
+  ]);
+  assert.equal(navigation([app, beta])[0]?.apps.length, 2);
+  const withoutPermissionsPage = appSchema.parse({
+    ...override,
+    pages: { ...override.pages, accessibility: false },
+  });
+  assert.ok(
+    !publicRoutes([withoutPermissionsPage]).includes(
+      '/apps/override/accessibility/',
+    ),
+  );
+  const draftRelease = appSchema.parse({
+    ...override,
+    status: 'coming-soon',
+    distribution: { ...override.distribution, draft: true },
+  });
+  assert.deepEqual(storeAction(draftRelease), {
+    label: 'Beta 0.1.0 · Download coming soon',
+    href: null,
+  });
+  const hidden = appSchema.parse({ ...override, visibility: 'draft' });
+  assert.deepEqual(publicRoutes([hidden]), ['/', '/privacy/']);
+  assert.deepEqual(navigation([hidden])[0]?.apps, []);
+});
+
+test('Override rejects unsafe, mismatched, unverified and inconsistent distribution data', () => {
+  for (const distribution of [
+    { ...override.distribution, draft: true },
+    { ...override.distribution, repository: 'untrusted/downloads' },
+    { ...override.distribution, tag: 'untagged-placeholder' },
+    { ...override.distribution, tag: 'override-v0.2.0' },
+    { ...override.distribution, asset: 'Override-0.2.0.dmg' },
+    { ...override.distribution, asset: 'Override.0.1.0.developer-id.zip' },
+    { ...override.distribution, asset: '../Override-0.1.0.dmg' },
+    { ...override.distribution, url: 'javascript:alert(1)' },
+    {
+      ...override.distribution,
+      url: 'https://untrusted.test/Override-0.1.0.dmg',
+    },
+    { ...override.distribution, verifiedOn: '2026-02-31' },
+    { ...override.distribution, verifiedOn: undefined },
+    { ...override.distribution, channel: 'stable' },
+  ])
+    assert.throws(() => appSchema.parse({ ...override, distribution }));
+  for (const field of ['presentation', 'distribution', 'features', 'pages']) {
+    const input: Record<string, unknown> = { ...override };
+    delete input[field];
+    assert.throws(() => appSchema.parse(input));
+  }
+  assert.throws(() => appSchema.parse({ ...override, status: 'coming-soon' }));
+  assert.throws(() => appSchema.parse({ ...override, slug: 'other-app' }));
+  assert.throws(() => appSchema.parse({ ...override, platforms: ['windows'] }));
+  assert.throws(() =>
+    appSchema.parse({ ...override, store: { url: 'https://example.com' } }),
+  );
+  assert.throws(() =>
+    appSchema.parse({
+      ...override,
+      pages: { privacy: false, support: false, accessibility: true },
+    }),
+  );
 });
 
 test('drafts never enter route discovery or navigation, even when available', () => {

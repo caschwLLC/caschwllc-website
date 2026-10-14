@@ -10,6 +10,9 @@ const routes = [
   '/apps/feelory/privacy/',
   '/apps/feelory/support/',
   '/apps/feelory/accessibility/',
+  '/apps/override/',
+  '/apps/override/support/',
+  '/apps/override/accessibility/',
   '/privacy/',
   '/404.html',
 ];
@@ -38,6 +41,9 @@ for (const route of routes) {
       'Feelory accessibility',
     );
     await expect(page.locator('a[href*="apps.apple.com"]')).toHaveCount(0);
+    await expect(
+      page.locator('a[href*="/apps/override/privacy/"]'),
+    ).toHaveCount(0);
     await expect(page.locator('form, iframe')).toHaveCount(0);
     if (route.endsWith('/privacy/')) {
       await expect(page.locator('.review-banner, .policy-draft')).toHaveCount(
@@ -99,7 +105,8 @@ for (const route of routes) {
       route === '/' ||
       route === '/apps/feelory/' ||
       route === '/apps/feelory/privacy/' ||
-      route === '/apps/feelory/accessibility/'
+      route === '/apps/feelory/accessibility/' ||
+      route.startsWith('/apps/override/')
     ) {
       for (const image of await page.locator('.device img').all()) {
         await image.scrollIntoViewIfNeeded();
@@ -138,6 +145,122 @@ test('product anchors, honest availability and reduced motion', async ({
   await expect(
     page.getByText('screen examples use synthetic content', { exact: false }),
   ).toBeVisible();
+});
+
+test('Override beta connects download, setup, support and permission guidance', async ({
+  page,
+}) => {
+  const download =
+    'https://github.com/caschwLLC/caschwllc-website/releases/download/override-v0.1.0/Override-0.1.0.dmg';
+  await page.goto(pathFor('/'));
+  const showcase = page.locator('.utility-showcase');
+  await expect(showcase).toContainText('Beta 0.1.0');
+  await expect(showcase).toContainText(
+    'Apple silicon Macs running macOS 27 or later',
+  );
+  await expect(
+    showcase.getByRole('link', { name: 'Download beta 0.1.0' }),
+  ).toHaveAttribute('href', download);
+  await showcase.getByRole('link', { name: 'Explore Override' }).click();
+  await expect(page).toHaveURL(new RegExp(`${pathFor('/apps/override/')}$`));
+  await expect(
+    page
+      .locator('.hero-actions')
+      .getByRole('link', { name: 'Download beta 0.1.0' }),
+  ).toHaveAttribute('href', download);
+  await expect(page.locator('main')).toContainText(
+    'This is prerelease software',
+  );
+  await expect(page.locator('main')).not.toContainText(
+    /Feelory|iCloud|Apple Health|VoiceOver|Coming soon/,
+  );
+  await expect(page.locator('main img, meta[property="og:image"]')).toHaveCount(
+    0,
+  );
+  await expect(page.locator('a[href*="/apps/override/privacy/"]')).toHaveCount(
+    0,
+  );
+  await page.getByRole('link', { name: 'Take a closer look' }).click();
+  await expect(page).toHaveURL(/#explore$/);
+  await expect(page.locator('.install-steps li')).toHaveText([
+    'Download Override-0.1.0.dmg.',
+    'Open the DMG.',
+    'Drag Override to Applications.',
+    'Eject the DMG.',
+    'Launch Override from Applications.',
+  ]);
+  await page
+    .getByRole('link', { name: 'Override support', exact: false })
+    .click();
+  await expect(page.locator('.back-link')).toHaveText('← Back to Override');
+  await expect(page.locator('.back-link')).toHaveAttribute(
+    'href',
+    pathFor('/apps/override/'),
+  );
+  await expect(
+    page.getByRole('link', { name: 'Download beta 0.1.0' }),
+  ).toHaveAttribute('href', download);
+  await expect(page.locator('main')).toContainText(
+    'Quit Override from the menu bar before replacing',
+  );
+  await expect(page.locator('main')).toContainText(
+    'it does not erase every stored preference',
+  );
+  await expect(page.locator('main')).toContainText(
+    'remove Override from Applications',
+  );
+  await expect(page.locator('.prose ol').first().locator('li')).toHaveText([
+    'Download Override-0.1.0.dmg.',
+    'Open the DMG.',
+    'Drag Override to Applications.',
+    'Eject the DMG.',
+    'Launch Override from Applications.',
+  ]);
+  await page
+    .getByRole('link', { name: 'Read Accessibility & permissions' })
+    .click();
+  await expect(page.locator('.back-link')).toHaveAttribute(
+    'href',
+    pathFor('/apps/override/'),
+  );
+  await expect(page.locator('main')).toContainText(
+    'System Settings → Privacy & Security → Accessibility',
+  );
+  await expect(page.locator('main')).toContainText(
+    'Override cannot grant it for you',
+  );
+  await expect(page.locator('main')).toContainText(
+    'previously granted access is revoked',
+  );
+  await expect(page.locator('main')).toContainText('Pause All Overrides');
+  const response = await page.request.get(pathFor('/apps/override/privacy/'));
+  expect(response.status()).toBe(404);
+});
+
+test('Override reading and product layouts fit narrow and enlarged text views', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 320, height: 720 });
+  for (const route of [
+    '/',
+    '/apps/override/',
+    '/apps/override/support/',
+    '/apps/override/accessibility/',
+  ]) {
+    await page.goto(pathFor(route));
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
+    await page.addStyleTag({ content: 'body { font-size: 212.5%; }' });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
+  }
 });
 
 test('Feelory marketing and support describe current features and screenshot variants', async ({

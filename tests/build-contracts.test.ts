@@ -15,6 +15,7 @@ import { promisify } from 'node:util';
 import { execFile } from 'node:child_process';
 import { resolve, join } from 'node:path';
 import feelory from '../src/content/apps/feelory.json';
+import override from '../src/content/apps/override.json';
 
 const run = promisify(execFile);
 const astro = resolve('node_modules/.bin/astro');
@@ -58,6 +59,46 @@ test('isolated Astro builds exclude drafts from all discovery and reject malform
       const html = await readFile(join(output, path), 'utf8');
       assert.ok(!html.includes(fixture.slug) && !html.includes(fixture.name));
     }
+    const overridePath = join(root, 'src/content/apps/override.json');
+    await writeFile(
+      overridePath,
+      JSON.stringify({
+        ...override,
+        status: 'coming-soon',
+        distribution: { ...override.distribution, draft: true },
+      }),
+    );
+    await build();
+    for (const path of [
+      'index.html',
+      'apps/override/index.html',
+      'apps/override/support/index.html',
+    ]) {
+      const html = await readFile(join(output, path), 'utf8');
+      assert.ok(html.includes('Download coming soon'));
+      assert.ok(
+        !html.includes('/releases/download/'),
+        `${path}: draft release link exposed`,
+      );
+    }
+    await writeFile(
+      overridePath,
+      JSON.stringify({
+        ...override,
+        pages: { ...override.pages, privacy: true },
+      }),
+    );
+    await assert.rejects(build(), (error: unknown) => {
+      assert.ok(
+        error instanceof Error && 'stdout' in error && 'stderr' in error,
+      );
+      assert.match(
+        `${String(error.stdout)}${String(error.stderr)}`,
+        /Missing privacy content for override/,
+      );
+      return true;
+    });
+    await writeFile(overridePath, JSON.stringify(override));
     for (const [invalid, expected] of [
       [{ ...fixture, hero: undefined }, /hero/],
       [
@@ -70,7 +111,7 @@ test('isolated Astro builds exclude drafts from all discovery and reject malform
       ],
       [
         { ...fixture, visibility: 'marketed' },
-        /Missing (privacy|support) content/,
+        /Missing (privacy|support|accessibility) content/,
       ],
     ] as const) {
       await writeFile(fixturePath, JSON.stringify(invalid));

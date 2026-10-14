@@ -1,6 +1,12 @@
 {
   "slug": "feelory",
   "name": "Feelory",
+  "presentation": "screens",
+  "pages": {
+    "privacy": true,
+    "support": true,
+    "accessibility": true
+  },
   "visibility": "marketed",
   "status": "coming-soon",
   "platforms": ["apple"],

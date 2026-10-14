@@ -40,7 +40,46 @@ export const mediaSchema = z.object({
   height: z.number().int().positive(),
 });
 
-export const appSchema = z
+const verificationDate = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/)
+  .refine((date) => {
+    const parsed = new Date(date);
+    return (
+      !Number.isNaN(parsed.valueOf()) &&
+      parsed.toISOString().slice(0, 10) === date
+    );
+  }, 'Invalid verification date');
+
+const distributionSchema = z
+  .object({
+    kind: z.literal('github-dmg'),
+    repository: z.literal('caschwLLC/caschwllc-website'),
+    version: z.string().regex(/^\d+\.\d+\.\d+$/),
+    tag: z.string().regex(/^override-v\d+\.\d+\.\d+$/),
+    asset: z.string().regex(/^Override-\d+\.\d+\.\d+\.dmg$/),
+    channel: z.literal('beta'),
+    draft: z.boolean(),
+    verifiedOn: verificationDate,
+  })
+  .strict()
+  .superRefine((release, ctx) => {
+    if (
+      release.tag !== `override-v${release.version}` ||
+      release.asset !== `Override-${release.version}.dmg`
+    )
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Release tag and DMG asset must match the beta version',
+      });
+  });
+
+const featureCopy = z.object({
+  title: z.string().min(5),
+  paragraphs: z.array(z.string().min(10)).min(1),
+});
+
+const appBase = z
   .object({
     slug: slugSchema,
     name: z.string().trim().min(1),
@@ -53,38 +92,69 @@ export const appSchema = z
     summary: z.string().trim().min(20),
     headline: z.string().trim().min(10),
     compatibility: z.string().trim().min(10),
-    icon: z.string().regex(/^\/media\/[a-z0-9-]+\.png$/),
-    hero: mediaSchema,
-    secondaryHero: mediaSchema,
-    features: z
-      .array(
-        z.object({
-          title: z.string().min(5),
-          paragraphs: z.array(z.string().min(10)).min(1),
+    pages: z
+      .object({
+        privacy: z.boolean(),
+        support: z.literal(true),
+        accessibility: z.boolean(),
+      })
+      .strict(),
+  })
+  .strict();
+
+const screensApp = appBase.extend({
+  presentation: z.literal('screens'),
+  icon: z.string().regex(/^\/media\/[a-z0-9-]+\.png$/),
+  hero: mediaSchema,
+  secondaryHero: mediaSchema,
+  features: z
+    .array(
+      featureCopy
+        .extend({
           media: mediaSchema,
           tone: z.enum(['lavender', 'mint', 'sky', 'ink']),
           caption: z.string().min(10),
-        }),
-      )
-      .min(1),
-    store: z
-      .object({
-        url: httpsUrl,
-        verifiedOn: z
-          .string()
-          .regex(/^\d{4}-\d{2}-\d{2}$/)
-          .refine((date) => {
-            const parsed = new Date(date);
-            return (
-              !Number.isNaN(parsed.valueOf()) &&
-              parsed.toISOString().slice(0, 10) === date
-            );
-          }, 'Invalid verification date'),
-      })
-      .optional(),
-  })
-  .strict()
+        })
+        .strict(),
+    )
+    .min(1),
+  store: z
+    .object({
+      url: httpsUrl,
+      verifiedOn: verificationDate,
+    })
+    .optional(),
+});
+
+const utilityApp = appBase.extend({
+  presentation: z.literal('utility'),
+  features: z.array(featureCopy.strict()).min(1),
+  distribution: distributionSchema,
+});
+
+export const appSchema = z
+  .discriminatedUnion('presentation', [screensApp, utilityApp])
   .superRefine((app, ctx) => {
+    if (app.presentation === 'utility') {
+      if (
+        app.slug !== 'override' ||
+        !app.platforms.includes('apple') ||
+        app.platforms.includes('windows')
+      )
+        ctx.addIssue({
+          code: 'custom',
+          message:
+            'Override DMG distribution requires the Override Apple catalog entry',
+        });
+      if ((app.status === 'coming-soon') !== app.distribution.draft)
+        ctx.addIssue({
+          code: 'custom',
+          message:
+            'Public downloads require a published release; drafts must be coming soon',
+          path: ['distribution', 'draft'],
+        });
+      return;
+    }
     if (app.status === 'available' && !app.store) {
       ctx.addIssue({
         code: 'custom',
@@ -127,6 +197,16 @@ export const appSchema = z
 export type App = z.infer<typeof appSchema>;
 export type Media = z.infer<typeof mediaSchema>;
 
+export function appMedia(app: App): Media[] {
+  return app.presentation === 'screens'
+    ? [
+        app.hero,
+        app.secondaryHero,
+        ...app.features.map((feature) => feature.media),
+      ]
+    : [];
+}
+
 export function parseCatalog(input: unknown): App[] {
   const apps = z.array(appSchema).parse(input);
   const slugs = apps.map((app) => app.slug);
@@ -158,9 +238,9 @@ export function publicRoutes(apps: App[]): string[] {
     '/privacy/',
     ...marketedApps(apps).flatMap((app) => [
       `/apps/${app.slug}/`,
-      `/apps/${app.slug}/privacy/`,
+      ...(app.pages.privacy ? [`/apps/${app.slug}/privacy/`] : []),
       `/apps/${app.slug}/support/`,
-      ...(app.slug === 'feelory' ? [`/apps/${app.slug}/accessibility/`] : []),
+      ...(app.pages.accessibility ? [`/apps/${app.slug}/accessibility/`] : []),
     ]),
   ];
 }
@@ -177,6 +257,15 @@ export function localPath(path: string, base = '/'): string {
 }
 
 export function storeAction(app: App) {
+  if (app.presentation === 'utility') {
+    const release = app.distribution;
+    return app.status === 'available' && !release.draft
+      ? {
+          label: `Download beta ${release.version}`,
+          href: `https://github.com/${release.repository}/releases/download/${release.tag}/${release.asset}`,
+        }
+      : { label: `Beta ${release.version} · Download coming soon`, href: null };
+  }
   return app.status === 'available' && app.store
     ? { label: 'View store listing', href: app.store.url }
     : { label: 'Coming soon', href: null };

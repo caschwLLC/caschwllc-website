@@ -1,5 +1,18 @@
 # Policy approval and deployment gates
 
+## Override policy boundary
+
+Override's new support and Accessibility & permissions pages are not a privacy
+policy. The owner requested a separate Override privacy draft for review,
+kept outside this repository in the implementing session's artifacts.
+`override.json` explicitly declares `pages.privacy: false`; there is no public
+Override privacy route or link. Existing policy approval and the Feelory/website
+effective date must not be reused for Override. Publishing the Override beta
+does not approve its privacy text. Existing approved policies remain unchanged
+and are not relabelled draft.
+
+## Existing approved policies
+
 The owner explicitly approved the public policy text and directed removal of
 policy draft/review notifications on 2026-10-07. Approval is recorded separately
 in `src/content/policy-publication.json`. The app is still **Coming soon**:
