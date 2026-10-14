@@ -4,6 +4,18 @@ Dependencies are lockfile-pinned and installed with `npm ci`. Actions are pinned
 to independently verified upstream release SHAs. No dependency tools or native
 browser binaries are deployed in the static artifact.
 
+## Installer-only Python tooling
+
+Override's packaging workflow uses `ds-store==1.3.1` and its dependency
+`mac-alias==2.2.2` to write native Finder layout metadata without automating Finder
+or implementing an undocumented binary format in this repository. Both are
+MIT-licensed pure-Python build tools, installed into an isolated ephemeral venv
+from exact wheel SHA-256 hashes in
+`scripts/override-installer-requirements.txt`, with `--require-hashes` and
+`--only-binary=:all:`. Installation and metadata/unsigned-image tests happen
+before the credential-bearing packaging step. Neither library ships in the app,
+DMG or website. No private source or credentials are sent to the package index.
+
 ## Outstanding advisories as of 2026-10-08
 
 `npm audit` reports **two high package findings representing one unresolved advisory**:
