@@ -3,7 +3,7 @@ import { getEntry, render } from 'astro:content';
 import Reading from '../layouts/Reading.astro';
 import { getApps } from '../lib/content';
 import { localPath } from '../lib/catalog';
-const apps = await getApps();
+const apps = (await getApps()).filter((app) => app.pages.privacy);
 const entry = await getEntry('policies', 'website/privacy');
 if (!entry) throw new Error('Missing website privacy policy');
 const { Content } = await render(entry);

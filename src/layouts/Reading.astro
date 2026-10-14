@@ -38,7 +38,7 @@ const app = appSlug
       )}
     >
       <span aria-hidden="true">← </span>
-      {appSlug ? 'Back to Feelory' : 'Back to home'}
+      {app ? `Back to ${app.name}` : 'Back to home'}
     </a>
     <h1>{title}</h1>
     {policy && app?.status === 'coming-soon' && (

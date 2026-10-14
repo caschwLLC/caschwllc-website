@@ -1,5 +1,18 @@
 # Policy approval and deployment gates
 
+## Override policy boundary
+
+Override's new support and Accessibility & permissions pages are not a privacy
+policy. The owner requested a separate Override privacy draft for review,
+kept outside this repository in the implementing session's artifacts.
+`override.json` explicitly declares `pages.privacy: false`; there is no public
+Override privacy route or link. Existing policy approval and the Feelory/website
+effective date must not be reused for Override. Publishing the Override beta
+does not approve its privacy text. Existing approved policies remain unchanged
+and are not relabelled draft.
+
+## Existing approved policies
+
 The owner explicitly approved the public policy text and directed removal of
 policy draft/review notifications on 2026-10-07. Approval is recorded separately
 in `src/content/policy-publication.json`. The app is still **Coming soon**:
@@ -35,7 +48,12 @@ Final production also requires separately authorized `PAGES_LAUNCH_APPROVED=true
 content confirmations cannot themselves activate it. The user separately
 authorized a public **review** site at the repository Pages URL, admitted through
 `PAGES_REVIEW_APPROVED=true` in review mode. Review pages are noindex and carry a
-review banner on non-policy pages only. Privacy pages have no review banner or
+product-specific banner on non-policy app pages only: Override says
+**Public Preview -- Coming soon.**, and Feelory says **Coming soon.**
+The developer homepage has no banner and keeps its closing copy studio-wide,
+without Feelory privacy/support links. These preview labels do not change
+Override's public beta download availability.
+Privacy pages have no review banner or
 policy draft label in either build mode. The Feelory policy instead states:
 **Feelory is coming soon. This policy describes how Feelory handles your information.**
 Website privacy carries no app availability notice. Unknown publisher/date values

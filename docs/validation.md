@@ -1,5 +1,54 @@
 # Local validation evidence
 
+## Override beta addition — 2026-10-14
+
+On macOS/Apple silicon with Node 22.23.2 and the existing locked dependencies:
+
+| Exact command                                                       | Result                                                                                                                                                                        |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CAPTURE_VISUAL_REVIEW=1 ASTRO_TELEMETRY_DISABLED=1 npm run verify` | Passed: Astro check clean, ESLint/Prettier clean, 14 unit/build-contract tests, 9 public routes plus 404, 33 browser tests passed and 1 intentional desktop performance skip. |
+| `WEBSITE_MODE=production ASTRO_TELEMETRY_DISABLED=1 npm run verify` | Passed with the same counts, covering root-based routes and metadata rather than the review repository subpath. No deployment performed.                                      |
+
+The new catalog tests cover the exact public beta DMG, matching version/tag/asset,
+unsafe or unverified distribution rejection, and a draft release with no
+download href. Isolated builds exercise that unavailable state on the homepage,
+product and support pages and reject missing declared privacy content.
+The shared website privacy index now lists only declared app policies; its
+opening description was adjusted to describe published policies rather than
+assert a policy exists for every marketed app. Existing approved policy status,
+publisher facts, effective dates, and substantive provider/deletion terms are
+unchanged.
+
+Browser coverage includes all three Override routes, home discovery, contextual
+navigation, exact installation order, quit-before-upgrade, uninstall caveats,
+user-granted permission guidance, and absent unapproved privacy links/routes.
+All route axe checks reported zero violations in desktop and mobile Chromium;
+keyboard skip navigation, no horizontal overflow, no page errors and no
+unexpected external requests passed. Additional Override checks passed at 320px
+and 200% body-text scaling. These automated checks are not accessibility
+certification or an app-level assistive-technology test.
+
+One batched desktop/mobile visual inspection and a confirmation pass covered the
+homepage, Override overview and both subpages. A download-link contrast conflict
+between reading and button styles was corrected before the successful checks.
+Screenshots are preserved outside the repository in the implementing session's
+`files/override-visual-review/` directory.
+
+Under the existing mobile cold-load lab conditions, Override LCP was 544–604ms
+in review and 544–616ms in production, CLS was 0, and initial transfer was
+6,501 / 6,417 bytes respectively. Override requests no hero image. Homepage and
+Feelory also remained within all existing performance/media budgets.
+These are localhost laboratory measurements, not public-host performance claims.
+
+Authenticated release metadata confirmed `override-v0.1.0` is public and marked
+prerelease; an anonymous redirect-following HEAD request to the exact final
+`Override-0.1.0.dmg` returned HTTP 200. This session did not publish or modify the
+release. No app build, installation, macOS permission changes, commit, push, PR,
+hosting change or deployment was performed. The Override privacy draft remains
+an unpublished session artifact pending separate approval.
+
+## Earlier validation
+
 Validated on 2026-10-07, macOS/Apple Silicon, Node 22.23.2, using locked
 dependencies. No GitHub CI/deployment, public CDN, DNS, live certificate, or
 App Store availability validation has been performed by this implementation.

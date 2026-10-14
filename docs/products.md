@@ -1,31 +1,71 @@
 # Product catalog
 
-`src/content/apps/feelory.json` is the only marketed product. Store availability
-is separate from marketing visibility. The site may show an unreleased product;
-it may not show a fake or disabled download badge.
+`src/content/apps/feelory.json` and `override.json` are the marketed products.
+Availability is separate from marketing visibility. The site may show an
+unreleased product; it may not show a fake or disabled download badge.
+
+Every record declares a `presentation` and explicit `pages` for privacy,
+support and accessibility. Support is required; undeclared pages have no route
+or discovery link. Missing declared content fails rather than rendering an
+empty page. Feelory's accessibility page retains its dedicated implementation.
+Override has support and permission pages, but no public privacy page pending
+separate policy approval.
 
 ## Add a public-safe draft
 
 Use a unique lowercase, hyphen-separated slug that is not a reserved route.
-Supply all required copy, icon path, platform, status, image names, natural
-dimensions and descriptive alt text. `visibility: draft` must exclude it from
+Supply all required common copy, platform, status and page declarations.
+`screens` entries require icon, hero and feature media, natural dimensions and
+descriptive alt text. `utility` entries require feature copy and verified
+distribution metadata, not placeholder media. `visibility: draft` must exclude it from
 homepage, navigation, product/support/privacy routes and sitemap. Do not commit
 confidential future products: a draft flag does not hide public repository files.
 
-When changing to `marketed`, add `policies/<slug>/privacy.md` and `support.md`,
-approved optimized media and provenance. The current product template uses
-Feelory's specific privacy/feature closing copy: adapt that content before
-marketing a second app, rather than presenting Feelory capabilities as universal.
-Generalize those product-specific sections into catalog fields when a second
-product is actually approved. Do not create speculative empty platform pages.
+When changing to `marketed`, add every declared reading document under
+`policies/<slug>/`. Privacy text needs its own owner approval before its page is
+declared. Screen-led products require approved optimized media and provenance.
+`ScreenProduct.astro` retains Feelory's specific presentation;
+`UtilityProduct.astro` provides Override's text-led presentation. A different
+product needs its own verified content rather than reusing either product's
+claims. Do not create speculative empty platform pages.
 
 ## Availability
 
-`coming-soon` forbids a store object. `available` requires a credential-free
+For screen-led store apps, `coming-soon` forbids a store object. `available` requires a credential-free
 HTTPS listing on a platform-compatible verified store host and a valid
 verification date. Visit the public listing, verify title/publisher/region and
 actual availability, then review the catalog change. Apple ID **6819497727**
 alone is not verification, a release date, or a usable download link.
+
+### Override beta DMG
+
+Override's utility distribution is restricted to
+`caschwLLC/caschwllc-website`, the `override-v<version>` tag, and matching
+`Override-<version>.dmg` asset. The channel is explicitly beta, independent of
+download availability. Store objects, arbitrary download URLs, wrong filenames,
+temporary draft tags and inconsistent draft/available states are rejected.
+
+Before changing distribution data, verify authenticated release metadata:
+
+```sh
+gh api repos/caschwLLC/caschwllc-website/releases/tags/override-v0.1.0
+curl --head --location --fail 'https://github.com/caschwLLC/caschwllc-website/releases/download/override-v0.1.0/Override-0.1.0.dmg'
+```
+
+On 2026-10-14 release `412890564` was verified public (`draft: false`,
+`prerelease: true`); the anonymous final DMG request returned HTTP 200.
+Asset `641123149` is 3,002,050 bytes, SHA-256
+`0d21e009ecfaeebf499cad68ca3b5e98e23174554092e27a91886006316b9d65`.
+This inspection did not publish or modify the release. No earlier ZIP or
+temporary `untagged-...` URL is used.
+
+Record a valid `verifiedOn` date only after verification. `status: available`
+with `draft: false` produces **Download beta 0.1.0**; `status: coming-soon`
+with `draft: true` produces text only and no download href. If public access
+fails, stop and investigate rather than asserting availability from an API
+name alone. Maintainers must reverify before updating the static catalog;
+builds and visitors do not query GitHub or silently activate new downloads.
+Never publish a release as a side effect of website work.
 
 The available component currently renders a clear text store link. If adding
 an official badge, verify the current Apple/Microsoft license and marketing
@@ -36,7 +76,9 @@ badge. No store badges are shipped in the coming-soon site.
 
 No platform headings appear for Apple-only or Windows-only catalogs. Apple and
 Windows groups appear only when marketed products genuinely span both. Drafts
-do not affect grouping. Header/footer policy targets must remain app-specific.
+do not affect grouping. Header Support targets the current app where present;
+the shared footer remains email and website privacy. Product-specific reading
+links must respect the app's declared pages.
 
 ## Tests
 

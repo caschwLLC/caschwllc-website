@@ -9,7 +9,7 @@ web
 ## Purpose and users
 
 The public caschw LLC software showroom helps prospective app users understand
-Feelory, its availability and privacy choices, and find support. It is an
+Feelory and Override, their availability and choices, and find support. It is an
 information site, not an account service or storefront.
 
 ## Confirmed product truth
@@ -23,6 +23,16 @@ testimonial has been verified. Apple ID 6819497727 is not a verified store URL.
 Data is local by default. iCloud sync, write-only Apple Health logging and
 on-device AI are optional. Core use does not require AI. No remote AI fallback.
 Not a medical device, diagnosis, treatment or substitute for professional care.
+
+Override is a macOS menu bar app for configurable window management, available
+as **0.1.0 beta** for Apple silicon Macs running macOS 27 or later. Its verified
+public DMG is hosted in this website repository's `override-v0.1.0` prerelease.
+Window controls, hide/minimize policies, snapping and custom layouts are
+optional; Accessibility access is granted by the user in System Settings.
+Application support and interception are best-effort. Do not generalize
+Feelory's privacy, AI, Health or accessibility claims to Override.
+Override's separate privacy text awaits owner review outside this repository;
+no public Override privacy page or inferred effective date is shipped.
 
 ## Brand and evidence
 

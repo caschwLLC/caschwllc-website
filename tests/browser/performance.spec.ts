@@ -13,7 +13,7 @@ test('mobile cold-load LCP, CLS, hero and initial transfer budgets', async ({
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile', 'Mobile lab run only');
   const report = [];
-  for (const route of ['/', '/apps/feelory/']) {
+  for (const route of ['/', '/apps/feelory/', '/apps/override/']) {
     for (let trial = 1; trial <= 3; trial++) {
       const context = await browser.newContext({
         viewport: { width: 390, height: 844 },
@@ -86,7 +86,8 @@ test('mobile cold-load LCP, CLS, hero and initial transfer budgets', async ({
       expect(metrics.lcp, `${route}: LCP must be observed`).toBeGreaterThan(0);
       expect(metrics.lcp, `${route}: LCP`).toBeLessThanOrEqual(2500);
       expect(metrics.cls, `${route}: CLS`).toBeLessThanOrEqual(0.1);
-      expect(metrics.heroBytes).toBeGreaterThan(0);
+      if (route === '/apps/override/') expect(metrics.heroBytes).toBe(0);
+      else expect(metrics.heroBytes).toBeGreaterThan(0);
       expect(metrics.heroBytes).toBeLessThanOrEqual(500_000);
       expect(totalBytes).toBeLessThanOrEqual(1_500_000);
       await context.close();

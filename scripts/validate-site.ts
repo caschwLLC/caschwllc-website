@@ -1,7 +1,13 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
-import { appSchema, parseCatalog, publicRoutes } from '../src/lib/catalog';
+import {
+  appMedia,
+  appSchema,
+  parseCatalog,
+  publicRoutes,
+  storeAction,
+} from '../src/lib/catalog';
 import sharp from 'sharp';
 import { siteConfig } from '../site.config.mjs';
 import { localPath } from '../src/lib/catalog';
@@ -39,14 +45,30 @@ const manifest = JSON.parse(
 
 for (const app of apps.filter((app) => app.visibility === 'marketed')) {
   appSchema.parse(app);
-  for (const kind of ['privacy', 'support'])
-    await stat(`src/content/policies/${app.slug}/${kind}.md`);
+  for (const kind of ['privacy', 'support', 'accessibility'] as const) {
+    if (
+      app.pages[kind] &&
+      !(kind === 'accessibility' && app.slug === 'feelory')
+    )
+      await stat(`src/content/policies/${app.slug}/${kind}.md`);
+  }
   await stat(`public${app.icon}`);
-  for (const media of [
-    app.hero,
-    app.secondaryHero,
-    ...app.features.map((feature) => feature.media),
-  ]) {
+  if (app.presentation === 'utility') {
+    const html = await readFile(`dist/apps/${app.slug}/index.html`, 'utf8');
+    const action = storeAction(app);
+    assert.ok(html.includes(`Beta ${app.distribution.version}`));
+    assert.equal(html.includes('https://github.com/'), action.href !== null);
+    if (action.href) assert.ok(html.includes(`href="${action.href}"`));
+    assert.ok(
+      !/Feelory|Apple Health|iCloud|phone-journal/.test(
+        html.slice(html.indexOf('<main'), html.indexOf('</main>')),
+      ),
+      'Utility product contains another app’s claims',
+    );
+    if (!app.pages.privacy)
+      await assert.rejects(stat(`dist/apps/${app.slug}/privacy/index.html`));
+  }
+  for (const media of appMedia(app)) {
     for (const name of [
       media.name,
       ...(media.darkName ? [media.darkName] : []),
@@ -120,7 +142,21 @@ for (const route of [...routes, '/404.html']) {
     }
   }
   if (target.mode === 'review') {
-    assert.equal(html.includes('Public review preview.'), !policy);
+    const expectedBanner =
+      !policy && route.startsWith('/apps/override/')
+        ? 'Public Preview -- Coming soon.'
+        : !policy && route.startsWith('/apps/feelory/')
+          ? 'Coming soon.'
+          : null;
+    const banner =
+      html
+        .match(/<aside class="review-banner"[^>]*>(.*?)<\/aside>/s)?.[1]
+        ?.trim() ?? null;
+    assert.equal(
+      banner,
+      expectedBanner,
+      `${route}: unexpected app preview banner`,
+    );
     assert.ok(html.includes('noindex, follow'));
   }
   assert.ok(

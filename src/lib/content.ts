@@ -6,7 +6,10 @@ export async function getApps() {
   return marketedApps(parseCatalog(all.map((entry) => entry.data)));
 }
 
-export async function policyFor(slug: string, kind: 'privacy' | 'support') {
+export async function policyFor(
+  slug: string,
+  kind: 'privacy' | 'support' | 'accessibility',
+) {
   const entry = await getEntry('policies', `${slug}/${kind}`);
   if (!entry) throw new Error(`Missing ${kind} content for ${slug}`);
   return entry;
