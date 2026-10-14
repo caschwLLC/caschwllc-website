@@ -47,6 +47,16 @@ It validates the existing app signature and notarization, staples and validates
 the app, copies it using `ditto`, and verifies the staged copy. A conventional
 compressed DMG contains the genuine app and an `/Applications` link.
 
+The disk image opens in native Finder icon view (640 by 400 points), with the
+unmodified app icon on the left, Applications on the right, and
+`Installation Guide.txt` below. Finder's native background follows the user's
+appearance. No custom artwork, Finder scripting, background process, or app
+launch is needed to build the layout. The included plain-text guide covers
+Apple silicon/macOS 27+, drag-to-Applications installation, ejection, launching
+the installed copy, manual Accessibility access for window overrides, quitting
+before upgrades, and quitting/removing the app to uninstall. It does not grant
+permissions, reset settings, remove saved data, or change app behavior.
+
 Only the DMG is signed, using a temporary keychain. It is submitted separately
 to Apple, awaited for at most 20 minutes, then stapled and checked with
 `stapler`, `codesign`, `hdiutil` and Gatekeeper. The final
@@ -113,7 +123,26 @@ files. Do not enable shell tracing or print secret environment variables.
 checks safe/unsafe archive fixtures, app identity/notarization, input/draft
 contracts, failure cleanup, and mocked pipeline success/failure upload gates
 without credentials, downloads or Apple services. These checks also run through
-`npm test` and `npm run verify`. Python 3.9+ standard library is required; no new
-packages are used.
-Real certificate import, Gatekeeper, Apple notarization, DMG mounting/install UX
-and release uploads still need the first separately approved macOS workflow run.
+`npm test` and `npm run verify`. These standard-library contracts require
+Python 3.9+ and do not require the separate layout dependencies below.
+The layout writer has a separate isolated Python environment:
+
+```sh
+python3 -m venv /tmp/override-layout-venv
+/tmp/override-layout-venv/bin/python -m pip install --require-hashes --only-binary=:all: -r scripts/override-installer-requirements.txt
+/tmp/override-layout-venv/bin/python -m unittest discover -s tests -p 'override_*test.py' -v
+```
+
+This runs the packaging contracts plus actual `.DS_Store` round-trip tests and,
+on macOS, an unsigned DMG creation/read-only mount test. The packaging workflow
+runs this expanded suite before credentials are passed to the packaging step.
+The website `npm run verify` continues to run the standard-library packaging
+contracts without installing the installer-only Python tools.
+
+The previous installer successfully completed signing/notarization/stapling and
+the owner reported installation and basic functionality after granting permission.
+The new presentation/guide still needs a separately approved fresh-version
+packaging run and visual/installation review of its final signed DMG. Existing
+final assets are never replaced: the current draft's completed DMG/checksum must
+remain untouched; use a new version-matched export/draft, or obtain separate owner
+authorization for any different asset/release plan.

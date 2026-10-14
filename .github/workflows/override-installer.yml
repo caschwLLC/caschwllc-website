@@ -35,7 +35,10 @@ jobs:
         with:
           persist-credentials: false
       - name: Validate packaging contracts without credentials
-        run: python3 -m unittest discover -s tests -p 'override_packaging_test.py' -v
+        run: |
+          python3 -m venv "$RUNNER_TEMP/override-layout-venv"
+          "$RUNNER_TEMP/override-layout-venv/bin/python" -m pip install --require-hashes --only-binary=:all: -r scripts/override-installer-requirements.txt
+          "$RUNNER_TEMP/override-layout-venv/bin/python" -m unittest discover -s tests -p 'override_*test.py' -v
       - name: Package, notarize, staple and attach to the existing draft
         env:
           GH_TOKEN: ${{ github.token }}
@@ -49,7 +52,7 @@ jobs:
           APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
           APP_STORE_CONNECT_KEY_ID: ${{ vars.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_ISSUER_ID }}
-        run: python3 scripts/package-override.py
+        run: '"$RUNNER_TEMP/override-layout-venv/bin/python" scripts/package-override.py'
       - name: Remove temporary signing material even after failure
         if: always()
         run: python3 scripts/package-override.py --cleanup

@@ -226,6 +226,32 @@ def signing_identity(keychain, expected, reports):
     return matches.pop()
 
 
+def write_installer_layout(stage):
+    from ds_store import DSStore
+
+    guide = Path(__file__).with_name("override-installation-guide.txt")
+    shutil.copyfile(guide, stage / "Installation Guide.txt")
+    with DSStore.open(str(stage / ".DS_Store"), "w+") as store:
+        store["."]["vSrn"] = ("long", 1)
+        store["."]["bwsp"] = {
+            "ShowStatusBar": False, "ShowToolbar": False,
+            "ShowPathbar": False, "ShowSidebar": False,
+            "WindowBounds": "{{160, 160}, {640, 400}}",
+        }
+        store["."]["icvp"] = {
+            "viewOptionsVersion": 1, "backgroundType": 0,
+            "backgroundColorRed": 1.0, "backgroundColorGreen": 1.0,
+            "backgroundColorBlue": 1.0, "iconSize": 96.0, "textSize": 14.0,
+            "labelOnBottom": True, "showItemInfo": False,
+            "showIconPreview": True, "arrangeBy": "none",
+            "gridOffsetX": 0.0, "gridOffsetY": 0.0, "gridSpacing": 100.0,
+        }
+        store["."]["icvl"] = ("type", b"icnv")
+        store["Override.app"]["Iloc"] = (170, 120)
+        store["Applications"]["Iloc"] = (470, 120)
+        store["Installation Guide.txt"]["Iloc"] = (320, 285)
+
+
 def package(work, reports):
     tag, asset = os.environ["RELEASE_TAG"], os.environ["INPUT_ASSET"]
     version = inputs(tag, asset)
@@ -281,6 +307,7 @@ def package(work, reports):
     validate_app(staged_app, version)
     stapler("validate", staged_app, reports, "staged-app")
     (stage / "Applications").symlink_to("/Applications")
+    write_installer_layout(stage)
     dmg = work / dmg_name
     run("hdiutil", "create", "-volname", "Override", "-srcfolder", str(stage),
         "-format", "UDZO", "-fs", "HFS+", str(dmg))

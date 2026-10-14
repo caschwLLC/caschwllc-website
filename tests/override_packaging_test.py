@@ -293,6 +293,7 @@ class PackagingTests(unittest.TestCase):
                     return subprocess.CompletedProcess(args, 0, stdout, stderr)
 
                 with patch.dict(os.environ, environment), \
+                        patch.object(packaging, "write_installer_layout") as layout, \
                         patch.object(packaging, "api", side_effect=fake_api), \
                         patch.object(packaging, "run", side_effect=fake_run), \
                         patch.object(packaging.time, "sleep"), \
@@ -318,6 +319,7 @@ class PackagingTests(unittest.TestCase):
                                          ("--keychain", str(work / "release.keychain-db")))
                         self.assertTrue(signed[0][-1].endswith(".dmg"))
                         self.assertTrue((work / "stage/Applications").is_symlink())
+                        layout.assert_called_once_with(work / "stage")
                     if failure in ("Invalid", "In Progress"):
                         self.assertTrue((reports / "submission-id.txt").exists())
                         self.assertTrue((reports / "info.json").exists())

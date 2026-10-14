@@ -1,0 +1,26 @@
+OVERRIDE
+Installation guide
+
+Requires an Apple silicon Mac with macOS 27 or later.
+
+INSTALL
+1. Drag Override.app into the Applications shortcut in this disk image.
+2. Eject the Override disk image.
+3. Open Override from your Applications folder.
+
+WINDOW OVERRIDES
+If you intend to use window overrides, grant Override Accessibility access
+manually in System Settings > Privacy & Security > Accessibility.
+Installing Override does not grant this permission.
+
+UPGRADE
+Quit Override before replacing the installed app. Drag the new Override.app
+into Applications and confirm the replacement in Finder. Eject the disk
+image, then open the installed app.
+
+UNINSTALL
+Quit Override, then remove Override.app from Applications using Finder.
+Removing the app does not necessarily remove its saved settings or revoke
+permissions. This guide does not reset permissions or remove other files.
+
+caschw LLC
