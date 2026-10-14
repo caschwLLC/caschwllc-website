@@ -57,6 +57,13 @@ is included.
 
 ## Failure and recovery
 
+Draft discovery uses the authenticated, paginated release collection and exact
+tag matching, then revalidates the selected release by ID. GitHub's release-by-tag
+endpoint can return 404 for a saved draft tag even when the draft is visible in
+the collection. The first live run failed at that endpoint before downloading
+the ZIP or accessing Apple services; this is not evidence of invalid signing
+credentials. Missing, ambiguous, published or changed releases still fail closed.
+
 The run summary and `override-notarization-RUN_ID-ATTEMPT` artifact retain the
 submission ID, input asset ID/hash, submit/wait/status output, and Apple's log
 when available, for 14 days. A wait timeout **does not cancel** Apple's server-side
