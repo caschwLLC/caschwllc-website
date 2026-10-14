@@ -101,7 +101,11 @@ def run(*args, check=True):
     # Never echo arguments: security commands contain passwords.
     result = subprocess.run(args, text=True, capture_output=True, check=False)
     if check and result.returncode:
-        raise RuntimeError(f"{Path(args[0]).name} {args[1]} failed: {result.stderr}")
+        stdout = result.stdout.strip() or "(empty)"
+        stderr = result.stderr.strip() or "(empty)"
+        raise RuntimeError(
+            f"{Path(args[0]).name} {args[1]} failed (exit {result.returncode})"
+            f"\nstdout: {stdout[:8192]}\nstderr: {stderr[:8192]}")
     return result
 
 
