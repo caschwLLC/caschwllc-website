@@ -7,6 +7,7 @@ import os
 from pathlib import Path, PurePosixPath
 import plistlib
 import re
+import shlex
 import shutil
 import stat
 import subprocess
@@ -153,11 +154,47 @@ def validate_app(app, version):
 
 
 def cleanup(work):
+    search_list = work / "original-keychains.json"
     keychain = work / "release.keychain-db"
-    if keychain.exists():
-        run("security", "delete-keychain", str(keychain))
-    if work.exists():
-        shutil.rmtree(work)
+    try:
+        if search_list.exists():
+            run("security", "list-keychains", "-d", "user", "-s",
+                *json.loads(search_list.read_text()))
+    finally:
+        try:
+            if keychain.exists():
+                run("security", "delete-keychain", str(keychain))
+        finally:
+            if work.exists():
+                shutil.rmtree(work)
+
+
+def enable_signing_keychain(work, keychain):
+    original = shlex.split(run("security", "list-keychains", "-d", "user").stdout)
+    (work / "original-keychains.json").write_text(json.dumps(original))
+    # --keychain alone does not add this keychain to certificate-chain lookup.
+    run("security", "list-keychains", "-d", "user", "-s", *original, str(keychain))
+
+
+def signing_identity(keychain, expected, reports):
+    result = run("security", "find-identity", "-v", "-p", "codesigning", str(keychain))
+    identities = re.findall(
+        r'^\s*\d+\)\s+([0-9A-Fa-f]{40})\s+"([^"\n]+)"\s*$',
+        result.stdout, re.MULTILINE)
+    matches = {fingerprint.upper() for fingerprint, name in identities if name == expected}
+    (reports / "signing-identity.json").write_text(json.dumps({
+        "valid_identity_count": len(identities),
+        "exact_match_count": len(matches),
+        "keychain_scope": "temporary release keychain",
+    }, indent=2))
+    require(identities,
+            "Temporary keychain has no valid codesigning identities after import; "
+            "inspect runner certificate/private-key availability and certificate trust/validity")
+    require(matches,
+            "Configured DEVELOPER_ID_APPLICATION does not exactly match a valid "
+            "codesigning identity in the temporary keychain")
+    require(len(matches) == 1, "Multiple valid certificates match the configured signing identity")
+    return matches.pop()
 
 
 def package(work, reports):
@@ -235,7 +272,9 @@ def package(work, reports):
         "-P", os.environ["DEVELOPER_ID_CERTIFICATE_PASSWORD"], "-T", "/usr/bin/codesign")
     run("security", "set-key-partition-list", "-S", "apple-tool:,apple:,codesign:",
         "-s", "-k", password, str(keychain))
-    run("codesign", "--sign", identity, "--keychain", str(keychain),
+    enable_signing_keychain(work, keychain)
+    fingerprint = signing_identity(keychain, identity, reports)
+    run("codesign", "--sign", fingerprint, "--keychain", str(keychain),
         "--timestamp", str(dmg))
     run("codesign", "--verify", "--strict", "--verbose=2", str(dmg))
     dmg_details = run("codesign", "-d", "--verbose=4", str(dmg)).stderr

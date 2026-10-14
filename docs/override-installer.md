@@ -57,6 +57,17 @@ is included.
 
 ## Failure and recovery
 
+After certificate import, the runner preserves its user keychain search list and
+adds only the temporary signing keychain for certificate-chain discovery.
+`codesign --keychain` alone restricts identity selection but does not include that
+keychain in chain lookup. The original search list is restored during cleanup.
+The runner enumerates valid codesigning identities only in that temporary
+keychain, requires one exact configured identity, then signs by its certificate
+fingerprint with the explicit keychain restriction retained.
+`signing-identity.json` records valid-identity and exact-match counts, not key
+material. Missing, mismatched or ambiguous identities fail before DMG signing.
+Successful import alone does not prove a usable signing identity exists.
+
 Draft discovery uses the authenticated, paginated release collection and exact
 tag matching, then revalidates the selected release by ID. GitHub's release-by-tag
 endpoint can return 404 for a saved draft tag even when the draft is visible in
