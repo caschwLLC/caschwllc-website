@@ -119,6 +119,34 @@ class PackagingTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     packaging.draft(123, "override-v0.1.0")
 
+    def test_draft_discovery_uses_paginated_collection_not_tag_endpoint(self):
+        tag = "override-v0.1.0"
+        release = {"id": 123, "tag_name": tag, "draft": True}
+        first_page = [{"id": index, "tag_name": f"other-v{index}", "draft": False}
+                      for index in range(100)]
+        with patch.object(packaging, "api", side_effect=[
+                first_page, [release], release]) as api:
+            self.assertEqual(packaging.find_draft(tag), release)
+            self.assertEqual([call.args[0] for call in api.call_args_list], [
+                f"repos/{packaging.REPOSITORY}/releases?per_page=100&page=1",
+                f"repos/{packaging.REPOSITORY}/releases?per_page=100&page=2",
+                f"repos/{packaging.REPOSITORY}/releases/123",
+            ])
+
+    def test_draft_discovery_rejects_missing_ambiguous_published_or_changed_release(self):
+        tag = "override-v0.1.0"
+        release = {"id": 123, "tag_name": tag, "draft": True}
+        for responses in [
+            [[]],
+            [[release, {**release, "id": 456}]],
+            [[release], {**release, "draft": False}],
+            [[release], {**release, "tag_name": "override-v0.2.0"}],
+        ]:
+            with self.subTest(responses=responses), \
+                    patch.object(packaging, "api", side_effect=responses):
+                with self.assertRaises(ValueError):
+                    packaging.find_draft(tag)
+
     def test_notarization_pipeline_and_upload_gates(self):
         for failure in (None, "app-staple", "Invalid", "In Progress", "dmg-staple",
                         "draft-changed"):
@@ -159,6 +187,8 @@ class PackagingTests(unittest.TestCase):
                     return subprocess.CompletedProcess(args, 0, b"", b"")
 
                 def fake_api(endpoint, *args):
+                    if endpoint == f"repos/{packaging.REPOSITORY}/releases?per_page=100&page=1":
+                        return [release]
                     if endpoint.startswith("https://uploads."):
                         self.assertTrue(any(call[:3] == ("xcrun", "stapler", "validate")
                                             and call[-1].endswith(".dmg") for call in calls))

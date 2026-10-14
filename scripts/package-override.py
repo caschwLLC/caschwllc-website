@@ -123,6 +123,20 @@ def draft(release_id, tag):
     return release
 
 
+def find_draft(tag):
+    # Draft tags may not resolve through GitHub's release-by-tag endpoint.
+    matches = []
+    page = 1
+    while True:
+        releases = api(f"repos/{REPOSITORY}/releases?per_page=100&page={page}")
+        matches.extend(release for release in releases if release["tag_name"] == tag)
+        if len(releases) < 100:
+            break
+        page += 1
+    require(len(matches) == 1, "Expected exactly one accessible release with the requested tag")
+    return draft(matches[0]["id"], tag)
+
+
 def validate_app(app, version):
     with (app / "Contents/Info.plist").open("rb") as handle:
         info = plistlib.load(handle)
@@ -155,9 +169,8 @@ def package(work, reports):
     identity = os.environ["DEVELOPER_ID_APPLICATION"]
     require(identity.startswith("Developer ID Application: ")
             and identity.endswith(f"({TEAM})"), "Unexpected DMG signing identity")
-    release = api(f"repos/{REPOSITORY}/releases/tags/{tag}")
+    release = find_draft(tag)
     release_id = release["id"]
-    release = draft(release_id, tag)
     matches = [item for item in release["assets"] if item["name"] == asset]
     require(len(matches) == 1, "Expected exactly one input asset on the draft")
     dmg_name = f"Override-{version}.dmg"
