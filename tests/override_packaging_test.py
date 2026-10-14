@@ -44,6 +44,18 @@ class PackagingTests(unittest.TestCase):
             with self.subTest(tag=tag, asset=asset), self.assertRaises(ValueError):
                 packaging.inputs(tag, asset)
 
+    def test_command_failure_reports_both_streams_without_echoing_arguments(self):
+        result = subprocess.CompletedProcess(
+            [], 1, "stapler detail on stdout", "stapler detail on stderr")
+        with patch.object(packaging.subprocess, "run", return_value=result) as run:
+            with self.assertRaises(RuntimeError) as failure:
+                packaging.run("xcrun", "stapler", "validate", "-v", "/fixture/file.dmg")
+        self.assertIn("xcrun stapler failed (exit 1)", str(failure.exception))
+        self.assertIn("stdout: stapler detail on stdout", str(failure.exception))
+        self.assertIn("stderr: stapler detail on stderr", str(failure.exception))
+        self.assertNotIn("/fixture/file.dmg", str(failure.exception))
+        run.assert_called_once()
+
     def test_valid_nested_export_and_framework_links(self):
         with self.archive(
             ["Export/Override.app/Contents/Info.plist",

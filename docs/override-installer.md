@@ -83,6 +83,8 @@ retrieve `xcrun notarytool log SUBMISSION_ID` with owner-managed authentication;
 do not put keys in shell history. In-progress submissions may not yet have a log.
 No installer is uploaded unless status is `Accepted` and all subsequent checks
 pass. A rerun submits a newly packaged DMG; there is no implicit submission resume.
+Failed command diagnostics include bounded stdout and stderr without echoing
+command arguments, so tools that report errors on stdout remain actionable.
 
 GitHub has no atomic draft-check-and-upload or two-asset transaction. Draft state
 is checked before each upload and afterward, but an owner must not concurrently
