@@ -148,7 +148,8 @@ class PackagingTests(unittest.TestCase):
                     packaging.find_draft(tag)
 
     def test_notarization_pipeline_and_upload_gates(self):
-        for failure in (None, "app-staple", "Invalid", "In Progress", "dmg-staple",
+        for failure in (None, "app-staple", "no-identity", "wrong-identity",
+                        "Invalid", "In Progress", "dmg-staple",
                         "draft-changed"):
             with self.subTest(failure=failure), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
@@ -203,7 +204,16 @@ class PackagingTests(unittest.TestCase):
                 def fake_run(*args, **kwargs):
                     calls.append(args)
                     stdout, stderr = "", ""
-                    if args[:3] == ("ditto", "-x", "-k"):
+                    if args[:2] == ("security", "list-keychains") and "-s" not in args:
+                        stdout = '"/fixture/login.keychain-db"\n'
+                    elif args[:2] == ("security", "find-identity"):
+                        if failure == "no-identity":
+                            stdout = "  0 valid identities found\n"
+                        else:
+                            name = ("Developer ID Application: Other" if failure == "wrong-identity"
+                                    else environment["DEVELOPER_ID_APPLICATION"])
+                            stdout = f'  1) {"A" * 40}  "{name}"\n'
+                    elif args[:3] == ("ditto", "-x", "-k"):
                         with zipfile.ZipFile(args[3]) as archive:
                             archive.extractall(args[4])
                     elif args[0] == "ditto":
@@ -246,11 +256,57 @@ class PackagingTests(unittest.TestCase):
                         signed = [call for call in calls
                                   if call[:2] == ("codesign", "--sign")]
                         self.assertEqual(len(signed), 1)
+                        self.assertEqual(signed[0][2], "A" * 40)
+                        self.assertEqual(signed[0][3:5],
+                                         ("--keychain", str(work / "release.keychain-db")))
                         self.assertTrue(signed[0][-1].endswith(".dmg"))
                         self.assertTrue((work / "stage/Applications").is_symlink())
                     if failure in ("Invalid", "In Progress"):
                         self.assertTrue((reports / "submission-id.txt").exists())
                         self.assertTrue((reports / "info.json").exists())
+
+    def test_runner_identity_selection_and_diagnostics(self):
+        expected = "Developer ID Application: Fixture (MF47M54FA9)"
+        for output, succeeds in [
+            (f'  1) {"a" * 40} "{expected}"\n  1 valid identities found', True),
+            ("  0 valid identities found", False),
+            (f'  1) {"A" * 40} "{expected} extra"\n', False),
+            (f'  1) {"A" * 40} "{expected}"\n  2) {"B" * 40} "{expected}"\n', False),
+        ]:
+            with self.subTest(output=output), tempfile.TemporaryDirectory() as directory:
+                reports = Path(directory)
+                result = subprocess.CompletedProcess([], 0, output, "")
+                with patch.object(packaging, "run", return_value=result) as run:
+                    if succeeds:
+                        self.assertEqual(packaging.signing_identity(
+                            reports / "keychain", expected, reports), "A" * 40)
+                    else:
+                        with self.assertRaises(ValueError):
+                            packaging.signing_identity(reports / "keychain", expected, reports)
+                    run.assert_called_once_with("security", "find-identity", "-v",
+                                                "-p", "codesigning", str(reports / "keychain"))
+                self.assertTrue((reports / "signing-identity.json").exists())
+
+    def test_keychain_search_list_is_preserved_and_restored(self):
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory) / "work"
+            work.mkdir()
+            keychain = work / "release.keychain-db"
+            keychain.touch()
+            result = subprocess.CompletedProcess(
+                [], 0, '  "/fixture/login keychain-db"\n "/fixture/system.keychain-db"\n', "")
+            with patch.object(packaging, "run", return_value=result) as run:
+                packaging.enable_signing_keychain(work, keychain)
+                self.assertEqual(run.call_args.args, (
+                    "security", "list-keychains", "-d", "user", "-s",
+                    "/fixture/login keychain-db", "/fixture/system.keychain-db", str(keychain)))
+                packaging.cleanup(work)
+                self.assertEqual(run.call_args_list[-2].args, (
+                    "security", "list-keychains", "-d", "user", "-s",
+                    "/fixture/login keychain-db", "/fixture/system.keychain-db"))
+                self.assertEqual(run.call_args_list[-1].args,
+                                 ("security", "delete-keychain", str(keychain)))
+            self.assertFalse(work.exists())
 
     def test_cleanup_runs_after_packaging_failure(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -261,6 +317,22 @@ class PackagingTests(unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     packaging.main()
                 cleanup.assert_called_once_with(Path(directory) / "override-packaging")
+
+    def test_cleanup_removes_credentials_even_if_search_list_restore_fails(self):
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory) / "work"
+            work.mkdir()
+            (work / "original-keychains.json").write_text('["/fixture/login.keychain-db"]')
+            (work / "release.keychain-db").touch()
+            (work / "AuthKey.p8").write_text("fixture")
+            with patch.object(packaging, "run", side_effect=[
+                    RuntimeError("restore fixture failure"),
+                    subprocess.CompletedProcess([], 0, "", "")]) as run:
+                with self.assertRaisesRegex(RuntimeError, "restore fixture failure"):
+                    packaging.cleanup(work)
+                self.assertEqual(run.call_args.args, (
+                    "security", "delete-keychain", str(work / "release.keychain-db")))
+            self.assertFalse(work.exists())
 
 
 if __name__ == "__main__":
