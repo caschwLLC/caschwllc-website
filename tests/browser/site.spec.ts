@@ -45,6 +45,31 @@ for (const route of routes) {
       page.locator('a[href*="/apps/override/privacy/"]'),
     ).toHaveCount(0);
     await expect(page.locator('form, iframe')).toHaveCount(0);
+    const expectedBanner =
+      siteConfig().mode === 'review' && !route.endsWith('/privacy/')
+        ? route.startsWith('/apps/override/')
+          ? 'Public Preview -- Coming soon.'
+          : route.startsWith('/apps/feelory/')
+            ? 'Coming soon.'
+            : null
+        : null;
+    if (expectedBanner)
+      await expect(page.locator('.review-banner')).toHaveText(expectedBanner);
+    else await expect(page.locator('.review-banner')).toHaveCount(0);
+    if (route === '/') {
+      await expect(
+        page.locator(
+          'a[href*="/apps/feelory/privacy/"], a[href*="/apps/feelory/support/"]',
+        ),
+      ).toHaveCount(0);
+      await expect(page.locator('.studio-note')).toContainText(
+        'Thoughtful tools.',
+      );
+      await expect(page.locator('.studio-note')).not.toContainText('Feelory');
+      await expect(page.locator('.image-note')).toHaveText(
+        'Genuine app captures , any content shown is using sample data.',
+      );
+    }
     if (route.endsWith('/privacy/')) {
       await expect(page.locator('.review-banner, .policy-draft')).toHaveCount(
         0,
@@ -129,6 +154,32 @@ for (const route of routes) {
   });
 }
 
+test('product button hovers match their showcase colors', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto(pathFor('/'));
+  const feelory = page.getByRole('link', { name: 'Explore Feelory' });
+  await feelory.hover();
+  await expect(feelory).toHaveCSS('background-color', 'rgb(81, 65, 156)');
+  const override = page.locator('.utility-showcase .button');
+  for (const button of await override.all()) {
+    await button.hover();
+    await expect(button).toHaveCSS('background-color', 'rgb(65, 110, 156)');
+    await expect(button).toHaveCSS('color', 'rgb(255, 255, 255)');
+  }
+  for (const route of [
+    '/apps/override/',
+    '/apps/override/support/',
+    '/apps/override/accessibility/',
+  ]) {
+    await page.goto(pathFor(route));
+    for (const button of await page.locator('.button').all()) {
+      await button.hover();
+      await expect(button).toHaveCSS('background-color', 'rgb(65, 110, 156)');
+      await expect(button).toHaveCSS('color', 'rgb(255, 255, 255)');
+    }
+  }
+});
+
 test('product anchors, honest availability and reduced motion', async ({
   page,
 }) => {
@@ -174,9 +225,18 @@ test('Override beta connects download, setup, support and permission guidance', 
   await expect(page.locator('main')).not.toContainText(
     /Feelory|iCloud|Apple Health|VoiceOver|Coming soon/,
   );
-  await expect(page.locator('main img, meta[property="og:image"]')).toHaveCount(
-    0,
+  await expect(page.locator('main img')).toHaveCount(1);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    'content',
+    /\/media\/override-icon\.png$/,
   );
+  const icon = page.locator('.product-name .override-icon');
+  await expect(icon).toHaveCSS('width', '64px');
+  await expect(icon).toHaveCSS('height', '64px');
+  await expect(icon).toHaveCSS('border-radius', '0px');
+  await expect(icon).toHaveCSS('padding', '0px');
+  await expect(icon).toHaveCSS('box-shadow', 'none');
+  await expect(icon).toHaveCSS('filter', 'none');
   await expect(page.locator('a[href*="/apps/override/privacy/"]')).toHaveCount(
     0,
   );
@@ -235,6 +295,32 @@ test('Override beta connects download, setup, support and permission guidance', 
   await expect(page.locator('main')).toContainText('Pause All Overrides');
   const response = await page.request.get(pathFor('/apps/override/privacy/'));
   expect(response.status()).toBe(404);
+});
+
+test('Override feature chapters share Feelory’s full-width color fields', async ({
+  page,
+}) => {
+  await page.goto(pathFor('/apps/override/'));
+  const chapters = page.locator('.utility-features > section');
+  await expect(chapters).toHaveCount(3);
+  const colors = [
+    'rgb(231, 228, 245)',
+    'rgb(227, 237, 229)',
+    'rgb(227, 237, 244)',
+  ];
+  for (const [index, color] of colors.entries()) {
+    const chapter = chapters.nth(index);
+    await expect(chapter).toHaveCSS('background-color', color);
+    const bounds = await chapter.boundingBox();
+    expect(bounds?.x).toBe(0);
+    expect(bounds?.width).toBe(await page.evaluate(() => window.innerWidth));
+    await expect(chapter.locator('.utility-feature-inner')).toHaveCSS(
+      'padding-left',
+      await page
+        .locator('.closing')
+        .evaluate((element) => getComputedStyle(element).paddingLeft),
+    );
+  }
 });
 
 test('Override reading and product layouts fit narrow and enlarged text views', async ({

@@ -16,13 +16,20 @@ const href = (path: string) => localPath(path, import.meta.env.BASE_URL);
   appSlug={app.slug}
 >
   <!-- THESIS: Configurable window behaviour explained directly, without simulated app screens.
-  OWN-WORLD: Existing paper and ink studio, sky field, system type, open text columns.
+  OWN-WORLD: Existing paper and ink studio, sky hero, lavender, mint and sky chapters, open text columns.
   STORY: Understand the beta, choose a download, grant window access deliberately.
   FIRST VIEWPORT: Product name and promise beside a concise capability index; beta download and compatibility stay together.
   FORM: Text-led extension of the approved showroom; no unapproved artwork. -->
   <section class="product-hero utility-hero wrap">
     <div class="hero-copy">
       <div class="product-name">
+        <img
+          class="override-icon"
+          src={href(app.icon)}
+          width="64"
+          height="64"
+          alt=""
+        />
         <p>{app.name}</p>
       </div>
       <h1>{app.headline}</h1>
@@ -62,14 +69,19 @@ const href = (path: string) => localPath(path, import.meta.env.BASE_URL);
       <p>Enable the optional behaviours you want. Leave the rest to macOS.</p>
     </div>
   </section>
-  <div id="explore" class="utility-features wrap">
+  <div id="explore" class="utility-features">
     {app.features.map((feature, index) => (
-      <section aria-labelledby={`feature-${index}`}>
-        <h2 id={`feature-${index}`}>{feature.title}</h2>
-        <div>
-          {feature.paragraphs.map((paragraph) => (
-            <p>{paragraph}</p>
-          ))}
+      <section
+        class:list={['feature', ['lavender', 'mint', 'sky'][index % 3]]}
+        aria-labelledby={`feature-${index}`}
+      >
+        <div class="utility-feature-inner wrap">
+          <h2 id={`feature-${index}`}>{feature.title}</h2>
+          <div>
+            {feature.paragraphs.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </div>
         </div>
       </section>
     ))}

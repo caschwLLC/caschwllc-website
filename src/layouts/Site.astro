@@ -29,10 +29,17 @@ const canonical = new URL(
   Astro.site,
 );
 const activeApp = apps.find((app) => app.slug === appSlug);
-const supportApp = activeApp ?? apps[0];
+const supportApp = activeApp;
+const reviewBanner =
+  review && !policy
+    ? activeApp?.slug === 'override'
+      ? 'Public Preview -- Coming soon.'
+      : activeApp?.slug === 'feelory'
+        ? 'Coming soon.'
+        : undefined
+    : undefined;
 const socialApp = appSlug ? activeApp : apps[0];
-const socialIcon =
-  socialApp?.presentation === 'screens' ? socialApp.icon : undefined;
+const socialIcon = socialApp?.icon;
 const discovery = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
@@ -92,7 +99,10 @@ const discovery = {
       set:html={JSON.stringify(discovery).replace(/</g, '\\u003c')}
     />
   </head>
-  <body class:list={[adaptiveColorScheme && 'theme-adaptive']}>
+  <body
+    class:list={[adaptiveColorScheme && 'theme-adaptive']}
+    data-app={appSlug}
+  >
     <a class="skip-link" href="#main">
       Skip to content
     </a>
@@ -134,9 +144,9 @@ const discovery = {
         )}
       </nav>
     </header>
-    {review && !policy && (
-      <aside class="review-banner" aria-label="Website review status">
-        Public review preview. Apps retain their stated availability.
+    {reviewBanner && (
+      <aside class="review-banner" aria-label="App preview status">
+        {reviewBanner}
       </aside>
     )}
     <main id="main" tabindex="-1">

@@ -353,12 +353,10 @@
   .utility-features {
     padding-block: 4rem;
   }
-  .utility-features > section {
+  .utility-feature-inner {
     display: grid;
     grid-template-columns: 1fr 1.1fr;
     gap: clamp(2rem, 6vw, 6rem);
-    padding-block: 3rem;
-    border-bottom: 1px solid var(--line);
   }
   .utility-features h2 {
     font-size: clamp(2rem, 3.5vw, 3.5rem);
@@ -515,7 +513,7 @@
     .utility-features {
       padding-block: 2rem;
     }
-    .utility-features > section,
+    .utility-feature-inner,
     .utility-setup {
       grid-template-columns: 1fr;
       gap: 1.5rem;
@@ -615,6 +613,12 @@
     width: 64px;
     height: 64px;
   }
+  .product-name img.override-icon {
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    filter: none;
+  }
   .product-name h2,
   .product-name p {
     font-size: 2rem;
@@ -651,8 +655,12 @@
     max-width: 100%;
     overflow-wrap: anywhere;
   }
+  .utility-showcase,
+  body[data-app='override'] {
+    --button-hover: #416e9c;
+  }
   .button:hover {
-    background: var(--accent);
+    background: var(--button-hover, var(--accent));
     color: white;
   }
   .text-link {

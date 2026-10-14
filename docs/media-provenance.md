@@ -1,5 +1,38 @@
 # Media provenance and rights
 
+## Override native-rendered icon
+
+The owner explicitly authorized the existing **Aligned Panes** artwork for the
+website. Only `override-icon.png` was copied, byte-for-byte, from the authorized
+`Resources/Website/Override/` handoff in the Override
+`caschw-shiny-chainsaw` worktree. The private source, handoff note, master and
+review sheet were not copied into this repository.
+
+The handoff records native export of the existing `Resources/AppIcon.icon`
+document through Apple's Icon Composer `ictool`, macOS Default rendition,
+design generation 27, at 1024 × 1024. Its two original pane layers are not
+SF Symbols or stock artwork. Native lighting, layer shadows, background and
+transparent macOS mask come from that export.
+
+The native Display P3 output was converted to embedded sRGB using Pillow
+11.3.0 ImageCms/LittleCMS with relative-colorimetric intent and unchanged alpha,
+then Lanczos-downsampled to the 192 × 192 RGBA website PNG. This website performs
+no further conversion or redraw. The 1024px master stays with the source
+handoff; no raster-master archive is added here.
+
+| Website file                     | Dimensions | SHA-256                                                            |
+| -------------------------------- | ---------- | ------------------------------------------------------------------ |
+| `public/media/override-icon.png` | 192 × 192  | `7e82dbd0bda6e306c11662dff132b89184a2e86c6098336b03b8798ec1ab31e7` |
+
+Homepage and product artwork display at 64 × 64 CSS pixels, with no additional
+padding, shadow, filter or corner rounding. An Override-only CSS rule preserves
+the native mask without changing Feelory. The same approved PNG supplies
+Override social metadata. Regression tests verify the exact hash, dimensions,
+sRGB profile, transparency and rendered styling.
+
+The artwork remains reserved-rights media, excluded from the website's MIT code
+license. Owner authorization does not grant unrestricted reuse.
+
 Only owner-approved Feelory captures with synthetic content and public-safe
 icon artwork are used here. The recaptured screenshots came from
 `caschwLLC/Feelory`, branch `z-02/app-store-readiness`, under

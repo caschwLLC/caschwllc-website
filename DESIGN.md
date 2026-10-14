@@ -93,17 +93,25 @@ The header exposes home, marketed products and contextual support; platform
 headings are data-derived.
 Primary links use a dark pill and a directional arrow. Coming soon is a
 noninteractive outlined text status, never a disabled download button.
+Button hovers retain Feelory's purple accent (`#51419c`); Override uses the
+equivalent blue accent (`#416e9c`) on its sky showcase and product pages.
 The footer links to email support and website privacy. App-specific privacy,
 support and accessibility links live on the relevant product pages. Product
 features use semantic figures, descriptions and honest synthetic-content
 captions.
 
 Override extends the showroom with a text-led sky field, an open capability
-index and separated reading sections, not simulated application windows or
-placeholder media. Its beta label and versioned DMG action remain explicit on
-the homepage, product page and support page. No unapproved icon or screenshot
-is used. Utility pages do not inherit Feelory's screen or privacy chapters.
+index and full-width lavender, mint and sky feature chapters with Feelory's
+shared section spacing, not simulated application windows or placeholder media.
+Its beta label and versioned DMG action remain explicit on
+the homepage, product page and support page. The approved native-rendered Override
+icon displays at 64px without extra rounding, effects or padding; its own
+transparent mask is preserved. No screenshot is fabricated. Utility pages do
+not inherit Feelory's screen or privacy chapters.
 The header wraps on narrow screens to accommodate multiple product links.
+The homepage closes with studio-wide copy rather than Feelory policy/support
+links. Its capture note identifies sample data. Review banners appear only on
+non-policy app pages, with app-specific wording; the developer homepage has none.
 
 One 850ms device-composition settle animation runs only with no motion preference;
 the default remains visible. Reduced motion removes it. Focus rings are 3px,

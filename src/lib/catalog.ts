@@ -128,6 +128,7 @@ const screensApp = appBase.extend({
 
 const utilityApp = appBase.extend({
   presentation: z.literal('utility'),
+  icon: z.literal('/media/override-icon.png'),
   features: z.array(featureCopy.strict()).min(1),
   distribution: distributionSchema,
 });

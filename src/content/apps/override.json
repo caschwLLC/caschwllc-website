@@ -2,6 +2,7 @@
   "slug": "override",
   "name": "Override",
   "presentation": "utility",
+  "icon": "/media/override-icon.png",
   "visibility": "marketed",
   "status": "available",
   "platforms": ["apple"],

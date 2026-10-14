@@ -52,7 +52,7 @@ for (const app of apps.filter((app) => app.visibility === 'marketed')) {
     )
       await stat(`src/content/policies/${app.slug}/${kind}.md`);
   }
-  if (app.presentation === 'screens') await stat(`public${app.icon}`);
+  await stat(`public${app.icon}`);
   if (app.presentation === 'utility') {
     const html = await readFile(`dist/apps/${app.slug}/index.html`, 'utf8');
     const action = storeAction(app);
@@ -142,7 +142,21 @@ for (const route of [...routes, '/404.html']) {
     }
   }
   if (target.mode === 'review') {
-    assert.equal(html.includes('Public review preview.'), !policy);
+    const expectedBanner =
+      !policy && route.startsWith('/apps/override/')
+        ? 'Public Preview -- Coming soon.'
+        : !policy && route.startsWith('/apps/feelory/')
+          ? 'Coming soon.'
+          : null;
+    const banner =
+      html
+        .match(/<aside class="review-banner"[^>]*>(.*?)<\/aside>/s)?.[1]
+        ?.trim() ?? null;
+    assert.equal(
+      banner,
+      expectedBanner,
+      `${route}: unexpected app preview banner`,
+    );
     assert.ok(html.includes('noindex, follow'));
   }
   assert.ok(

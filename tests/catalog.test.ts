@@ -87,7 +87,13 @@ test('Override rejects unsafe, mismatched, unverified and inconsistent distribut
     { ...override.distribution, channel: 'stable' },
   ])
     assert.throws(() => appSchema.parse({ ...override, distribution }));
-  for (const field of ['presentation', 'distribution', 'features', 'pages']) {
+  for (const field of [
+    'presentation',
+    'distribution',
+    'features',
+    'pages',
+    'icon',
+  ]) {
     const input: Record<string, unknown> = { ...override };
     delete input[field];
     assert.throws(() => appSchema.parse(input));
