@@ -85,6 +85,13 @@ No installer is uploaded unless status is `Accepted` and all subsequent checks
 pass. A rerun submits a newly packaged DMG; there is no implicit submission resume.
 Failed command diagnostics include bounded stdout and stderr without echoing
 command arguments, so tools that report errors on stdout remain actionable.
+Stapler output from every attempt is retained in `stapler-*.json` reports.
+Both staple and validate contact Apple's ticket service. Only the observed
+transient failure combination (exit 68 and `NSURLErrorDomain Code=-1005`,
+connection lost) is retried: at most three attempts, with 10s then 30s delays.
+Exit 68 alone is not retried: it can also mean an unnotarized file or an
+unexpected ticket response. Invalid/missing/revoked tickets and all other
+failures stop immediately; exhausted retries still block every asset upload.
 
 GitHub has no atomic draft-check-and-upload or two-asset transaction. Draft state
 is checked before each upload and afterward, but an owner must not concurrently

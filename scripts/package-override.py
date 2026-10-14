@@ -12,6 +12,7 @@ import shutil
 import stat
 import subprocess
 import sys
+import time
 import unicodedata
 import zipfile
 
@@ -97,16 +98,40 @@ def archive_app(archive):
     return app
 
 
-def run(*args, check=True):
+def command_error(args, result):
     # Never echo arguments: security commands contain passwords.
+    stdout = result.stdout.strip() or "(empty)"
+    stderr = result.stderr.strip() or "(empty)"
+    return RuntimeError(
+        f"{Path(args[0]).name} {args[1]} failed (exit {result.returncode})"
+        f"\nstdout: {stdout[-8192:]}\nstderr: {stderr[-8192:]}")
+
+
+def run(*args, check=True):
     result = subprocess.run(args, text=True, capture_output=True, check=False)
     if check and result.returncode:
-        stdout = result.stdout.strip() or "(empty)"
-        stderr = result.stderr.strip() or "(empty)"
-        raise RuntimeError(
-            f"{Path(args[0]).name} {args[1]} failed (exit {result.returncode})"
-            f"\nstdout: {stdout[:8192]}\nstderr: {stderr[:8192]}")
+        raise command_error(args, result)
     return result
+
+
+def stapler(action, path, reports, label):
+    command = ("xcrun", "stapler", action, "-v", str(path))
+    for attempt in range(1, 4):
+        result = run(*command, check=False)
+        (reports / f"stapler-{label}-{action}-{attempt}.json").write_text(json.dumps({
+            "attempt": attempt, "exit_code": result.returncode,
+            "stdout": result.stdout, "stderr": result.stderr,
+        }, indent=2))
+        if result.returncode == 0:
+            return
+        connection_lost = re.search(
+            r"\bNSURLErrorDomain\s+Code=-1005\b", result.stdout + "\n" + result.stderr)
+        if result.returncode != 68 or not connection_lost or attempt == 3:
+            raise command_error(command, result)
+        delay = (10, 30)[attempt - 1]
+        print(f"stapler {action} {label}: connection lost; retrying in {delay}s "
+              f"(attempt {attempt}/3)", flush=True)
+        time.sleep(delay)
 
 
 def api(endpoint, *args):
@@ -245,8 +270,8 @@ def package(work, reports):
             require(path.resolve().is_relative_to(app.resolve()) and path.exists(),
                     "Broken, cyclic or escaping app symlink")
     validate_app(app, version)
-    run("xcrun", "stapler", "staple", "-v", str(app))
-    run("xcrun", "stapler", "validate", "-v", str(app))
+    stapler("staple", app, reports, "source-app")
+    stapler("validate", app, reports, "source-app")
     validate_app(app, version)
 
     stage = work / "stage"
@@ -254,7 +279,7 @@ def package(work, reports):
     staged_app = stage / "Override.app"
     run("ditto", str(app), str(staged_app))
     validate_app(staged_app, version)
-    run("xcrun", "stapler", "validate", "-v", str(staged_app))
+    stapler("validate", staged_app, reports, "staged-app")
     (stage / "Applications").symlink_to("/Applications")
     dmg = work / dmg_name
     run("hdiutil", "create", "-volname", "Override", "-srcfolder", str(stage),
@@ -310,8 +335,8 @@ def package(work, reports):
     require(status.returncode == 0, "Cannot retrieve notarization status")
     require(json.loads(status.stdout).get("status") == "Accepted",
             "DMG not accepted; inspect reports. A wait timeout does not cancel Apple's submission")
-    run("xcrun", "stapler", "staple", "-v", str(dmg))
-    run("xcrun", "stapler", "validate", "-v", str(dmg))
+    stapler("staple", dmg, reports, "dmg")
+    stapler("validate", dmg, reports, "dmg")
     run("codesign", "--verify", "--strict", "--verbose=2", str(dmg))
     run("hdiutil", "verify", str(dmg))
     run("spctl", "--assess", "--type", "open", "--context",
