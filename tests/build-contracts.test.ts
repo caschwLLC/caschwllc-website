@@ -128,6 +128,26 @@ test('isolated Astro builds exclude drafts from all discovery and reject malform
     }
     await unlink(fixturePath);
     await writeFile(
+      overridePath,
+      JSON.stringify({ ...override, visibility: 'draft' }),
+    );
+    await build();
+    for (const path of [
+      'index.html',
+      'privacy/index.html',
+      '404.html',
+      'sitemap.xml',
+      'apps/feelory/index.html',
+    ]) {
+      const html = await readFile(join(output, path), 'utf8');
+      assert.ok(
+        !/override/i.test(html),
+        `${path}: hidden Override artwork or content leaks through shared metadata`,
+      );
+    }
+    await assert.rejects(stat(`${output}/apps/override/index.html`));
+    await writeFile(overridePath, JSON.stringify(override));
+    await writeFile(
       join(root, 'src/content/apps/feelory.json'),
       JSON.stringify({ ...feelory, visibility: 'draft' }),
     );

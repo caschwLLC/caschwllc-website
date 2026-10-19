@@ -1,34 +1,65 @@
 # Media provenance and rights
 
-## Override native-rendered icon
+## Override W2 icon and M2 menu bar glyphs
 
-The owner explicitly authorized the existing **Aligned Panes** artwork for the
-website. Only `override-icon.png` was copied, byte-for-byte, from the authorized
-`Resources/Website/Override/` handoff in the Override
-`caschw-shiny-chainsaw` worktree. The private source, handoff note, master and
-review sheet were not copied into this repository.
+The owner authorized transferring the approved **W2 Clear Glass & Enamel** icon
+and **M2 Channel** glyphs from the Override website handoff for this refresh.
+They replace the earlier Aligned Panes artwork. Only the required files were
+copied, byte-for-byte, from `Resources/Website/Override/` at source revision
+`02199ae45afcd7179e9fa734d68b822ae3f24b46` (main after icon PR 136 merged).
+Every copied file was verified against the handoff's `provenance.txt`.
+No private app source, internal planning, handoff prompt, raw provenance
+document, build script, masters or unused platform artwork was copied.
 
-The handoff records native export of the existing `Resources/AppIcon.icon`
-document through Apple's Icon Composer `ictool`, macOS Default rendition,
-design generation 27, at 1024 × 1024. Its two original pane layers are not
-SF Symbols or stock artwork. Native lighting, layer shadows, background and
-transparent macOS mask come from that export.
+The handoff records Apple's native Icon Composer `ictool` export, design
+generation 27, Default and Dark renditions. The lilac clear-glass rear half and
+gold-enamel front half form a split-squircle O on plum. Apple's renderer supplies
+lighting, glass, shadows and the transparent macOS mask. These are original
+project shapes, not SF Symbols, stock imagery or repurposed Apple app icons.
+Native Display P3 was converted by the source exporter to embedded sRGB using
+Pillow ImageCms/LittleCMS, relative-colorimetric intent and preserved alpha.
+Density assets were Lanczos-downsampled from the 1024px sRGB masters.
+The website does not resize, re-encode, recolor or recreate these files.
 
-The native Display P3 output was converted to embedded sRGB using Pillow
-11.3.0 ImageCms/LittleCMS with relative-colorimetric intent and unchanged alpha,
-then Lanczos-downsampled to the 192 × 192 RGBA website PNG. This website performs
-no further conversion or redraw. The 1024px master stays with the source
-handoff; no raster-master archive is added here.
+PNG paths below are under `public/media/`; menu bar paths are under
+`src/assets/override/menubar/`.
 
-| Website file                     | Dimensions | SHA-256                                                            |
-| -------------------------------- | ---------- | ------------------------------------------------------------------ |
-| `public/media/override-icon.png` | 192 × 192  | `7e82dbd0bda6e306c11662dff132b89184a2e86c6098336b03b8798ec1ab31e7` |
+| File                                         | Dimensions | SHA-256                                                            |
+| -------------------------------------------- | ---------- | ------------------------------------------------------------------ |
+| `override-icon.png`                          | 192 × 192  | `c6b60b35e187baaa8695307e3dded92db3b1ac58f0f88b3b9910251f537714a0` |
+| `override-icon-64.png`                       | 64 × 64    | `2865659a256bedb1f339dc60c96c7239f142945908baabd4e2d8b5c9ff733b58` |
+| `override-icon-128.png`                      | 128 × 128  | `5bd2609ed86d10edebd63b122dd974cbff10b952a9d19b1d72d349d91e2d2e44` |
+| `override-icon-192.png`                      | 192 × 192  | `c6b60b35e187baaa8695307e3dded92db3b1ac58f0f88b3b9910251f537714a0` |
+| `override-icon-dark-64.png`                  | 64 × 64    | `b159d40c0c2333e42c18ab3836692fcf196c283fd65fdf1bbf91d082df8bbd1d` |
+| `override-icon-dark-128.png`                 | 128 × 128  | `05d59f1497e8b07cffee31919a8c2d64209882ec22d66cd63bba4700f8e8a513` |
+| `override-icon-dark-192.png`                 | 192 × 192  | `bd4eaae9186a358d10d0c27f1b301102d7211424e17a7694d3c152e28486f891` |
+| `override-social-card.png`                   | 1200 × 630 | `586c7d1b71f6730803bd7c5d2e46a90272593d1296c2c5c46c60404ccf75c741` |
+| `override-menubar-ready.svg`                 | 26 × 20    | `54cf9b43e6855ddeebd54979ee41cc326bac6eb5e84f448b15a6b2b400a8df17` |
+| `override-menubar-accessibility-missing.svg` | 26 × 20    | `a92f8433d61304cfdd2cb961a8a964fcdbd928a1f0220ef6f7f06c87b299e8b8` |
+| `override-menubar-paused.svg`                | 26 × 20    | `2ff6945e4576649498673c77e420f5b8744784f5c2f447aff1acc092c74b7c6f` |
+| `override-menubar-stashed.svg`               | 26 × 20    | `60acc9787f56861d803ca7b73fac0242c45eb36c8cf5b5f19b8d709cef6d9f33` |
 
-Homepage and product artwork display at 64 × 64 CSS pixels, with no additional
-padding, shadow, filter or corner rounding. An Override-only CSS rule preserves
-the native mask without changing Feelory. The same approved PNG supplies
-Override social metadata. Regression tests verify the exact hash, dimensions,
-sRGB profile, transparency and rendered styling.
+The shared app-icon renderer displays Override at 64 CSS pixels and uses
+64/128/192px files as 1x/2x/3x sources, selecting Dark with
+`prefers-color-scheme`. No extra rounding, padding, clipping mask, border,
+shadow or recoloring is applied. Feelory's styling is unchanged.
+The legacy PNG path contains the same approved W2 bytes as the light 192px file.
+Override's three pages use the supplied social card with absolute image URLs;
+the site-wide caschw LLC favicon remains unchanged.
+
+The four supplied SVGs are inlined at build time with `currentColor`. Geometry
+and viewBox are preserved; only internal IDs/references are namespaced per
+instance to avoid clip-path collisions, and decorative accessibility attributes
+are added. Adjacent text explains ready, Accessibility missing, paused and
+stashed, including priority in that order of precedence: Accessibility missing,
+paused, stashed, ready. The source SVG files remain byte-for-byte unchanged and
+are excluded from formatting to preserve checksum identity.
+
+No Override screenshots or installation illustrations exist in the website to
+refresh. No app UI was fabricated. Branding and state guidance are staged for
+the 0.1.1 release in a draft PR. The owner subsequently authorized updating the
+download to the verified public 0.1.1 DMG. Website merge and publication still
+require separate authorization.
 
 The artwork remains reserved-rights media, excluded from the website's MIT code
 license. Owner authorization does not grant unrestricted reuse.

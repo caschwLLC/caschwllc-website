@@ -39,6 +39,16 @@ alone is not verification, a release date, or a usable download link.
 
 ### Override beta DMG
 
+Override's optional `iconVariants` declares complete `light` and `dark` objects,
+each with exact `1x`/`2x`/`3x` paths to approved 64/128/192px PNGs. Partial sets,
+swapped density paths, external sources and undeclared keys fail validation.
+The shared app-icon component keeps 64px layout dimensions and the native mask.
+The optional `socialImage` declares a local PNG, 1200×630 dimensions and alt
+text. The shared layout uses it for an active marketed app's Open Graph and
+large Twitter preview, respecting configured review/production URL bases.
+Absent artwork metadata retains existing behavior; malformed metadata never
+silently falls back. Asset identity is recorded in [media provenance](media-provenance.md).
+
 Override's utility distribution is restricted to
 `caschwLLC/caschwllc-website`, the `override-v<version>` tag, and matching
 `Override-<version>.dmg` asset. The channel is explicitly beta, independent of
@@ -48,19 +58,19 @@ temporary draft tags and inconsistent draft/available states are rejected.
 Before changing distribution data, verify authenticated release metadata:
 
 ```sh
-gh api repos/caschwLLC/caschwllc-website/releases/tags/override-v0.1.0
-curl --head --location --fail 'https://github.com/caschwLLC/caschwllc-website/releases/download/override-v0.1.0/Override-0.1.0.dmg'
+gh api repos/caschwLLC/caschwllc-website/releases/tags/override-v0.1.1
+curl --head --location --fail 'https://github.com/caschwLLC/caschwllc-website/releases/download/override-v0.1.1/Override-0.1.1.dmg'
 ```
 
-On 2026-10-14 release `412890564` was verified public (`draft: false`,
+On 2026-10-19 release `417587950` was verified public (`draft: false`,
 `prerelease: true`); the anonymous final DMG request returned HTTP 200.
-Asset `641123149` is 3,002,050 bytes, SHA-256
-`0d21e009ecfaeebf499cad68ca3b5e98e23174554092e27a91886006316b9d65`.
+Asset `657022500` is 3,268,580 bytes, SHA-256
+`0393b1d1bde0d93e1843d5ce3474aa8f043c43e4be658e7da53e2c25f94e307c`.
 This inspection did not publish or modify the release. No earlier ZIP or
 temporary `untagged-...` URL is used.
 
 Record a valid `verifiedOn` date only after verification. `status: available`
-with `draft: false` produces **Download beta 0.1.0**; `status: coming-soon`
+with `draft: false` produces **Download beta 0.1.1**; `status: coming-soon`
 with `draft: true` produces text only and no download href. If public access
 fails, stop and investigate rather than asserting availability from an API
 name alone. Maintainers must reverify before updating the static catalog;

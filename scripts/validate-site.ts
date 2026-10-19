@@ -53,7 +53,20 @@ for (const app of apps.filter((app) => app.visibility === 'marketed')) {
       await stat(`src/content/policies/${app.slug}/${kind}.md`);
   }
   await stat(`public${app.icon}`);
+  if (app.socialImage) {
+    const info = await sharp(`public${app.socialImage.src}`).metadata();
+    assert.equal(info.width, app.socialImage.width);
+    assert.equal(info.height, app.socialImage.height);
+  }
   if (app.presentation === 'utility') {
+    if (app.iconVariants) {
+      for (const sources of Object.values(app.iconVariants))
+        for (const [density, path] of Object.entries(sources)) {
+          const info = await sharp(`public${path}`).metadata();
+          assert.equal(info.width, Number(density[0]) * 64);
+          assert.equal(info.height, Number(density[0]) * 64);
+        }
+    }
     const html = await readFile(`dist/apps/${app.slug}/index.html`, 'utf8');
     const action = storeAction(app);
     assert.ok(html.includes(`Beta ${app.distribution.version}`));
@@ -107,6 +120,39 @@ for (const route of [...routes, '/404.html']) {
   const path =
     route === '/404.html' ? 'dist/404.html' : `dist${route}index.html`;
   const html = await readFile(path, 'utf8');
+  if (route.startsWith('/apps/override/')) {
+    const override = apps.find((app) => app.slug === 'override');
+    assert.ok(override?.socialImage);
+    assert.ok(
+      html.includes(
+        `property="og:image" content="${urlFor(override.socialImage.src)}"`,
+      ),
+    );
+    assert.ok(html.includes('property="og:image:width" content="1200"'));
+    assert.ok(html.includes('property="og:image:height" content="630"'));
+    assert.ok(
+      html.includes('name="twitter:card" content="summary_large_image"'),
+    );
+    assert.ok(
+      html.includes(
+        `name="twitter:image" content="${urlFor(override.socialImage.src)}"`,
+      ),
+    );
+    assert.ok(
+      html.includes('Accessibility missing → paused → stashed → ready.'),
+    );
+  }
+  if (route === '/' || route.startsWith('/apps/override/'))
+    assert.ok(
+      !html.includes('/media/override-icon.png'),
+      'Legacy icon reference remains',
+    );
+  for (const srcset of html.matchAll(/srcset="([^"]+)"/g)) {
+    for (const candidate of srcset[1]!.split(',')) {
+      const src = candidate.trim().split(/\s+/)[0]!;
+      await stat(diskPath(new URL(src, urlFor(route)).pathname));
+    }
+  }
   assert.equal(
     (html.match(/<h1(?:\s|>)/g) ?? []).length,
     1,

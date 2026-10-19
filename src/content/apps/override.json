@@ -3,6 +3,24 @@
   "name": "Override",
   "presentation": "utility",
   "icon": "/media/override-icon.png",
+  "iconVariants": {
+    "light": {
+      "1x": "/media/override-icon-64.png",
+      "2x": "/media/override-icon-128.png",
+      "3x": "/media/override-icon-192.png"
+    },
+    "dark": {
+      "1x": "/media/override-icon-dark-64.png",
+      "2x": "/media/override-icon-dark-128.png",
+      "3x": "/media/override-icon-dark-192.png"
+    }
+  },
+  "socialImage": {
+    "src": "/media/override-social-card.png",
+    "width": 1200,
+    "height": 630,
+    "alt": "Override's lilac glass and gold enamel split O on a deep plum background."
+  },
   "visibility": "marketed",
   "status": "available",
   "platforms": ["apple"],
@@ -17,12 +35,12 @@
   "distribution": {
     "kind": "github-dmg",
     "repository": "caschwLLC/caschwllc-website",
-    "version": "0.1.0",
-    "tag": "override-v0.1.0",
-    "asset": "Override-0.1.0.dmg",
+    "version": "0.1.1",
+    "tag": "override-v0.1.1",
+    "asset": "Override-0.1.1.dmg",
     "channel": "beta",
     "draft": false,
-    "verifiedOn": "2026-10-14"
+    "verifiedOn": "2026-10-19"
   },
   "features": [
     {

@@ -1,0 +1,115 @@
+---
+import ready from '../assets/override/menubar/override-menubar-ready.svg?raw';
+import missing from '../assets/override/menubar/override-menubar-accessibility-missing.svg?raw';
+import paused from '../assets/override/menubar/override-menubar-paused.svg?raw';
+import stashed from '../assets/override/menubar/override-menubar-stashed.svg?raw';
+import { localPath } from '../lib/catalog';
+
+interface Props {
+  id: string;
+  context?: 'product' | 'support' | 'accessibility';
+}
+const { id, context = 'product' } = Astro.props;
+const href = (path: string) => localPath(path, import.meta.env.BASE_URL);
+const states = [
+  {
+    id: 'ready',
+    label: 'Ready',
+    svg: ready,
+    description: 'Override is running and applying your enabled settings.',
+  },
+  {
+    id: 'accessibility-missing',
+    label: 'Accessibility access needed',
+    svg: missing,
+    description:
+      'Grant Accessibility access in System Settings to use window-management features.',
+  },
+  {
+    id: 'paused',
+    label: 'Paused',
+    svg: paused,
+    description: 'Window overrides are paused. Your configuration is kept.',
+  },
+  {
+    id: 'stashed',
+    label: 'Windows available to restore',
+    svg: stashed,
+    description:
+      'Hidden or minimized windows are available to restore from Override.',
+  },
+];
+const visible =
+  context === 'accessibility'
+    ? states.filter((state) =>
+        ['accessibility-missing', 'paused'].includes(state.id),
+      )
+    : states;
+// Each supplied SVG uses the same IDs. Scope fragment references, not geometry.
+const inline = (svg: string, state: string) =>
+  svg
+    .replace('<svg ', '<svg aria-hidden="true" focusable="false" ')
+    .replace(/id="([^"]+)"/g, `id="${id}-${state}-$1"`)
+    .replace(/url\(#([^)]+)\)/g, `url(#${id}-${state}-$1)`);
+---
+
+<section
+  class:list={['menu-bar-guide', context !== 'product' && 'menu-bar-compact']}
+  aria-labelledby={`${id}-heading`}
+>
+  <h2 id={`${id}-heading`}>
+    {context === 'product'
+      ? 'Know what the menu bar is telling you.'
+      : context === 'support'
+        ? 'Read the menu bar status'
+        : 'Permission and pause indicators'}
+  </h2>
+  <dl class="menu-bar-states">
+    {visible.map((state) => (
+      <div data-menu-bar-state={state.id}>
+        <dt>
+          <span class="menu-bar-glyph" set:html={inline(state.svg, state.id)} />
+          <span>{state.label}</span>
+        </dt>
+        <dd>{state.description}</dd>
+      </div>
+    ))}
+  </dl>
+  <p class="menu-bar-priority">
+    When several states apply, only the highest-priority indicator appears:
+    <strong>Accessibility missing → paused → stashed → ready.</strong>
+    An access warning or paused state can hide the tray indicator even when
+    windows are available to restore.
+  </p>
+  <p>
+    {context === 'support' ? (
+      <>
+        <a href="#grant-accessibility-access">Check Accessibility access</a> or{' '}
+        <a href="#a-window-does-not-respond">troubleshoot window actions</a>.
+      </>
+    ) : context === 'accessibility' ? (
+      <>
+        <a href="#grant-access-in-system-settings">
+          Grant access in System Settings
+        </a>{' '}
+        or{' '}
+        <a href="#denial-revocation-and-native-behaviour">
+          review pause and native behaviour
+        </a>
+        .
+      </>
+    ) : (
+      <>
+        <a href={href('/apps/override/accessibility/')}>
+          Accessibility &amp; permissions
+        </a>{' '}
+        ·{' '}
+        <a
+          href={`${href('/apps/override/support/')}#a-window-does-not-respond`}
+        >
+          Pause and restore help
+        </a>
+      </>
+    )}
+  </p>
+</section>

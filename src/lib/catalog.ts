@@ -79,6 +79,17 @@ const featureCopy = z.object({
   paragraphs: z.array(z.string().min(10)).min(1),
 });
 
+const iconDensities = (appearance: 'light' | 'dark') => {
+  const prefix = `/media/override-icon-${appearance === 'dark' ? 'dark-' : ''}`;
+  return z
+    .object({
+      '1x': z.literal(`${prefix}64.png`),
+      '2x': z.literal(`${prefix}128.png`),
+      '3x': z.literal(`${prefix}192.png`),
+    })
+    .strict();
+};
+
 const appBase = z
   .object({
     slug: slugSchema,
@@ -92,6 +103,15 @@ const appBase = z
     summary: z.string().trim().min(20),
     headline: z.string().trim().min(10),
     compatibility: z.string().trim().min(10),
+    socialImage: z
+      .object({
+        src: z.string().regex(/^\/media\/[a-z0-9-]+\.png$/),
+        width: z.literal(1200),
+        height: z.literal(630),
+        alt: z.string().trim().min(12),
+      })
+      .strict()
+      .optional(),
     pages: z
       .object({
         privacy: z.boolean(),
@@ -129,6 +149,13 @@ const screensApp = appBase.extend({
 const utilityApp = appBase.extend({
   presentation: z.literal('utility'),
   icon: z.literal('/media/override-icon.png'),
+  iconVariants: z
+    .object({
+      light: iconDensities('light'),
+      dark: iconDensities('dark'),
+    })
+    .strict()
+    .optional(),
   features: z.array(featureCopy.strict()).min(1),
   distribution: distributionSchema,
 });

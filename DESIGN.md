@@ -105,8 +105,16 @@ index and full-width lavender, mint and sky feature chapters with Feelory's
 shared section spacing, not simulated application windows or placeholder media.
 Its beta label and versioned DMG action remain explicit on
 the homepage, product page and support page. The approved native-rendered Override
-icon displays at 64px without extra rounding, effects or padding; its own
-transparent mask is preserved. No screenshot is fabricated. Utility pages do
+W2 lilac-glass and gold-enamel split O icon displays at 64px, using the supplied
+64/128/192px light and dark assets at 1x/2x/3x. It has no extra rounding, effects
+or padding; its own transparent mask is preserved. Dark artwork follows the
+visitor's appearance preference without changing the existing page theme.
+An open menu bar definition list uses the supplied M2 currentColor glyphs and
+explains Accessibility-missing, paused, stashed and ready priority. Compact
+reading-page variants connect status to permission and troubleshooting guidance.
+Guide headings reuse the utility 1.75–3rem ramp, with 1.75rem reading headings.
+Override social previews use the supplied 1200×630 card, not the small app icon;
+the global favicon stays caschw LLC. No screenshot is fabricated. Utility pages do
 not inherit Feelory's screen or privacy chapters.
 The header wraps on narrow screens to accommodate multiple product links.
 The homepage closes with studio-wide copy rather than Feelory policy/support

@@ -400,6 +400,66 @@
   .support-download p {
     margin-bottom: 1rem;
   }
+  .utility-menu-bar {
+    padding-bottom: 5rem;
+  }
+  .menu-bar-guide h2 {
+    max-width: 22ch;
+    font-size: clamp(1.75rem, 3vw, 3rem);
+    line-height: 1.15;
+  }
+  .menu-bar-states {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 3rem;
+    margin-block: 2rem;
+  }
+  .menu-bar-states > div {
+    border-top: 1px solid var(--line);
+    padding-block: 1.25rem;
+  }
+  .menu-bar-states dt {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 650;
+  }
+  .menu-bar-states dd {
+    margin-top: 0.75rem;
+    max-width: 50ch;
+  }
+  .menu-bar-glyph {
+    display: inline-flex;
+    flex: 0 0 26px;
+  }
+  .menu-bar-glyph svg {
+    width: 26px;
+    height: 20px;
+  }
+  .menu-bar-guide > p {
+    max-width: 70ch;
+    margin-top: 1.25rem;
+  }
+  .menu-bar-guide a {
+    display: inline-block;
+    padding-block: 0.5rem;
+    color: var(--accent);
+  }
+  .menu-bar-priority strong {
+    display: block;
+    margin-block: 0.5rem;
+  }
+  .menu-bar-compact {
+    margin-block: 3rem;
+  }
+  .menu-bar-compact h2 {
+    font-size: 1.75rem;
+    max-width: none;
+  }
+  .menu-bar-compact .menu-bar-states {
+    grid-template-columns: 1fr;
+    margin-block: 1.5rem;
+  }
   .not-found {
     padding-block: 5rem 7rem;
   }
@@ -608,6 +668,10 @@
     align-items: center;
     gap: 1rem;
   }
+  .app-icon {
+    display: block;
+    flex: 0 0 64px;
+  }
   .product-name img {
     border-radius: 23%;
     width: 64px;
@@ -618,6 +682,9 @@
     padding: 0;
     box-shadow: none;
     filter: none;
+    border: 0;
+    clip-path: none;
+    mask-image: none;
   }
   .product-name h2,
   .product-name p {
@@ -796,6 +863,9 @@
     min-height: 44px;
   }
   @media (max-width: 700px) {
+    .menu-bar-states {
+      grid-template-columns: 1fr;
+    }
     .wordmark {
       font-size: 1.5rem;
     }

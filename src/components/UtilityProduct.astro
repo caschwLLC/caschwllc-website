@@ -1,6 +1,8 @@
 ---
 import Site from '../layouts/Site.astro';
 import Availability from './Availability.astro';
+import AppIcon from './AppIcon.astro';
+import OverrideMenuBarStates from './OverrideMenuBarStates.astro';
 import { localPath } from '../lib/catalog';
 import type { App } from '../lib/catalog';
 interface Props {
@@ -23,13 +25,7 @@ const href = (path: string) => localPath(path, import.meta.env.BASE_URL);
   <section class="product-hero utility-hero wrap">
     <div class="hero-copy">
       <div class="product-name">
-        <img
-          class="override-icon"
-          src={href(app.icon)}
-          width="64"
-          height="64"
-          alt=""
-        />
+        <AppIcon app={app} />
         <p>{app.name}</p>
       </div>
       <h1>{app.headline}</h1>
@@ -85,6 +81,9 @@ const href = (path: string) => localPath(path, import.meta.env.BASE_URL);
         </div>
       </section>
     ))}
+  </div>
+  <div class="utility-menu-bar wrap">
+    <OverrideMenuBarStates id="product-menu-bar" />
   </div>
   <section class="utility-setup wrap" aria-labelledby="install">
     <div>

@@ -9,10 +9,9 @@ limited window controls to macOS Accessibility. Need help? Email
 
 ## Install Override
 
-Use the download above when available. It is the final DMG asset for this beta,
-not the earlier ZIP distribution candidate.
+Use the linked beta DMG above when available.
 
-1. Download **Override-0.1.0.dmg**.
+1. Download **Override-0.1.1.dmg**.
 2. Open the DMG.
 3. Drag **Override** to **Applications**.
 4. Eject the DMG.
@@ -26,6 +25,10 @@ to configure it. Optional window overrides start off.
 Override needs Accessibility permission to manage other applications' windows.
 The user grants this permission in **System Settings → Privacy & Security →
 Accessibility**; Override cannot grant it on your behalf.
+
+An exclamation mark in the menu bar means Accessibility access is needed.
+This indicator takes priority over paused overrides and windows available to
+restore; it does not mean those other states have been cleared.
 
 In Override's Settings, choose **Grant Accessibility Access** and, if needed,
 **Open Accessibility Settings**. Enable Override in System Settings, then
@@ -80,6 +83,11 @@ click will be intercepted.
 configuration. **Restore Stashed Windows** restores remembered windows that
 still exist. **Undo Last Action** reverses the most recent supported window
 action only while its target still matches the recorded change.
+
+Pause bars indicate that overrides are paused. The tray indicator means hidden
+or minimized windows are available to restore. A higher-priority access warning
+or paused indicator can hide the tray, so check the restore command even when
+the tray is not visible.
 
 ## Report a beta problem
 
