@@ -40,6 +40,9 @@ const reviewBanner =
     : undefined;
 const socialApp = appSlug ? activeApp : apps[0];
 const socialIcon = socialApp?.icon;
+const socialImage = socialApp?.socialImage;
+const socialSrc = socialImage?.src ?? socialIcon;
+const socialAlt = socialImage?.alt ?? `${socialApp?.name} app artwork`;
 const discovery = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
@@ -81,19 +84,28 @@ const discovery = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content="caschw LLC" />
-    {socialIcon && (
+    {socialSrc && (
       <meta
         property="og:image"
-        content={new URL(href(socialIcon), Astro.site)}
+        content={new URL(href(socialSrc), Astro.site)}
       />
     )}
-    {socialIcon && (
-      <meta
-        property="og:image:alt"
-        content={`${socialApp?.name} app artwork`}
-      />
+    {socialSrc && <meta property="og:image:alt" content={socialAlt} />}
+    {socialImage && (
+      <>
+        <meta property="og:image:width" content={String(socialImage.width)} />
+        <meta property="og:image:height" content={String(socialImage.height)} />
+        <meta
+          name="twitter:image"
+          content={new URL(href(socialImage.src), Astro.site)}
+        />
+        <meta name="twitter:image:alt" content={socialAlt} />
+      </>
     )}
-    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:card"
+      content={socialImage ? 'summary_large_image' : 'summary'}
+    />
     <script
       type="application/ld+json"
       set:html={JSON.stringify(discovery).replace(/</g, '\\u003c')}

@@ -13,6 +13,10 @@ You decide whether to grant access. Override cannot grant it for you. Without
 access, dependent window-management features are unavailable; you can still
 open Override's menu bar item and review Settings.
 
+The exclamation-mark menu bar indicator means Accessibility access is needed.
+It takes priority over the paused and stashed-window indicators. Granting access
+is still your choice; the indicator cannot grant permission for you.
+
 ## Grant access in System Settings
 
 1. Launch Override from Applications.
@@ -40,6 +44,11 @@ dependent window actions.
 Use **Pause All Overrides** from the menu bar to suspend overrides while keeping
 your configuration. Application exclusions let you keep native behaviour for
 particular applications.
+
+Pause bars in the menu bar indicate paused overrides, unless the higher-priority
+Accessibility warning is showing. Pausing keeps your configuration. An access
+warning or paused state can take precedence over the tray indicator for windows
+available to restore.
 
 Interception is best-effort. Unsupported controls, unavailable permission, or
 an unsafe target can leave an action with native macOS handling.

@@ -16,6 +16,51 @@ import {
 
 const app = appSchema.parse(feelory);
 
+test('Override artwork requires complete local light/dark density sets and valid social metadata', () => {
+  assert.doesNotThrow(() => appSchema.parse(override));
+  assert.doesNotThrow(() =>
+    appSchema.parse({
+      ...override,
+      iconVariants: undefined,
+      socialImage: undefined,
+    }),
+  );
+  for (const iconVariants of [
+    { light: override.iconVariants.light },
+    {
+      ...override.iconVariants,
+      dark: { ...override.iconVariants.dark, '3x': undefined },
+    },
+    {
+      ...override.iconVariants,
+      light: {
+        ...override.iconVariants.light,
+        '1x': '/media/override-icon-192.png',
+      },
+    },
+    {
+      ...override.iconVariants,
+      dark: {
+        ...override.iconVariants.dark,
+        '2x': 'https://private.test/icon.png',
+      },
+    },
+    {
+      ...override.iconVariants,
+      dark: { ...override.iconVariants.dark, '1x': '/media/../icon.png' },
+    },
+  ])
+    assert.throws(() => appSchema.parse({ ...override, iconVariants }));
+  for (const socialImage of [
+    { ...override.socialImage, src: '//private.test/card.png' },
+    { ...override.socialImage, src: '/media/../card.png' },
+    { ...override.socialImage, width: 0 },
+    { ...override.socialImage, height: 1200 },
+    { ...override.socialImage, alt: '' },
+  ])
+    assert.throws(() => appSchema.parse({ ...override, socialImage }));
+});
+
 test('coming soon is marketed without a download or store badge', () => {
   assert.equal(marketedApps([app]).length, 1);
   assert.deepEqual(storeAction(app), { label: 'Coming soon', href: null });

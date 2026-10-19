@@ -2,6 +2,7 @@
 import Site from '../layouts/Site.astro';
 import Device from '../components/Device.astro';
 import Availability from '../components/Availability.astro';
+import AppIcon from '../components/AppIcon.astro';
 import { getApps } from '../lib/content';
 import { localPath } from '../lib/catalog';
 const apps = await getApps();
@@ -40,13 +41,7 @@ const href = (path: string) => localPath(path, import.meta.env.BASE_URL);
     >
       <div class="showcase-copy">
         <div class="product-name">
-          <img
-            class:list={[app.presentation === 'utility' && 'override-icon']}
-            src={href(app.icon)}
-            width="64"
-            height="64"
-            alt=""
-          />
+          <AppIcon app={app} />
           <h2 id={`app-${app.slug}`}>{app.name}</h2>
         </div>
         {app.presentation === 'screens' ? (

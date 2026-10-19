@@ -2,7 +2,210 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { siteConfig } from '../../site.config.mjs';
 import { localPath } from '../../src/lib/catalog';
+import { readFile } from 'node:fs/promises';
 const pathFor = (path: string) => localPath(path, siteConfig().base);
+
+for (const colorScheme of ['light', 'dark'] as const) {
+  for (const deviceScaleFactor of [1, 2, 3]) {
+    test(`Override ${colorScheme} artwork selects exact ${deviceScaleFactor}x source`, async ({
+      browser,
+    }, testInfo) => {
+      const context = await browser.newContext({
+        colorScheme,
+        deviceScaleFactor,
+        viewport:
+          testInfo.project.name === 'mobile'
+            ? { width: 390, height: 844 }
+            : { width: 1440, height: 1000 },
+      });
+      try {
+        const page = await context.newPage();
+        for (const route of ['/', '/apps/override/']) {
+          await page.goto(pathFor(route));
+          const icon = page.locator('.override-icon');
+          const expected = `override-icon-${colorScheme === 'dark' ? 'dark-' : ''}${deviceScaleFactor * 64}.png`;
+          await expect
+            .poll(() =>
+              icon.evaluate((img: HTMLImageElement) => img.currentSrc),
+            )
+            .toBe(
+              new URL(pathFor(`/media/${expected}`), 'http://127.0.0.1:4321')
+                .href,
+            );
+          await expect(icon).toHaveJSProperty('complete', true);
+          const dimensions = await icon.evaluate(
+            async (img: HTMLImageElement) => {
+              const bitmap = await createImageBitmap(
+                await (await fetch(img.currentSrc)).blob(),
+              );
+              const size = [bitmap.width, bitmap.height];
+              bitmap.close();
+              return { size, natural: [img.naturalWidth, img.naturalHeight] };
+            },
+          );
+          expect(dimensions.size).toEqual([
+            deviceScaleFactor * 64,
+            deviceScaleFactor * 64,
+          ]);
+          expect(dimensions.natural).toEqual([64, 64]);
+          for (const [property, value] of Object.entries({
+            width: '64px',
+            height: '64px',
+            'border-radius': '0px',
+            padding: '0px',
+            'box-shadow': 'none',
+            filter: 'none',
+            'clip-path': 'none',
+            'mask-image': 'none',
+            'border-width': '0px',
+          }))
+            await expect(icon).toHaveCSS(property, value);
+          if (process.env.CAPTURE_VISUAL_REVIEW === '1') {
+            await icon.screenshot({
+              path: testInfo.outputPath(
+                `${route === '/' ? 'home' : 'product'}-${colorScheme}-${deviceScaleFactor}x.png`,
+              ),
+            });
+          }
+        }
+      } finally {
+        await context.close();
+      }
+    });
+  }
+
+  test(`Override ${colorScheme} state guides and social previews preserve artwork and site identity`, async ({
+    page,
+  }, testInfo) => {
+    await page.emulateMedia({ colorScheme, reducedMotion: 'reduce' });
+    for (const route of [
+      '/apps/override/',
+      '/apps/override/support/',
+      '/apps/override/accessibility/',
+    ]) {
+      await page.goto(pathFor(route));
+      const states = route.endsWith('/accessibility/')
+        ? ['accessibility-missing', 'paused']
+        : ['ready', 'accessibility-missing', 'paused', 'stashed'];
+      await expect(page.locator('[data-menu-bar-state]')).toHaveCount(
+        states.length,
+      );
+      await expect(page.locator('.menu-bar-priority')).toContainText(
+        'Accessibility missing → paused → stashed → ready.',
+      );
+      for (const state of states) {
+        const glyph = page.locator(`[data-menu-bar-state="${state}"] svg`);
+        await expect(glyph).toHaveAttribute('aria-hidden', 'true');
+        await expect(glyph).toHaveAttribute('viewBox', '0 0 26 20');
+        const source = await readFile(
+          `src/assets/override/menubar/override-menubar-${state}.svg`,
+          'utf8',
+        );
+        const expected = [...source.matchAll(/<path[^>]*>/g)].map(
+          (match) => match[0],
+        );
+        expect(
+          await glyph
+            .locator('path')
+            .evaluateAll((paths) =>
+              paths.map((path) => path.outerHTML.replace(/><\/path>$/, '/>')),
+            ),
+        ).toEqual(expected);
+        const clipReferencesResolve = await glyph.evaluate((svg) =>
+          [...svg.querySelectorAll('[clip-path]')].every((element) => {
+            const id = element
+              .getAttribute('clip-path')
+              ?.match(/^url\(#(.+)\)$/)?.[1];
+            return (
+              id &&
+              [...svg.querySelectorAll('clipPath')].some(
+                (clip) => clip.id === id,
+              )
+            );
+          }),
+        );
+        expect(clipReferencesResolve).toBe(true);
+      }
+      const ids = await page
+        .locator('[id]')
+        .evaluateAll((nodes) => nodes.map((node) => node.id));
+      expect(new Set(ids).size).toBe(ids.length);
+      const links = page.locator('.menu-bar-guide a');
+      for (const link of await links.all()) {
+        const target = new URL((await link.getAttribute('href'))!, page.url());
+        if (target.pathname === new URL(page.url()).pathname && target.hash)
+          await expect(page.locator(target.hash)).toHaveCount(1);
+      }
+      const social = new URL(
+        pathFor('/media/override-social-card.png'),
+        siteConfig().site,
+      ).href;
+      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+        'content',
+        social,
+      );
+      await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+        'content',
+        social,
+      );
+      await expect(
+        page.locator('meta[property="og:image:width"]'),
+      ).toHaveAttribute('content', '1200');
+      await expect(
+        page.locator('meta[property="og:image:height"]'),
+      ).toHaveAttribute('content', '630');
+      await expect(
+        page.locator('meta[property="og:image:alt"]'),
+      ).toHaveAttribute('content', /lilac glass and gold enamel/);
+      await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+        'content',
+        'summary_large_image',
+      );
+      await expect(page.locator('link[rel="icon"]')).toHaveAttribute(
+        'href',
+        pathFor('/favicon.svg'),
+      );
+      expect(await page.locator('head').innerHTML()).not.toMatch(
+        /caschw\/Override|Resources\/Website|manifest\.webmanifest/,
+      );
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      if (process.env.CAPTURE_VISUAL_REVIEW === '1')
+        await page.screenshot({
+          path: testInfo.outputPath(
+            `${route.includes('/support/') ? 'support' : route.includes('/accessibility/') ? 'accessibility' : 'product'}-${colorScheme}-${testInfo.project.name}.png`,
+          ),
+          fullPage: true,
+        });
+    }
+    await page.goto(pathFor('/'));
+    await expect(page.locator('link[rel="icon"]')).toHaveAttribute(
+      'href',
+      pathFor('/favicon.svg'),
+    );
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+      'content',
+      'summary',
+    );
+    if (process.env.CAPTURE_VISUAL_REVIEW === '1')
+      await page.screenshot({
+        path: testInfo.outputPath(
+          `home-${colorScheme}-${testInfo.project.name}.png`,
+        ),
+        fullPage: true,
+      });
+  });
+}
 
 const routes = [
   '/',
@@ -228,7 +431,7 @@ test('Override beta connects download, setup, support and permission guidance', 
   await expect(page.locator('main img')).toHaveCount(1);
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     'content',
-    /\/media\/override-icon\.png$/,
+    /\/media\/override-social-card\.png$/,
   );
   const icon = page.locator('.product-name .override-icon');
   await expect(icon).toHaveCSS('width', '64px');
@@ -328,24 +531,27 @@ test('Override reading and product layouts fit narrow and enlarged text views', 
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 320, height: 720 });
-  for (const route of [
-    '/',
-    '/apps/override/',
-    '/apps/override/support/',
-    '/apps/override/accessibility/',
-  ]) {
-    await page.goto(pathFor(route));
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= window.innerWidth,
-      ),
-    ).toBe(true);
-    await page.addStyleTag({ content: 'body { font-size: 212.5%; }' });
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= window.innerWidth,
-      ),
-    ).toBe(true);
+  for (const colorScheme of ['light', 'dark'] as const) {
+    await page.emulateMedia({ colorScheme });
+    for (const route of [
+      '/',
+      '/apps/override/',
+      '/apps/override/support/',
+      '/apps/override/accessibility/',
+    ]) {
+      await page.goto(pathFor(route));
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true);
+      await page.addStyleTag({ content: 'body { font-size: 212.5%; }' });
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true);
+    }
   }
 });
 

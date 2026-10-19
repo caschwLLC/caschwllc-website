@@ -1,5 +1,78 @@
 # Local validation evidence
 
+## Override W2/M2 refresh — 2026-10-19
+
+Prepared for the next release as a draft PR, not as publication authorization.
+The website's published 0.1.0 distribution record, versioned installation steps,
+download URL, global favicon and publication configuration are unchanged.
+
+On macOS/Apple silicon with Node 22.23.2 and the existing locked dependencies:
+
+| Exact command                                                       | Result                                                                                                                                                                                         |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CAPTURE_VISUAL_REVIEW=1 ASTRO_TELEMETRY_DISABLED=1 npm run verify` | Passed: Astro and lint clean, 16 unit/build-contract tests, 9 public routes plus 404, 53 browser tests passed with 1 intentional desktop performance skip. Captured the website visual matrix. |
+| `ASTRO_TELEMETRY_DISABLED=1 npm run verify`                         | Passed on the final current-main baseline: 17 unit/build-contract tests, 9 public routes plus 404, 53 browser tests passed with 1 intentional desktop performance skip; check/lint clean.      |
+| `WEBSITE_MODE=production ASTRO_TELEMETRY_DISABLED=1 npm run verify` | Passed on the final current-main baseline with the same counts, checking root-based URLs and social metadata. No deployment.                                                                   |
+
+The captured website source is identical to the final website source; the
+current-main baseline additionally contains the existing deterministic packaging
+unit test, explaining the 16-to-17 count change. Those tests use mocks, no
+credentials or Apple services. No installer packaging workflow or real packaging
+command was run.
+
+All 12 imported files match the approved handoff checksums. Tests check icon
+dimensions, sRGB/ICC/alpha, transparent corners, the legacy W2 alias and the
+1200×630 social card. Catalog tests reject incomplete or unsafe artwork
+declarations. Isolated builds exclude hidden Override content/artwork from
+discovery and metadata. Browser checks compare inline SVG path markup with the
+original files and verify unique IDs and local clip-path references.
+
+Homepage and product icons select the exact 64/128/192px source in both appearance
+preferences at device pixel ratios 1, 2 and 3, in wide and narrow contexts.
+Checks measure loaded `currentSrc`, decoded raster dimensions and CSS dimensions,
+not just declared srcsets. No added rounding, padding, border, filter, shadow or
+clipping mask is applied. The site keeps its existing page colors; dark
+preference selects dark artwork rather than introducing a new global theme.
+
+All three Override routes have absolute website-hosted Open Graph/Twitter image
+URLs, dimensions and alt text; the caschw LLC favicon is unchanged. State guides
+are static semantic text with decorative currentColor glyphs, valid help anchors
+and the exact Accessibility-missing > paused > stashed > ready priority.
+Light/dark route checks passed axe with zero violations. Existing keyboard,
+no-runtime, no-external-request, overflow and reduced-motion checks also pass.
+The 320px layouts pass both appearance preferences and 200% body-text scaling.
+These checks do not certify app accessibility or every browser/assistive tool.
+
+One batched visual review inspected the homepage, product and help layouts,
+including light/dark and desktop/mobile examples, native-density icon crops
+and the supplied social card. No corrective visual pass was needed. Review
+captures are archived outside the repository in the implementing session's
+`files/override-visual-review/` directory, including the six appearance/density
+combinations. No app screenshot or installation illustration existed in the
+website to replace, and no application UI was fabricated.
+
+The Impeccable mechanical scan of the changed UI files returned 46 advisory CSS
+scale matches (exit 2): existing font/color/radius values, plus the two guide
+heading rules that deliberately reuse the incumbent utility/reading ramp.
+These are contextually intentional matches, not broken layout or contrast
+findings. The guide ramp is documented in `DESIGN.md`; no detector suppression
+or unrelated design-system changes were added. Hook matches on the unchanged
+Feelory fixture color and the validator's image-matching regex likewise describe
+test/source text, not new rendered defects.
+
+Final mobile localhost performance: Override LCP 408–420ms in review and
+416–420ms in production, CLS 0, initial transfer 23,700/23,614 bytes respectively.
+Homepage and Feelory retained all existing budgets. These are laboratory
+measurements, not public-host performance claims.
+
+**Publication hold:** the new branding and menu bar guide target the next app
+release while downloads intentionally remain at 0.1.0. Keep the PR draft and
+unmerged until the owner verifies the app end-to-end, provides the final version,
+authorizes the verified distribution update and explicitly authorizes coordinated
+publication. Successful main push CI can trigger the existing deployment.
+No release, signing, packaging workflow, credentials, release assets, hosting,
+DNS, permissions or download links were changed.
+
 ## Override beta addition — 2026-10-14
 
 On macOS/Apple silicon with Node 22.23.2 and the existing locked dependencies:

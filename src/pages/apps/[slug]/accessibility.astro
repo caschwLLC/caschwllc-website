@@ -6,6 +6,7 @@ import type { App } from '../../../lib/catalog';
 import Reading from '../../../layouts/Reading.astro';
 import { policyFor } from '../../../lib/content';
 import { render } from 'astro:content';
+import OverrideMenuBarStates from '../../../components/OverrideMenuBarStates.astro';
 
 const voiceControlVerified = false;
 const lastUpdated = '2026-10-12';
@@ -39,6 +40,12 @@ const Content = content?.Content;
     description={entry.data.description}
     appSlug={app.slug}
   >
+    {app.slug === 'override' && (
+      <OverrideMenuBarStates
+        id="accessibility-menu-bar"
+        context="accessibility"
+      />
+    )}
     <Content />
   </Reading>
 ) : (

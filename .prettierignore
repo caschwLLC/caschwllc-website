@@ -5,4 +5,5 @@ package-lock.json
 test-results
 playwright-report
 public/media
+src/assets/override/menubar
 .impeccable/hook.cache.json

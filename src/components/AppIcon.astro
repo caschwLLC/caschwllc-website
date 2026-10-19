@@ -1,0 +1,32 @@
+---
+import type { App } from '../lib/catalog';
+import { localPath } from '../lib/catalog';
+
+interface Props {
+  app: App;
+}
+const { app } = Astro.props;
+const href = (path: string) => localPath(path, import.meta.env.BASE_URL);
+const variants = app.presentation === 'utility' ? app.iconVariants : undefined;
+const srcset = (sources: Record<'1x' | '2x' | '3x', string>) =>
+  Object.entries(sources)
+    .map(([density, src]) => `${href(src)} ${density}`)
+    .join(', ');
+---
+
+<picture class="app-icon">
+  {variants && (
+    <source
+      media="(prefers-color-scheme: dark)"
+      srcset={srcset(variants.dark)}
+    />
+  )}
+  <img
+    class:list={[app.presentation === 'utility' && 'override-icon']}
+    src={href(variants ? variants.light['1x'] : app.icon)}
+    srcset={variants ? srcset(variants.light) : undefined}
+    width="64"
+    height="64"
+    alt=""
+  />
+</picture>

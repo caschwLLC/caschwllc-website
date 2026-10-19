@@ -39,6 +39,16 @@ alone is not verification, a release date, or a usable download link.
 
 ### Override beta DMG
 
+Override's optional `iconVariants` declares complete `light` and `dark` objects,
+each with exact `1x`/`2x`/`3x` paths to approved 64/128/192px PNGs. Partial sets,
+swapped density paths, external sources and undeclared keys fail validation.
+The shared app-icon component keeps 64px layout dimensions and the native mask.
+The optional `socialImage` declares a local PNG, 1200×630 dimensions and alt
+text. The shared layout uses it for an active marketed app's Open Graph and
+large Twitter preview, respecting configured review/production URL bases.
+Absent artwork metadata retains existing behavior; malformed metadata never
+silently falls back. Asset identity is recorded in [media provenance](media-provenance.md).
+
 Override's utility distribution is restricted to
 `caschwLLC/caschwllc-website`, the `override-v<version>` tag, and matching
 `Override-<version>.dmg` asset. The channel is explicitly beta, independent of
