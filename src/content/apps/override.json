@@ -35,12 +35,12 @@
   "distribution": {
     "kind": "github-dmg",
     "repository": "caschwLLC/caschwllc-website",
-    "version": "0.1.0",
-    "tag": "override-v0.1.0",
-    "asset": "Override-0.1.0.dmg",
+    "version": "0.1.1",
+    "tag": "override-v0.1.1",
+    "asset": "Override-0.1.1.dmg",
     "channel": "beta",
     "draft": false,
-    "verifiedOn": "2026-10-14"
+    "verifiedOn": "2026-10-19"
   },
   "features": [
     {

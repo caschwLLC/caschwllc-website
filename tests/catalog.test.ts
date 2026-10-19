@@ -78,8 +78,8 @@ test('coming soon is marketed without a download or store badge', () => {
 test('Override exposes a verified beta DMG, not a store listing or borrowed media', () => {
   const beta = appSchema.parse(override);
   assert.deepEqual(storeAction(beta), {
-    label: 'Download beta 0.1.0',
-    href: 'https://github.com/caschwLLC/caschwllc-website/releases/download/override-v0.1.0/Override-0.1.0.dmg',
+    label: 'Download beta 0.1.1',
+    href: 'https://github.com/caschwLLC/caschwllc-website/releases/download/override-v0.1.1/Override-0.1.1.dmg',
   });
   assert.deepEqual(appMedia(beta), []);
   assert.deepEqual(publicRoutes([beta]), [
@@ -105,7 +105,7 @@ test('Override exposes a verified beta DMG, not a store listing or borrowed medi
     distribution: { ...override.distribution, draft: true },
   });
   assert.deepEqual(storeAction(draftRelease), {
-    label: 'Beta 0.1.0 · Download coming soon',
+    label: 'Beta 0.1.1 · Download coming soon',
     href: null,
   });
   const hidden = appSchema.parse({ ...override, visibility: 'draft' });

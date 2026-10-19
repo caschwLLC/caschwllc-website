@@ -405,22 +405,22 @@ test('Override beta connects download, setup, support and permission guidance', 
   page,
 }) => {
   const download =
-    'https://github.com/caschwLLC/caschwllc-website/releases/download/override-v0.1.0/Override-0.1.0.dmg';
+    'https://github.com/caschwLLC/caschwllc-website/releases/download/override-v0.1.1/Override-0.1.1.dmg';
   await page.goto(pathFor('/'));
   const showcase = page.locator('.utility-showcase');
-  await expect(showcase).toContainText('Beta 0.1.0');
+  await expect(showcase).toContainText('Beta 0.1.1');
   await expect(showcase).toContainText(
     'Apple silicon Macs running macOS 27 or later',
   );
   await expect(
-    showcase.getByRole('link', { name: 'Download beta 0.1.0' }),
+    showcase.getByRole('link', { name: 'Download beta 0.1.1' }),
   ).toHaveAttribute('href', download);
   await showcase.getByRole('link', { name: 'Explore Override' }).click();
   await expect(page).toHaveURL(new RegExp(`${pathFor('/apps/override/')}$`));
   await expect(
     page
       .locator('.hero-actions')
-      .getByRole('link', { name: 'Download beta 0.1.0' }),
+      .getByRole('link', { name: 'Download beta 0.1.1' }),
   ).toHaveAttribute('href', download);
   await expect(page.locator('main')).toContainText(
     'This is prerelease software',
@@ -446,7 +446,7 @@ test('Override beta connects download, setup, support and permission guidance', 
   await page.getByRole('link', { name: 'Take a closer look' }).click();
   await expect(page).toHaveURL(/#explore$/);
   await expect(page.locator('.install-steps li')).toHaveText([
-    'Download Override-0.1.0.dmg.',
+    'Download Override-0.1.1.dmg.',
     'Open the DMG.',
     'Drag Override to Applications.',
     'Eject the DMG.',
@@ -461,7 +461,7 @@ test('Override beta connects download, setup, support and permission guidance', 
     pathFor('/apps/override/'),
   );
   await expect(
-    page.getByRole('link', { name: 'Download beta 0.1.0' }),
+    page.getByRole('link', { name: 'Download beta 0.1.1' }),
   ).toHaveAttribute('href', download);
   await expect(page.locator('main')).toContainText(
     'Quit Override from the menu bar before replacing',
@@ -473,7 +473,7 @@ test('Override beta connects download, setup, support and permission guidance', 
     'remove Override from Applications',
   );
   await expect(page.locator('.prose ol').first().locator('li')).toHaveText([
-    'Download Override-0.1.0.dmg.',
+    'Download Override-0.1.1.dmg.',
     'Open the DMG.',
     'Drag Override to Applications.',
     'Eject the DMG.',

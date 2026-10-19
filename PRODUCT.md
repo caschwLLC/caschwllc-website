@@ -25,8 +25,8 @@ on-device AI are optional. Core use does not require AI. No remote AI fallback.
 Not a medical device, diagnosis, treatment or substitute for professional care.
 
 Override is a macOS menu bar app for configurable window management, available
-as **0.1.0 beta** for Apple silicon Macs running macOS 27 or later. Its verified
-public DMG is hosted in this website repository's `override-v0.1.0` prerelease.
+as **0.1.1 beta** for Apple silicon Macs running macOS 27 or later. Its verified
+public DMG is hosted in this website repository's `override-v0.1.1` prerelease.
 Window controls, hide/minimize policies, snapping and custom layouts are
 optional; Accessibility access is granted by the user in System Settings.
 Application support and interception are best-effort. Do not generalize

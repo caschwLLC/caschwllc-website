@@ -1,5 +1,31 @@
 # Local validation evidence
 
+## Override 0.1.1 download follow-up — 2026-10-19
+
+The owner confirmed that 0.1.1 is published and requested the website version and
+download update. Authenticated metadata verified release `417587950`, tag
+`override-v0.1.1`, `draft: false`, `prerelease: true`. The final anonymous
+redirect-following HEAD request returned HTTP 200 for `Override-0.1.1.dmg`.
+Asset `657022500` is 3,268,580 bytes; GitHub reports SHA-256
+`0393b1d1bde0d93e1843d5ce3474aa8f043c43e4be658e7da53e2c25f94e307c`.
+No installer was executed or repackaged.
+
+The catalog now uses version 0.1.1, matching tag and DMG filename, and verification
+date 2026-10-19. Homepage/product/support labels and download links derive from
+that record; the support installation filename, product facts, documentation and
+regression expectations were updated together. Earlier evidence below remains
+a historical record, not the current distribution.
+
+| Exact command                                                       | Result                                                                                                                                                |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ASTRO_TELEMETRY_DISABLED=1 npm run verify`                         | Passed: check/lint clean, 17 unit/build-contract tests, 9 public routes plus 404, 53 browser tests passed and 1 intentional desktop performance skip. |
+| `WEBSITE_MODE=production ASTRO_TELEMETRY_DISABLED=1 npm run verify` | Passed with the same counts, including exact 0.1.1 download hrefs and installation filenames.                                                         |
+
+The existing local preview serves the updated 0.1.1 support page. The PR remains
+draft; this version/download authorization does not authorize website merge or
+deployment. No release, packaging workflow, signing, permission or hosting
+configuration was changed.
+
 ## Override W2/M2 refresh — 2026-10-19
 
 Prepared for the next release as a draft PR, not as publication authorization.
@@ -65,11 +91,11 @@ Final mobile localhost performance: Override LCP 408–420ms in review and
 Homepage and Feelory retained all existing budgets. These are laboratory
 measurements, not public-host performance claims.
 
-**Publication hold:** the new branding and menu bar guide target the next app
-release while downloads intentionally remain at 0.1.0. Keep the PR draft and
-unmerged until the owner verifies the app end-to-end, provides the final version,
-authorizes the verified distribution update and explicitly authorizes coordinated
-publication. Successful main push CI can trigger the existing deployment.
+**Publication hold at initial handoff:** the new branding and menu bar guide
+initially retained 0.1.0 pending release verification. The owner subsequently
+confirmed publication of 0.1.1 and authorized the verified distribution update
+below. Keep the PR draft and unmerged until the owner explicitly authorizes
+coordinated website publication. Successful main push CI can trigger the existing deployment.
 No release, signing, packaging workflow, credentials, release assets, hosting,
 DNS, permissions or download links were changed.
 

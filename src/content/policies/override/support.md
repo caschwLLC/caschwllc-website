@@ -11,7 +11,7 @@ limited window controls to macOS Accessibility. Need help? Email
 
 Use the linked beta DMG above when available.
 
-1. Download **Override-0.1.0.dmg**.
+1. Download **Override-0.1.1.dmg**.
 2. Open the DMG.
 3. Drag **Override** to **Applications**.
 4. Eject the DMG.

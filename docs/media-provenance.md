@@ -57,8 +57,9 @@ are excluded from formatting to preserve checksum identity.
 
 No Override screenshots or installation illustrations exist in the website to
 refresh. No app UI was fabricated. Branding and state guidance are staged for
-the next release in a draft PR; the existing 0.1.0 download is unchanged pending
-the owner's end-to-end release verification and publication authorization.
+the 0.1.1 release in a draft PR. The owner subsequently authorized updating the
+download to the verified public 0.1.1 DMG. Website merge and publication still
+require separate authorization.
 
 The artwork remains reserved-rights media, excluded from the website's MIT code
 license. Owner authorization does not grant unrestricted reuse.
