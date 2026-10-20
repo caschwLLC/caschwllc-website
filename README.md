@@ -20,7 +20,9 @@ npm run dev
 Node 22.12+ (22.x) is required. On this Mac, Node/npm are available under
 `/opt/homebrew/bin`; add that directory to `PATH` if needed.
 No backend, accounts, analytics, forms, newsletters or remote font requests.
-The shipped pages need no JavaScript runtime.
+The shipped pages need no application JavaScript runtime. Optional, separately
+approved production analytics is documented in [docs/analytics.md](docs/analytics.md);
+review hosting and local previews stay untracked.
 
 ## Commands
 

@@ -1,6 +1,10 @@
 # Contributor and agent instructions
 
 Work only in this website repository. Never read or import private app source.
+The owner authorized a task-specific read-only review of Override for the
+analytics/privacy integration. Verify privacy facts only; do not modify the app,
+run its builds/workflows, or import private source/internal documents here.
+This is not standing permission to inspect other app repositories.
 Approved app screenshots and icon artwork may be transferred only with explicit
 owner authorization and documented provenance. Do not copy internal planning
 packets into the repository.
@@ -25,8 +29,10 @@ Astro telemetry is disabled for CI; use `ASTRO_TELEMETRY_DISABLED=1` locally.
 - Local-first is not a claim that hosting/email providers collect nothing.
   Maintain explicit opt-in iCloud, write-only Health, optional on-device AI and
   deletion/export/backup distinctions.
-- No forms, analytics, newsletters, tracking, external fonts, remote embeds,
-  client runtime or remote AI fallback.
+- No forms, newsletters, advertising, external fonts, remote embeds, application
+  client runtime or remote AI fallback. The sole analytics exception is the
+  explicitly enabled, owner-approved production-only Umami integration described
+  in `docs/analytics.md`; review hosting and local previews remain untracked.
 - Screens are genuine, proportional and unmodified except resizing/encoding.
   Synthetic reflections and saved AI-tag provenance are not live AI evidence.
 - Code is MIT; media, branding and copy are not. See `LICENSE` and
@@ -38,6 +44,28 @@ Read `PRODUCT.md`, `DESIGN.md` and relevant docs. Use semantic HTML, accessible
 focus/skip links, reduced motion, responsive images and explicit dimensions.
 Keep catalogue schema and tests together. Reject invalid data instead of silently
 substituting defaults. Update directly related docs.
+
+New public pages must use the shared site layout; new app download/store actions
+must use the shared Availability component. This inherits analytics coverage
+without per-app scripts. Marketed apps need an approved app privacy policy.
+End each app privacy policy with the shared Web privacy section linking to the
+site privacy policy. Keep detailed hosting/analytics disclosures in the site
+policy, not copied into app policies. Keep website analytics distinct from each
+app's actual data handling.
+
+Every change must include a policy-impact review. When collection, event fields,
+providers/endpoints, hosting, retention, deletion, consent/DNT or support handling
+changes, revise all affected statements, docs and tests in the same change.
+Verify app claims from authorized evidence; never infer them from website
+behavior or the absence of a search match. Analytics behavior/disclosure changes
+invalidate the separate analytics approval digest. Never refresh approval just
+to make a build pass: obtain the owner's explicit approval of the revision.
+Do not weaken unchanged app privacy promises. Reuse the recorded responsible
+publisher and support-handling facts without asking the owner to reconfirm them.
+The owner authorizes setting each created or changed policy/page's date to the
+actual creation/change date, including adding the Web privacy link. Keep dates
+in individual content records; never bump unrelated pages or the global
+publication date to date a single-page change.
 
 Do not commit, push, create branches/worktrees, enable Pages, change permissions,
 deploy, or change DNS without the user's explicit authorization. The user has

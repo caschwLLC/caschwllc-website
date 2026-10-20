@@ -1,15 +1,44 @@
 # Policy approval and deployment gates
 
+## Optional website analytics revision
+
+The optional production-only Umami implementation is staged disabled. Existing
+`policyTextApproved: true` does not automatically activate analytics.
+`src/content/analytics-publication.json` is separately
+unapproved and enabled production builds reject missing/stale behavior/policy
+approval or missing marketed-app privacy declarations.
+
+Website privacy describes actual build-selected behavior: untracked review/
+disabled builds, or explicitly approved production analytics. App policies end
+with a short Web privacy section linking to it, without repeating its provider
+or analytics details. Feelory's app-level data promises are unchanged. Override
+support/Accessibility link to its app policy; shared website privacy links remain
+distinct. The owner confirmed Override's app facts on 2026-10-19; its policy is
+now included in the catalog. The owner authorized narrowly scoped read-only
+Override fact verification; no app source or internal documents are imported here.
+
+Before activation, record explicit approval of the final analytics disclosure.
+Publisher and support-handling facts carry forward from the existing record.
+The owner authorizes dating created/changed pages with the actual change date,
+without further reconfirmation. See
+[analytics.md](analytics.md) for manual account/Variables steps and maintenance.
+
 ## Override policy boundary
 
-Override's new support and Accessibility & permissions pages are not a privacy
-policy. The owner requested a separate Override privacy draft for review,
-kept outside this repository in the implementing session's artifacts.
-`override.json` explicitly declares `pages.privacy: false`; there is no public
-Override privacy route or link. Existing policy approval and the Feelory/website
-effective date must not be reused for Override. Publishing the Override beta
-does not approve its privacy text. Existing approved policies remain unchanged
-and are not relabelled draft.
+Override has a separate app privacy policy at `/apps/override/privacy/`, declared
+by its catalog entry and linked from the product and support pages. The owner
+confirmed no update checks, remote services, crash reporting service, telemetry
+or third-party SDKs. Diagnostics generate privacy-safe descriptions of Override's
+own actions only when enabled, stay in memory until quit, and are copied only
+when the user chooses the button. Previously exported copies remain separate.
+These owner-confirmed facts resolve the earlier source-review questions;
+incomplete source evidence must not override the owner's explicit confirmation.
+
+Website, Feelory and Override privacy policies use individual effective dates
+of 2026-10-19 for this change. Override support/Accessibility carry the same
+last-updated date. Unchanged Feelory support/Accessibility and the global
+publication record keep their earlier dates. App policies end with a short
+Web privacy link, not detailed website analytics statements.
 
 ## Existing approved policies
 

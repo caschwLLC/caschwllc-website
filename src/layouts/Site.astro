@@ -3,6 +3,7 @@ import '../styles/site.css';
 import { getApps } from '../lib/content';
 import { localPath, navigation } from '../lib/catalog';
 import { siteConfig } from '../../site.config.mjs';
+import Analytics from '../components/Analytics.astro';
 const review = siteConfig().mode === 'review';
 interface Props {
   title: string;
@@ -110,6 +111,7 @@ const discovery = {
       type="application/ld+json"
       set:html={JSON.stringify(discovery).replace(/</g, '\\u003c')}
     />
+    <Analytics excluded={noindex} />
   </head>
   <body
     class:list={[adaptiveColorScheme && 'theme-adaptive']}

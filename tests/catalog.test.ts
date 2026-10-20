@@ -86,6 +86,7 @@ test('Override exposes a verified beta DMG, not a store listing or borrowed medi
     '/',
     '/privacy/',
     '/apps/override/',
+    '/apps/override/privacy/',
     '/apps/override/support/',
     '/apps/override/accessibility/',
   ]);

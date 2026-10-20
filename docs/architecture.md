@@ -2,7 +2,8 @@
 
 Astro statically renders all pages. The browser receives HTML, one local CSS
 bundle and local images; no hydration, runtime application JavaScript, external
-fonts, backend, tracking or forms. Structured WebPage data describes the pages,
+fonts, backend or forms. A separately approved, optional production-only Umami
+loader is the sole analytics exception. Structured WebPage data describes the pages,
 not an available store product. No invented price, rating or review fields.
 
 ## Sources and flow
@@ -18,14 +19,18 @@ not an available store product. No invented price, rating or review fields.
 - Catalog-driven `getStaticPaths()` generates products and their explicitly
   declared privacy/support/accessibility routes. Feelory retains its dedicated
   accessibility presentation; Override uses a permission-guidance document.
-  Override privacy is intentionally absent until its separate text is approved.
+  All marketed apps, including Override, require their own privacy policy.
   Voice Control content remains absent until that capability is verified.
   404 is accessible, noindex, and excluded from sitemap. Robots points to sitemap.
 - `Site.astro`: shared brand, navigation, footer, canonical/social metadata.
+  It also owns the optional analytics loader for every public HTML page except 404. `analytics.config.mjs` rejects invalid active configuration and stale
+  analytics policy approval. Localhost and review pages never load the tracker.
   Product routes explicitly pass app context for metadata and the header's
   contextual Support link. The shared footer remains email and website privacy;
   app-specific reading links live on product pages.
 - `Reading.astro`: bounded reading measure and optional confirmed publisher/date.
+  Publisher comes from the existing publication record; effective/updated dates
+  come from each policy's validated frontmatter, never a global date bump.
 - `Device.astro`: genuine proportional media in original illustrative surrounds.
 - `ScreenProduct.astro`: the existing Feelory screen-led product surface.
   `UtilityProduct.astro`: Override's text-led beta surface without borrowed
@@ -36,6 +41,13 @@ not an available store product. No invented price, rating or review fields.
   download href. Release visibility is checked by a maintainer, not by runtime
   requests or a network-dependent build.
 - `src/content/publication.json`: independent, default-incomplete launch facts.
+- `src/content/analytics-publication.json`: separate approval of the analytics
+  endpoint, website ID and behavior/policy digest; initially unapproved.
+  `WebsitePrivacyNotice.astro` ends app policies with a short Web privacy link.
+  `WebsiteAnalyticsDisclosure.astro` keeps build-selected analytics details only
+  in the site policy. `Availability.astro` supplies catalog-derived click metadata; the
+  nonblocking listener never delays or redirects a download. See
+  [analytics.md](analytics.md) for setup, data fields and failure behavior.
 
 Catalog data and content are English initially; fields and separate documents
 keep future localization isolated from page layout. No locale or legal facts

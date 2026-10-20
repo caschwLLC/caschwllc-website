@@ -16,6 +16,9 @@ concurrency:
 
 env:
   ASTRO_TELEMETRY_DISABLED: 1
+  UMAMI_ENABLED: ${{ vars.UMAMI_ENABLED || 'false' }}
+  UMAMI_WEBSITE_ID: ${{ vars.UMAMI_WEBSITE_ID }}
+  UMAMI_SCRIPT_URL: ${{ vars.UMAMI_SCRIPT_URL }}
 
 jobs:
   validate:

@@ -1,6 +1,7 @@
 ---
 title: Override accessibility & permissions
 description: Why Override needs Accessibility permission, how to grant or revoke it, and how to pause window overrides.
+updatedOn: '2026-10-19'
 ---
 
 ## Why window management needs permission
@@ -71,3 +72,7 @@ Override version, the permission status shown, and the steps you tried.
 Do not send private window or document content.
 
 [Installation, upgrades, uninstall, and troubleshooting](../support/)
+
+Website visits are separate from macOS permission choices. See
+[website privacy](../../../privacy/) for this website's hosting, analytics and
+support-email handling, and [Override privacy](../privacy/) for app data handling.

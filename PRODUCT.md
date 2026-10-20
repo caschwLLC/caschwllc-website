@@ -31,8 +31,10 @@ Window controls, hide/minimize policies, snapping and custom layouts are
 optional; Accessibility access is granted by the user in System Settings.
 Application support and interception are best-effort. Do not generalize
 Feelory's privacy, AI, Health or accessibility claims to Override.
-Override's separate privacy text awaits owner review outside this repository;
-no public Override privacy page or inferred effective date is shipped.
+Override's privacy policy uses owner-confirmed app facts: no update checks,
+remote services, telemetry, crash reporting service or third-party SDKs.
+Optional privacy-safe diagnostics stay in memory until quit and are copied
+only by user action. App policies link to the separate website policy.
 
 ## Brand and evidence
 
@@ -44,7 +46,10 @@ provenance fixture that does not demonstrate a live model result.
 
 ## Constraints and open decisions
 
-No analytics, tracking, forms, newsletters or external font requests.
+No forms, newsletters, advertising or external font requests. Optional aggregate
+Umami website analytics is limited to explicitly enabled, owner-approved
+production builds; review hosting and localhost remain untracked. App data
+handling is separate. See `docs/analytics.md` for privacy and activation gates.
 Email support is apps@caschw.com, hosted by Outlook.com/Microsoft.
 Code is MIT; copy, branding and artwork are reserved rights.
 Responsible publisher, policy effective date, provider disclosures and final

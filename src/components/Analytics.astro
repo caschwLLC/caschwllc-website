@@ -1,0 +1,19 @@
+---
+import { analyticsConfig } from '../../analytics.config.mjs';
+import source from '../scripts/analytics.js?raw';
+interface Props {
+  excluded?: boolean;
+}
+const config = Astro.props.excluded ? null : analyticsConfig();
+---
+
+{config && (
+  <script
+    is:inline
+    data-analytics-loader
+    data-website-id={config.websiteId}
+    data-script-url={config.scriptUrl}
+    data-hostname={config.hostname}
+    set:html={source}
+  />
+)}

@@ -8,8 +8,9 @@ Every record declares a `presentation` and explicit `pages` for privacy,
 support and accessibility. Support is required; undeclared pages have no route
 or discovery link. Missing declared content fails rather than rendering an
 empty page. Feelory's accessibility page retains its dedicated implementation.
-Override has support and permission pages, but no public privacy page pending
-separate policy approval.
+Override has support, permission and owner-confirmed privacy pages. All marketed
+apps require an app privacy policy with its own effective date and a final shared
+Web privacy link to the separate website policy.
 
 ## Add a public-safe draft
 

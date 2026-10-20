@@ -131,4 +131,7 @@ offset 5px; the skip link becomes visible on focus. Reading links are underlined
 - Keep availability, optional features and privacy distinctions explicit.
 - Preserve semantic headings, keyboard access, contrast and reduced motion.
 - Do not add fake UI, AI answers, reviews, prices, awards, badge affordances,
-  external font requests, tracking or empty platform navigation.
+  external font requests, unapproved tracking or empty platform navigation.
+- Keep the optional production-only Umami integration invisible and nonblocking;
+  new pages/actions inherit shared coverage, never per-app trackers. Preserve
+  ordinary links even when analytics is blocked. See `docs/analytics.md`.

@@ -1,6 +1,8 @@
 import { defineConfig } from 'astro/config';
 import { siteConfig } from './site.config.mjs';
+import { analyticsConfig } from './analytics.config.mjs';
 const target = siteConfig();
+analyticsConfig();
 
 export default defineConfig({
   site: target.site,
