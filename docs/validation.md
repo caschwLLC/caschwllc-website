@@ -365,3 +365,17 @@ deployment, release publication or app packaging occurred. Remaining live
 acceptance requires explicit analytics-disclosure approval, separately
 authorized production activation/deployment and Umami Realtime verification,
 not repeated confirmation of resolved app facts or policy dates.
+
+## Analytics approval (2026-10-20)
+
+The owner explicitly approved the documented analytics behavior and disclosure.
+The separate approval record now binds the current source fingerprint to the
+configured Umami website ID and Cloud script URL. The repository variable
+remains `UMAMI_ENABLED=false`; approval does not itself start collection.
+
+`UMAMI_ENABLED=true UMAMI_WEBSITE_ID=<configured-public-id> UMAMI_SCRIPT_URL=https://cloud.umami.is/script.js WEBSITE_MODE=production ASTRO_TELEMETRY_DISABLED=1 npm run verify`
+passed: type/lint clean, 19 unit/build-contract tests, built-site checks,
+73 browser passes and one intentional skip. Browser tests run locally on an
+untracked hostname or intercept vendor requests; no live account events were
+sent. Catalog mutation fixtures explicitly disable analytics so their intended
+content-validation failures are not preempted by the policy fingerprint guard.

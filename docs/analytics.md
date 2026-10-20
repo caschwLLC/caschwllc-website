@@ -2,8 +2,10 @@
 
 ## Status and scope
 
-The Umami integration is staged, **disabled and not policy-approved**.
-`src/content/analytics-publication.json` deliberately records `approved: false`.
+The owner approved the documented Umami behavior and disclosure on 2026-10-20.
+`src/content/analytics-publication.json` records the approved source fingerprint
+and configured website ID/script URL. Collection remains **disabled** until the
+approved revision is deployed with `UMAMI_ENABLED=true`.
 Override's app privacy policy now uses the owner's confirmed diagnostics and
 no-remote-collection facts. No DNS, release, download destination
 or hosting setting is changed by this integration.

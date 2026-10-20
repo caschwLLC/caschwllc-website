@@ -34,7 +34,11 @@ test('isolated Astro builds exclude drafts from all discovery and reject malform
   const build = () =>
     run(process.execPath, [astro, 'build', '--outDir', output], {
       cwd: root,
-      env: { ...process.env, ASTRO_TELEMETRY_DISABLED: '1' },
+      env: {
+        ...process.env,
+        ASTRO_TELEMETRY_DISABLED: '1',
+        UMAMI_ENABLED: 'false',
+      },
     });
   try {
     for (const path of [
