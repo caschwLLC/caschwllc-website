@@ -4,9 +4,10 @@
 
 The optional production-only Umami implementation is staged disabled. Existing
 `policyTextApproved: true` does not automatically activate analytics.
-`src/content/analytics-publication.json` is separately
-unapproved and enabled production builds reject missing/stale behavior/policy
-approval or missing marketed-app privacy declarations.
+The owner separately approved the documented analytics behavior and disclosure
+on 2026-10-20. `src/content/analytics-publication.json` records its fingerprint
+and configured website ID/script URL. Enabled production builds still reject
+missing/stale behavior/policy approval or missing marketed-app privacy declarations.
 
 Website privacy describes actual build-selected behavior: untracked review/
 disabled builds, or explicitly approved production analytics. App policies end
@@ -17,7 +18,8 @@ distinct. The owner confirmed Override's app facts on 2026-10-19; its policy is
 now included in the catalog. The owner authorized narrowly scoped read-only
 Override fact verification; no app source or internal documents are imported here.
 
-Before activation, record explicit approval of the final analytics disclosure.
+The final analytics disclosure approval is recorded; activation and deployment
+remain separate from that approval.
 Publisher and support-handling facts carry forward from the existing record.
 The owner authorizes dating created/changed pages with the actual change date,
 without further reconfirmation. See

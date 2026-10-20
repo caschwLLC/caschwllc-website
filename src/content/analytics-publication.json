@@ -1,6 +1,6 @@
 {
-  "approved": false,
-  "digest": null,
-  "websiteId": null,
-  "scriptUrl": null
+  "approved": true,
+  "digest": "c5431d83471f42965f22924bf1f05d3823a5606bd313ee789cfc5df139eba597",
+  "websiteId": "67eed8f7-558a-422c-bb9f-c3c24c590b79",
+  "scriptUrl": "https://cloud.umami.is/script.js"
 }
