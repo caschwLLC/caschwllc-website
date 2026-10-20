@@ -9,7 +9,18 @@ const action = storeAction(app);
 ---
 
 {action.href ? (
-  <a class="button" href={action.href} rel="noopener noreferrer">
+  <a
+    class="button"
+    href={action.href}
+    rel="noopener noreferrer"
+    data-analytics-event={
+      app.presentation === 'utility' ? 'download_click' : 'store_click'
+    }
+    data-analytics-app={app.slug}
+    data-analytics-version={
+      app.presentation === 'utility' ? app.distribution.version : undefined
+    }
+  >
     {action.label}
     <span aria-hidden="true"> ↗</span>
   </a>

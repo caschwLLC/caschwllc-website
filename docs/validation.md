@@ -274,3 +274,94 @@ final provider/content approvals, DNS delegation readiness and separately
 authorized final custom-domain launch remain unresolved. These are **not**
 blockers to the user-authorized repository-URL review publication handled by the parent. Feelory in-app policy/support
 links remain a separate app change.
+
+# Minimal website analytics (staged, disabled)
+
+Owner-directed privacy separation follow-up: approved app policy routes now end
+with a short Web privacy link; only the website policy renders detailed
+build-selected analytics disclosures. Removed the duplicated Feelory website
+paragraph. Browser fixtures assert final-section placement, site-policy links
+and absence of Umami details in app-policy prose, including a future-app fixture.
+The private session Override draft now uses the owner-directed privacy-safe
+diagnostics explanation and explicitly distinguishes in-app loss on quit from
+already exported copies. It remains unpublished and awaiting its other approvals.
+Both full verification commands below passed again after this change (19
+unit/build-contract tests, 69 browser passes, one intentional skip per mode).
+
+The repository variables were read back successfully: the supplied public UUID,
+`https://cloud.umami.is/script.js`, and `UMAMI_ENABLED=false`. No setting was
+changed by the implementation. The analytics-specific approval record remains
+false; Override's app privacy draft and evidence stay outside the repository.
+No merge, publication, DNS change, app build or installer packaging occurred.
+
+Commands and final results:
+
+- `UMAMI_ENABLED=false ASTRO_TELEMETRY_DISABLED=1 npm run verify` -- passed:
+  type check and lint clean, 19 unit/build-contract tests passed, built-site
+  checks passed, 69 browser tests passed and the existing desktop-only
+  performance case intentionally skipped.
+- `UMAMI_ENABLED=false WEBSITE_MODE=production ASTRO_TELEMETRY_DISABLED=1 npm run verify`
+  -- passed with the same counts.
+- `UMAMI_TRACKER_TEST_FILE=<session-artifact>/umami-tracker.js npx playwright test tests/browser/analytics.spec.ts --project=desktop`
+  -- passed all 8 tests against the fetched actual Cloud tracker. Every script,
+  collection, installer and store request was intercepted; no real account
+  events or actual downloads were generated. The fixture runs the enabled
+  production built-site validator as well as browser assertions.
+- The documented read-only GitHub release-asset command returned the public
+  0.1.0 and 0.1.1 DMG counters. Counts are cumulative and are not pinned in docs.
+- `git diff --check` -- passed before this documentation-only record.
+
+Enabled-production tests use isolated public-safe future-app/policy/page fixtures
+and a dummy UUID/approval. They verify inherited coverage, exactly one sanitized
+page/event payload, future store clicks, DNT, 404 exclusion, localhost/review/
+unapproved-host guards, JavaScript-disabled links, and native ordinary/keyboard/
+modified/middle-click download requests with loaded, blocked and stalled
+trackers. Fixture approvals do not approve the real site.
+
+The actual tracker transfer measured **2,333 bytes gzip** (4,810 decoded bytes)
+with `Accept-Encoding: gzip`, below the proposed 10 KB compressed tracker budget.
+The local inline loader adds no separate request. A first tracked page requires
+the vendor script and one collection request; an eligible click adds a collection
+request. This is a measurement of the inspected script, not a permanent size
+guarantee. The external Cloud URL is mutable and its bytes are not covered by
+the local policy digest; review vendor behavior changes separately.
+
+The design hook's broken-image finding in `scripts/validate-site.ts` is a false
+positive on the existing image-validation regular expression, not an image
+element in rendered UI. No suppression or unrelated design change was added.
+
+At this initial validation checkpoint, Override's app-data and policy-date
+questions were still pending. The owner confirmations below supersede those
+questions. Analytics-specific approval and live activation remain separate.
+
+## Owner-confirmed app privacy and page-specific dates (2026-10-19)
+
+The owner confirmed Override's optional diagnostics behavior and absence of
+automatic update checks, remote services, crash reporting service, telemetry
+and third-party SDKs. The new app privacy policy is wired through the catalog,
+product/support/accessibility links and sitemap. Diagnostics are off by default,
+privacy-safe, in memory only and discarded immediately on quit; copying requires
+the user's explicit action after enabling diagnostics. Exported copies remain
+separate.
+
+Each app policy ends with the shared Web privacy link; detailed website
+analytics disclosures remain only in the website policy. Website, Feelory and
+Override privacy pages have individual effective dates of 2026-10-19.
+Override support and accessibility pages have that updated date. Unchanged
+pages and the global publication date retain their existing dates. Contributor
+instructions record the owner's authorization to reuse established publisher
+and support facts and date only pages actually created or changed.
+
+Commands and results after these changes:
+
+- `UMAMI_ENABLED=false ASTRO_TELEMETRY_DISABLED=1 npm run verify` -- passed:
+  type check and lint clean, 19 unit/build-contract tests passed, built-site
+  checks passed, 73 browser tests passed and one intentional skip.
+- `UMAMI_ENABLED=false WEBSITE_MODE=production ASTRO_TELEMETRY_DISABLED=1 npm run verify`
+  -- passed with the same counts.
+
+Analytics remains disabled with its approval record false. No commit, push,
+deployment, release publication or app packaging occurred. Remaining live
+acceptance requires explicit analytics-disclosure approval, separately
+authorized production activation/deployment and Umami Realtime verification,
+not repeated confirmation of resolved app facts or policy dates.

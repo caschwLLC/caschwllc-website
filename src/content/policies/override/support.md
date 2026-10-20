@@ -1,6 +1,7 @@
 ---
 title: Override support
 description: Install the Override beta, grant window access, upgrade, uninstall, and troubleshoot window management.
+updatedOn: '2026-10-19'
 ---
 
 Override is beta software. You may encounter bugs, and some applications expose
@@ -96,9 +97,17 @@ reproduce, and what you expected versus what happened. Do not include private
 window content, document names, or sensitive screenshots.
 
 Override's Diagnostics settings include an optional detailed troubleshooting
-mode and a report-copy command. Review any report before choosing to email it.
-Copying a report does not itself send an email.
+mode and a report-copy command. Diagnostics are off by default; when enabled,
+they generate only privacy-safe descriptions of Override's own actions for bug
+identification and troubleshooting. No personal information, window titles,
+content, or pointer data is included. When disabled, no diagnostics are generated.
+All in-app diagnostics stay in memory and are lost immediately when you quit.
+Only choosing the copy button after enabling diagnostics copies a report to the
+clipboard; it does not send an email or delete copies you already saved/shared.
+
+See [Override privacy](../privacy/) for app data and support handling.
 
 Support email is hosted by Outlook.com/Microsoft. See
 [website privacy](../../../privacy/) for email-provider disclosures and support
-correspondence handling.
+correspondence handling and this website's current analytics behavior. Website
+analytics does not describe what the Override app reads or stores.

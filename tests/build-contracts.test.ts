@@ -44,6 +44,7 @@ test('isolated Astro builds exclude drafts from all discovery and reject malform
       'tsconfig.json',
       'package.json',
       'site.config.mjs',
+      'analytics.config.mjs',
     ]) {
       await cp(resolve(path), join(root, path), { recursive: true });
     }
@@ -81,13 +82,10 @@ test('isolated Astro builds exclude drafts from all discovery and reject malform
         `${path}: draft release link exposed`,
       );
     }
-    await writeFile(
-      overridePath,
-      JSON.stringify({
-        ...override,
-        pages: { ...override.pages, privacy: true },
-      }),
-    );
+    await writeFile(overridePath, JSON.stringify(override));
+    const privacyPath = join(root, 'src/content/policies/override/privacy.md');
+    const privacy = await readFile(privacyPath, 'utf8');
+    await unlink(privacyPath);
     await assert.rejects(build(), (error: unknown) => {
       assert.ok(
         error instanceof Error && 'stdout' in error && 'stderr' in error,
@@ -98,6 +96,7 @@ test('isolated Astro builds exclude drafts from all discovery and reject malform
       );
       return true;
     });
+    await writeFile(privacyPath, privacy);
     await writeFile(overridePath, JSON.stringify(override));
     for (const [invalid, expected] of [
       [{ ...fixture, hero: undefined }, /hero/],
@@ -112,6 +111,14 @@ test('isolated Astro builds exclude drafts from all discovery and reject malform
       [
         { ...fixture, visibility: 'marketed' },
         /Missing (privacy|support|accessibility) content/,
+      ],
+      [
+        {
+          ...fixture,
+          visibility: 'marketed',
+          pages: { ...fixture.pages, privacy: false },
+        },
+        /Missing approved privacy policy declaration/,
       ],
     ] as const) {
       await writeFile(fixturePath, JSON.stringify(invalid));

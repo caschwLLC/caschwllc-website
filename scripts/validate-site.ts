@@ -11,7 +11,10 @@ import {
 import sharp from 'sharp';
 import { siteConfig } from '../site.config.mjs';
 import { localPath } from '../src/lib/catalog';
+import { analyticsConfig } from '../analytics.config.mjs';
 const target = siteConfig();
+const analytics = analyticsConfig();
+const analyticsSource = await readFile('src/scripts/analytics.js', 'utf8');
 const urlFor = (route: string) =>
   new URL(localPath(route, target.base), target.site).href;
 function diskPath(pathname: string) {
@@ -138,9 +141,10 @@ for (const route of [...routes, '/404.html']) {
         `name="twitter:image" content="${urlFor(override.socialImage.src)}"`,
       ),
     );
-    assert.ok(
-      html.includes('Accessibility missing → paused → stashed → ready.'),
-    );
+    if (!route.endsWith('/privacy/'))
+      assert.ok(
+        html.includes('Accessibility missing → paused → stashed → ready.'),
+      );
   }
   if (route === '/' || route.startsWith('/apps/override/'))
     assert.ok(
@@ -206,11 +210,29 @@ for (const route of [...routes, '/404.html']) {
     assert.ok(html.includes('noindex, follow'));
   }
   assert.ok(
-    !/<form|<iframe|<script[^>]+src=|fonts\.googleapis|gtag|analytics\.js/.test(
-      html,
-    ),
+    !/<form|<iframe|<script[^>]+src=|fonts\.googleapis|gtag/.test(html),
     'Unexpected runtime/tracking/embed',
   );
+  const executable = [
+    ...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g),
+  ].filter((match) => !match[1]!.includes('type="application/ld+json"'));
+  assert.equal(
+    executable.length,
+    analytics && route !== '/404.html' ? 1 : 0,
+    `${route}: unexpected executable scripts`,
+  );
+  if (executable.length) {
+    const [script] = executable;
+    assert.equal(script![2]!.trim(), analyticsSource.trim());
+    assert.ok(script![1]!.includes('data-analytics-loader'));
+    assert.ok(
+      script![1]!.includes(`data-website-id="${analytics!.websiteId}"`),
+    );
+    assert.ok(
+      script![1]!.includes(`data-script-url="${analytics!.scriptUrl}"`),
+    );
+    assert.ok(script![1]!.includes(`data-hostname="${analytics!.hostname}"`));
+  }
   for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     const value = match[1]!;
     if (

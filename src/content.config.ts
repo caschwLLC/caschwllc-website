@@ -10,6 +10,11 @@ export const collections = {
   }),
   policies: defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/policies' }),
-    schema: z.object({ title: z.string(), description: z.string() }),
+    schema: z.object({
+      title: z.string(),
+      description: z.string(),
+      effectiveDate: z.iso.date().optional(),
+      updatedOn: z.iso.date().optional(),
+    }),
   }),
 };

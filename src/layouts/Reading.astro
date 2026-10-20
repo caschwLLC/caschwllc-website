@@ -3,12 +3,16 @@ import Site from './Site.astro';
 import { localPath } from '../lib/catalog';
 import publication from '../content/publication.json';
 import { getApps } from '../lib/content';
+import WebsitePrivacyNotice from '../components/WebsitePrivacyNotice.astro';
+import WebsiteAnalyticsDisclosure from '../components/WebsiteAnalyticsDisclosure.astro';
 interface Props {
   title: string;
   description: string;
   appSlug?: string;
   policy?: boolean;
   adaptiveColorScheme?: boolean;
+  effectiveDate?: string;
+  updatedOn?: string;
 }
 const {
   title,
@@ -16,6 +20,8 @@ const {
   appSlug,
   policy = false,
   adaptiveColorScheme = false,
+  effectiveDate,
+  updatedOn,
 } = Astro.props;
 const app = appSlug
   ? (await getApps()).find((app) => app.slug === appSlug)
@@ -50,16 +56,20 @@ const app = appSlug
     {policy && publication.responsiblePublisher && (
       <p>Responsible publisher: {publication.responsiblePublisher}</p>
     )}
-    {policy && publication.effectiveDate && (
+    {policy && effectiveDate && (
       <p>
-        Effective:{' '}
-        <time datetime={publication.effectiveDate}>
-          {publication.effectiveDate}
-        </time>
+        Effective: <time datetime={effectiveDate}>{effectiveDate}</time>
+      </p>
+    )}
+    {updatedOn && (
+      <p>
+        Last updated: <time datetime={updatedOn}>{updatedOn}</time>
       </p>
     )}
     <div class="prose">
       <slot />
+      {policy &&
+        (app ? <WebsitePrivacyNotice /> : <WebsiteAnalyticsDisclosure />)}
     </div>
   </article>
 </Site>

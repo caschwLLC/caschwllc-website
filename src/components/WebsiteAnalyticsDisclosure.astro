@@ -1,0 +1,36 @@
+---
+import { analyticsConfig } from '../../analytics.config.mjs';
+const active = analyticsConfig() !== null;
+---
+
+<section aria-labelledby="website-data">
+  <h2 id="website-data">Website data</h2>
+  {active ? (
+    <>
+      <p>
+        The production website uses Umami Cloud for aggregate page views and
+        download or store-link clicks. It sends the page path and title,
+        hostname, referring website origin, and, for these clicks, the app name
+        and download version where applicable. URL queries and fragments are
+        excluded. Umami receives connection information when processing these
+        requests. Its Hobby plan retains analytics for six months.
+      </p>
+      <p>
+        Collection respects Do Not Track and uses no tracking cookies or
+        personal user identifiers. We do not enable session replay or additional
+        performance tracking. Counts are approximate, and clicking a link does
+        not establish a completed download or installation. Website analytics is
+        separate from app data handling.
+      </p>
+    </>
+  ) : (
+    <p>
+      This website does not currently collect page-view or link-click analytics.
+      Website hosting and voluntary support email still involve the providers
+      described in the website privacy policy, separately from app data.
+    </p>
+  )}
+  <p>The public review site is untracked.</p>
+</section>
+*** Move to:
+/Users/carl/dev/caschwllc-website/src/components/WebsiteAnalyticsDisclosure.astro

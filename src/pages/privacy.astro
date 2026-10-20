@@ -6,10 +6,17 @@ import { localPath } from '../lib/catalog';
 const apps = (await getApps()).filter((app) => app.pages.privacy);
 const entry = await getEntry('policies', 'website/privacy');
 if (!entry) throw new Error('Missing website privacy policy');
+if (!entry.data.effectiveDate)
+  throw new Error('Missing website privacy effective date');
 const { Content } = await render(entry);
 ---
 
-<Reading title={entry.data.title} description={entry.data.description} policy>
+<Reading
+  title={entry.data.title}
+  description={entry.data.description}
+  effectiveDate={entry.data.effectiveDate}
+  policy
+>
   {apps.length > 0 && (
     <p>
       For app data and permission choices:{' '}

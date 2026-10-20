@@ -1,4 +1,5 @@
 ---
+effectiveDate: '2026-10-19'
 title: Feelory privacy
 description: How Feelory stores reflections, optional iCloud and Health choices, deletion, exports, and support correspondence.
 ---
@@ -133,15 +134,6 @@ to Apple’s policies. Information you choose to send may be received by us and
 Apple to investigate your feedback. Copies held by Apple follow Apple’s controls
 and retention policies. Do not include private journal entries or Health data
 in support requests or beta feedback.
-
-## Public website
-
-When this website is hosted on GitHub Pages, GitHub logs visitors’ IP addresses
-for security purposes, as described in
-[GitHub’s privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
-The site does not add analytics, advertising, tracking cookies, or a contact
-form. Website hosting logs are separate from Feelory’s on-device app data; we
-do not send journal content to the website.
 
 ## Contact
 

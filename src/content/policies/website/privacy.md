@@ -1,6 +1,7 @@
 ---
 title: Website privacy
 description: Website hosting logs, email support, and the distinction between this site and on-device app data.
+effectiveDate: '2026-10-19'
 ---
 
 This policy covers the caschw LLC information website. Published app-specific
@@ -8,9 +9,10 @@ privacy policies are linked above and from their product pages.
 
 ## A simple information site
 
-This website has no analytics, advertising, tracking cookies, contact form,
+This website has no advertising, tracking cookies, contact form,
 newsletter, or account system. It does not request external fonts or embed
-third-party media. We do not send app journal content to the website.
+third-party media. We do not send app journal content to the website. The
+Website data section below describes the analytics behavior of this build.
 
 ## Hosting
 

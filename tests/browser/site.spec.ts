@@ -214,6 +214,7 @@ const routes = [
   '/apps/feelory/support/',
   '/apps/feelory/accessibility/',
   '/apps/override/',
+  '/apps/override/privacy/',
   '/apps/override/support/',
   '/apps/override/accessibility/',
   '/privacy/',
@@ -244,9 +245,6 @@ for (const route of routes) {
       'Feelory accessibility',
     );
     await expect(page.locator('a[href*="apps.apple.com"]')).toHaveCount(0);
-    await expect(
-      page.locator('a[href*="/apps/override/privacy/"]'),
-    ).toHaveCount(0);
     await expect(page.locator('form, iframe')).toHaveCount(0);
     const expectedBanner =
       siteConfig().mode === 'review' && !route.endsWith('/privacy/')
@@ -288,7 +286,7 @@ for (const route of routes) {
           'Feelory is coming soon. This policy describes how Feelory handles your information.',
         );
         await expect(page.locator('body')).toContainText(
-          'Effective: 2026-10-12',
+          'Effective: 2026-10-19',
         );
         await expect(page.locator('body')).toContainText('Delete iCloud Data…');
         await expect(page.locator('body')).toContainText(
@@ -441,7 +439,7 @@ test('Override beta connects download, setup, support and permission guidance', 
   await expect(icon).toHaveCSS('box-shadow', 'none');
   await expect(icon).toHaveCSS('filter', 'none');
   await expect(page.locator('a[href*="/apps/override/privacy/"]')).toHaveCount(
-    0,
+    1,
   );
   await page.getByRole('link', { name: 'Take a closer look' }).click();
   await expect(page).toHaveURL(/#explore$/);
@@ -497,7 +495,59 @@ test('Override beta connects download, setup, support and permission guidance', 
   );
   await expect(page.locator('main')).toContainText('Pause All Overrides');
   const response = await page.request.get(pathFor('/apps/override/privacy/'));
-  expect(response.status()).toBe(404);
+  expect(response.status()).toBe(200);
+});
+
+test('owner-confirmed app privacy and page-specific dates remain separate from website analytics', async ({
+  page,
+}) => {
+  for (const route of [
+    '/privacy/',
+    '/apps/feelory/privacy/',
+    '/apps/override/privacy/',
+  ]) {
+    await page.goto(pathFor(route));
+    await expect(page.locator('time')).toHaveAttribute(
+      'datetime',
+      '2026-10-19',
+    );
+    if (route.startsWith('/apps/')) {
+      await expect(page.locator('.prose > :last-child')).toHaveAttribute(
+        'aria-labelledby',
+        'web-privacy',
+      );
+      await expect(page.locator('#website-data')).toHaveCount(0);
+    }
+  }
+  await expect(page.locator('.prose')).toContainText(
+    'no diagnostics are generated',
+  );
+  await expect(page.locator('.prose')).toContainText(
+    'No personal information, window titles, window content, or pointer data',
+  );
+  await expect(page.locator('.prose')).toContainText(
+    'immediately discards all diagnostics',
+  );
+  await expect(page.locator('.prose')).toContainText(
+    'no automatic update checks, crash reporting service, remote services, telemetry, or third-party SDKs',
+  );
+  await expect(page.locator('.prose')).toContainText(
+    'does not delete those copies',
+  );
+  for (const route of [
+    '/apps/override/support/',
+    '/apps/override/accessibility/',
+  ]) {
+    await page.goto(pathFor(route));
+    await expect(page.locator('time')).toHaveAttribute(
+      'datetime',
+      '2026-10-19',
+    );
+  }
+  await page.goto(pathFor('/apps/feelory/accessibility/'));
+  await expect(page.locator('time')).toHaveAttribute('datetime', '2026-10-12');
+  await page.goto(pathFor('/apps/feelory/support/'));
+  await expect(page.locator('time')).toHaveCount(0);
 });
 
 test('Override feature chapters share Feelory’s full-width color fields', async ({

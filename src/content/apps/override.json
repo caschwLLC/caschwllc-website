@@ -25,7 +25,7 @@
   "status": "available",
   "platforms": ["apple"],
   "pages": {
-    "privacy": false,
+    "privacy": true,
     "support": true,
     "accessibility": true
   },
