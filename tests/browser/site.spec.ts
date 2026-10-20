@@ -507,6 +507,8 @@ test('owner-confirmed app privacy and page-specific dates remain separate from w
     '/apps/override/privacy/',
   ]) {
     await page.goto(pathFor(route));
+    await expect(page.locator('.prose')).not.toContainText('*** Move to:');
+    await expect(page.locator('.prose')).not.toContainText('/Users/');
     await expect(page.locator('time')).toHaveAttribute(
       'datetime',
       '2026-10-19',
