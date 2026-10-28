@@ -32,14 +32,55 @@
     --mint: #e3ede5;
     --sky: #e3edf4;
     --accent: #51419c;
+    --selection: #cfc7f3;
+    --status-line: #8a829e;
+    --utility-rule: #a8bbc8;
+    --on-strong: #ffffff;
+    --graphite: #24272d;
+    --graphite-ink: #f5f5f2;
+    --graphite-secondary: #c8cbd1;
+    --graphite-edge: transparent;
+    --device-body: #24272d;
+    --device-line: #555a63;
+    --device-shadow: rgb(24 26 36 / 35%);
+    --button-fill: #51419c;
+    --button-hover: #352568;
+    --button-deep: #443582;
     --gutter: clamp(1.25rem, 4.5vw, 5rem);
     --radius: 2rem;
+    color-scheme: light dark;
     color: var(--ink);
     background: var(--paper);
     font-family:
       -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
       sans-serif;
     font-synthesis: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #17181a;
+      --ink: #f5f5f2;
+      --secondary: #c4c6cb;
+      --line: #4a4d55;
+      --lavender: #26213a;
+      --mint: #1b2821;
+      --sky: #1a2633;
+      --accent: #c8bcff;
+      --selection: #4a3f86;
+      --status-line: #8a8f99;
+      --utility-rule: #3d4f61;
+      --on-strong: #ffffff;
+      --graphite: #0f1012;
+      --graphite-ink: #f5f5f2;
+      --graphite-secondary: #c8cbd1;
+      --graphite-edge: #2c2f35;
+      --device-body: #24272d;
+      --device-line: #6b707a;
+      --device-shadow: rgb(0 0 0 / 55%);
+      --button-fill: #6b5bc9;
+      --button-hover: #443582;
+      --button-deep: #c8bcff;
+    }
   }
   body {
     line-height: 1.6;
@@ -80,13 +121,14 @@
     outline: none;
   }
   ::selection {
-    background: #cfc7f3;
+    background: var(--selection);
     color: var(--ink);
   }
   @media (prefers-reduced-motion: no-preference) {
     .button {
       transition:
         background-color 180ms ease-out,
+        border-color 180ms ease-out,
         color 180ms ease-out;
     }
     .device-pair {
@@ -331,7 +373,7 @@
   }
   .utility-index dl > div {
     padding-block: 1rem;
-    border-top: 1px solid #a8bbc8;
+    border-top: 1px solid var(--utility-rule);
   }
   .utility-index dt {
     font-weight: 650;
@@ -393,12 +435,6 @@
     align-items: center;
     min-height: 44px;
     margin-top: 0.75rem;
-  }
-  .support-download {
-    margin-bottom: 2rem;
-  }
-  .support-download p {
-    margin-bottom: 1rem;
   }
   .utility-menu-bar {
     padding-bottom: 5rem;
@@ -527,6 +563,9 @@
       order: 5;
       justify-self: start;
     }
+    .showcase-copy > .product-name + .button {
+      order: 1;
+    }
     .showcase-copy > .compatibility {
       order: 6;
       margin-top: 0;
@@ -625,13 +664,13 @@
 @layer components {
   .review-banner {
     padding: 0.8rem var(--gutter);
-    background: #e7e4f5;
-    color: #22252b;
+    background: var(--lavender);
+    color: var(--ink);
     font-size: 0.9375rem;
     text-align: center;
   }
   .policy-availability {
-    background: #e7e4f5;
+    background: var(--lavender);
     padding: 1.25rem;
     margin-bottom: 2rem;
     border-radius: 1rem;
@@ -655,13 +694,13 @@
     left: 1rem;
     transform: translateY(-200%);
     background: var(--ink);
-    color: white;
+    color: var(--paper);
     padding: 0.75rem 1rem;
     z-index: 5;
   }
   .skip-link:focus {
     transform: none;
-    color: white;
+    color: var(--paper);
   }
   .product-name {
     display: flex;
@@ -692,13 +731,19 @@
     font-weight: 650;
     letter-spacing: -0.035em;
   }
-  .showcase-copy > .status {
-    margin-top: 1.25rem;
+  .showcase-copy > .status,
+  .showcase-copy > .product-name + .button {
+    margin-top: 1.5rem;
+  }
+  @media (max-width: 700px) {
+    .showcase-copy > .product-name + .button {
+      margin-top: 0;
+    }
   }
   .status {
     display: inline-flex;
     align-items: center;
-    border: 1px solid #8a829e;
+    border: 1px solid var(--status-line);
     border-radius: 99px;
     padding: 0.4rem 0.9rem;
     font-size: 0.875rem;
@@ -711,9 +756,9 @@
     align-items: center;
     gap: 1.5rem;
     justify-content: space-between;
-    background: var(--ink);
-    color: white;
-    border: 1px solid var(--ink);
+    background: var(--button-fill);
+    color: var(--on-strong);
+    border: 1px solid var(--button-fill);
     border-radius: 99px;
     padding: 0.85rem 1.5rem;
     font-weight: 600;
@@ -724,11 +769,31 @@
   }
   .utility-showcase,
   body[data-app='override'] {
-    --button-hover: #416e9c;
+    --button-fill: #416e9c;
+    --button-deep: #355d87;
+    --button-hover: #23486f;
+  }
+  @media (prefers-color-scheme: dark) {
+    .utility-showcase,
+    body[data-app='override'] {
+      --button-fill: #4675a9;
+      --button-deep: #a9c8ea;
+      --button-hover: #2b5584;
+    }
   }
   .button:hover {
-    background: var(--button-hover, var(--accent));
-    color: white;
+    background: var(--button-hover);
+    border-color: var(--button-hover);
+    color: var(--on-strong);
+  }
+  .button-secondary {
+    background: transparent;
+    color: var(--button-deep);
+    border-color: currentColor;
+  }
+  .button-secondary:hover {
+    background: var(--button-fill);
+    border-color: var(--button-fill);
   }
   .text-link {
     font-weight: 600;
@@ -746,11 +811,11 @@
     margin-bottom: 0;
   }
   .device {
-    background: #24272d;
+    background: var(--device-body);
     padding: 7px;
-    border: 2px solid #555a63;
+    border: 2px solid var(--device-line);
     border-radius: 34px;
-    box-shadow: 0 22px 34px -18px rgb(24 26 36 / 35%);
+    box-shadow: 0 22px 34px -18px var(--device-shadow);
     width: 100%;
     max-width: 300px;
   }
@@ -800,11 +865,12 @@
     background: var(--sky);
   }
   .ink {
-    background: #24272d;
-    color: #f5f5f2;
+    background: var(--graphite);
+    color: var(--graphite-ink);
+    box-shadow: inset 0 0 0 1px var(--graphite-edge);
   }
   .ink figcaption {
-    color: #c8cbd1;
+    color: var(--graphite-secondary);
   }
   .privacy-feature dl {
     margin-bottom: 2rem;
@@ -855,7 +921,7 @@
     color: var(--accent);
   }
   .prose .button {
-    color: white;
+    color: var(--on-strong);
   }
   .accessibility-link {
     display: flex;
@@ -889,11 +955,8 @@
   }
 }
 @layer accessibility {
-  body.theme-adaptive {
+  body.large-targets {
     min-height: 100vh;
-    color: var(--ink);
-    background: var(--paper);
-    color-scheme: light dark;
   }
   .accessibility-page .a11y-updated {
     color: var(--secondary);
@@ -916,47 +979,38 @@
     margin-top: 0.75rem;
     color: var(--secondary);
   }
-  body.theme-adaptive .site-header .wordmark,
-  body.theme-adaptive .site-header nav a,
-  body.theme-adaptive .site-footer .wordmark,
-  body.theme-adaptive .site-footer nav a,
-  body.theme-adaptive .back-link,
-  body.theme-adaptive .accessibility-page a,
-  body.theme-adaptive #main:focus,
+  body.large-targets .site-header .wordmark,
+  body.large-targets .site-header nav a,
+  body.large-targets .site-footer .wordmark,
+  body.large-targets .site-footer nav a,
+  body.large-targets .back-link,
+  body.large-targets .accessibility-page a,
+  body.large-targets #main:focus,
   .prose p:has(> a:only-child) a {
     display: inline-flex;
     min-height: 44px;
     align-items: center;
   }
-  body.theme-adaptive #main:focus {
+  body.large-targets #main:focus {
     display: block;
     outline: 3px solid var(--accent);
     outline-offset: -3px;
   }
   @media (max-width: 700px) {
-    body.theme-adaptive .site-header {
+    body.large-targets .site-header {
       flex-wrap: wrap;
     }
-    body.theme-adaptive .site-header nav {
+    body.large-targets .site-header nav {
       width: 100%;
       flex-wrap: wrap;
       justify-content: flex-start;
       gap: 0.5rem 1rem;
     }
-    body.theme-adaptive .nav-group {
+    body.large-targets .nav-group {
       flex-wrap: wrap;
     }
-    body.theme-adaptive .accessibility-page h1 {
+    body.large-targets .accessibility-page h1 {
       font-size: min(2.75rem, 12vw);
-    }
-  }
-  @media (prefers-color-scheme: dark) {
-    body.theme-adaptive {
-      --paper: #17181a;
-      --ink: #f5f5f2;
-      --secondary: #c4c6cb;
-      --line: #51535a;
-      --accent: #c8bcff;
     }
   }
 }

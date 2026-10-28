@@ -10,7 +10,6 @@ interface Props {
   description: string;
   appSlug?: string;
   policy?: boolean;
-  adaptiveColorScheme?: boolean;
   effectiveDate?: string;
   updatedOn?: string;
 }
@@ -19,7 +18,6 @@ const {
   description,
   appSlug,
   policy = false,
-  adaptiveColorScheme = false,
   effectiveDate,
   updatedOn,
 } = Astro.props;
@@ -33,7 +31,6 @@ const app = appSlug
   description={description}
   appSlug={appSlug}
   policy={policy}
-  adaptiveColorScheme={adaptiveColorScheme}
 >
   <article class="reading">
     <a

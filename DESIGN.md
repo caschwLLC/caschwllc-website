@@ -10,6 +10,15 @@ colors:
   mint: '#e3ede5'
   sky: '#e3edf4'
   accent: '#51419c'
+  dark-paper: '#17181a'
+  dark-ink: '#f5f5f2'
+  dark-secondary: '#c4c6cb'
+  dark-line: '#4a4d55'
+  dark-lavender: '#26213a'
+  dark-mint: '#1b2821'
+  dark-sky: '#1a2633'
+  dark-accent: '#c8bcff'
+  dark-graphite: '#0f1012'
 typography:
   display:
     fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif'
@@ -28,13 +37,18 @@ spacing:
   gutter: 'clamp(1.25rem, 4.5vw, 5rem)'
 components:
   button-primary:
-    backgroundColor: '{colors.ink}'
+    backgroundColor: '{colors.accent}'
     textColor: '#ffffff'
     rounded: '{rounded.pill}'
     padding: '0.85rem 1.5rem'
   button-primary-hover:
-    backgroundColor: '{colors.accent}'
+    backgroundColor: '#352568'
     textColor: '#ffffff'
+  button-secondary:
+    backgroundColor: 'transparent'
+    textColor: '#443582'
+    rounded: '{rounded.pill}'
+    padding: '0.85rem 1.5rem'
 ---
 
 # Design system: caschw LLC
@@ -54,6 +68,16 @@ chapter; mint supports reflection; sky supports practice. The dark insights
 chapter uses a graphite field with light text and an actual dark-mode capture.
 Accent is used for interactive hover/focus and reading-page links, not for
 invented app UI. Screen colors remain the genuine capture's colors.
+
+Every page follows the visitor's system appearance with no toggle or script.
+In dark appearance paper becomes near-black `#17181a`, ink `#f5f5f2` and
+secondary `#c4c6cb`; lavender, mint and sky become deep tints (`#26213a`,
+`#1b2821`, `#1a2633`) so chapters keep their identity without glare, and the
+graphite chapter deepens to `#0f1012` with a hairline edge. Store buttons lift
+to brighter fills (Feelory `#6b5bc9`, hover `#443582`; Override `#4675a9`,
+hover `#2b5584`) with white text, and outlined Explore links use light app
+tints (`#c8bcff`, `#a9c8ea`). All text keeps at least WCAG AA contrast. Pages
+declare `color-scheme: light dark` and light/dark `theme-color` values.
 
 ## Typography
 
@@ -91,10 +115,12 @@ Paired opening screens lean ±5 degrees without changing their content.
 
 The header exposes home, marketed products and contextual support; platform
 headings are data-derived.
-Primary links use a dark pill and a directional arrow. Coming soon is a
-noninteractive outlined text status, never a disabled download button.
-Button hovers retain Feelory's purple accent (`#51419c`); Override uses the
-equivalent blue accent (`#416e9c`) on its sky showcase and product pages.
+Primary store/download links use a pill filled with the app colour and a
+directional arrow; hover visibly deepens it. Feelory uses purple (`#51419c`, hover
+`#352568`); Override uses blue (`#416e9c`, hover `#23486f`) on its sky showcase
+and product pages. Secondary "Explore" links are outlined in the deeper shade
+and fill with the app colour on hover. Coming soon is a noninteractive outlined
+text status, never a disabled download button.
 The footer links to email support and website privacy. App-specific privacy,
 support and accessibility links live on the relevant product pages. Product
 features use semantic figures, descriptions and honest synthetic-content
@@ -108,7 +134,7 @@ the homepage, product page and support page. The approved native-rendered Overri
 W2 lilac-glass and gold-enamel split O icon displays at 64px, using the supplied
 64/128/192px light and dark assets at 1x/2x/3x. It has no extra rounding, effects
 or padding; its own transparent mask is preserved. Dark artwork follows the
-visitor's appearance preference without changing the existing page theme.
+visitor's appearance preference together with the page theme.
 An open menu bar definition list uses the supplied M2 currentColor glyphs and
 explains Accessibility-missing, paused, stashed and ready priority. Compact
 reading-page variants connect status to permission and troubleshooting guidance.

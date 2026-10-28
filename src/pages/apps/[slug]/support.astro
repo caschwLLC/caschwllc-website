@@ -3,7 +3,6 @@ import { render } from 'astro:content';
 import Reading from '../../../layouts/Reading.astro';
 import { getApps, policyFor } from '../../../lib/content';
 import type { App } from '../../../lib/catalog';
-import Availability from '../../../components/Availability.astro';
 import OverrideMenuBarStates from '../../../components/OverrideMenuBarStates.astro';
 export async function getStaticPaths() {
   return (await getApps()).map((app) => ({
@@ -25,14 +24,6 @@ const { Content } = await render(entry);
   appSlug={app.slug}
   updatedOn={entry.data.updatedOn}
 >
-  {app.presentation === 'utility' && (
-    <div class="support-download">
-      <p>
-        Beta {app.distribution.version}. {app.compatibility}
-      </p>
-      <Availability app={app} />
-    </div>
-  )}
   {app.slug === 'override' && (
     <OverrideMenuBarStates id="support-menu-bar" context="support" />
   )}

@@ -8,7 +8,11 @@
     "accessibility": true
   },
   "visibility": "marketed",
-  "status": "coming-soon",
+  "status": "available",
+  "store": {
+    "url": "https://apps.apple.com/us/app/feelory-app/id6819497727",
+    "verifiedOn": "2026-10-28"
+  },
   "platforms": ["apple"],
   "summary": "Journal with feeling tags and intensity, make quick check-ins, and explore 128 emotions. Personal by design, local by default.",
   "headline": "Find words for what you feel.",

@@ -1,5 +1,15 @@
 # Local validation evidence
 
+## Feelory App Store availability — 2026-10-28
+
+The owner reported that Feelory is live. The public listing
+`https://apps.apple.com/us/app/feelory-app/id6819497727` was fetched on
+2026-10-28: title Feelory App, iPhone, iPad and Mac (Designed for iPad),
+copyright caschw LLC, privacy label "Data Not Collected", consistent with the
+Feelory privacy policy. Price, ratings and reviews are not published on the site.
+The catalog records `status: available` and `verifiedOn: 2026-10-28`.
+No app build, App Store Connect change, commit, push or deployment was performed.
+
 ## Override 0.1.1 download follow-up — 2026-10-19
 
 The owner confirmed that 0.1.1 is published and requested the website version and
@@ -182,7 +192,8 @@ noindex and a banner on non-policy pages only. Policy text is owner-approved.
 Rendered policy HTML and browser checks reject policy draft/unapproved labels,
 public-review banners and review metadata in both modes; legitimate journal
 draft and correspondence review descriptions remain part of the policy.
-Feelory privacy displays the app's Coming soon notice separately.
+Coming soon apps display an availability notice on their privacy page;
+Feelory no longer does.
 The icon test compares the complete 192px PNG pixels to the unchanged genuine SVG
 layers in back-to-front order and checks the pale center. All three copied SVG
 SHA-256 hashes match the allowed Feelory icon resources. Direct image inspection
@@ -379,3 +390,22 @@ passed: type/lint clean, 19 unit/build-contract tests, built-site checks,
 untracked hostname or intercept vendor requests; no live account events were
 sent. Catalog mutation fixtures explicitly disable analytics so their intended
 content-validation failures are not preempted by the policy fingerprint guard.
+
+## Full-site dark appearance (2026-10-28)
+
+All public pages and the 404 now follow `prefers-color-scheme: dark` through
+shared CSS tokens; previously only screenshots, the Override icon and the
+accessibility page adapted. The Override dark icons already in `public/media/`
+are byte-identical to the Override repository's website export, so no new
+artwork was needed. A browser test emulates dark appearance on every route,
+checking root background/text colors, `color-scheme` and dark `theme-color`
+metadata, zero axe WCAG 2.2 AA violations, tinted chapter fields, skip link,
+review banner and both apps' button default/hover colors.
+
+Policy impact: presentation only. No collection, event fields, providers,
+hosting, retention, consent or support handling changed. `Site.astro` and
+`Reading.astro` are part of the analytics fingerprint, so the recorded approval
+digest changed; on 2026-10-28 the owner explicitly approved the new digest
+`38662f863607be1416d3cbe083d5b6006faa000ca4020d76d419ec8bfad0a03c`, which is now
+recorded in `src/content/analytics-publication.json`. Analytics behavior and
+disclosure are unchanged.

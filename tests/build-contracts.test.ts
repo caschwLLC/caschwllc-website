@@ -74,11 +74,7 @@ test('isolated Astro builds exclude drafts from all discovery and reject malform
       }),
     );
     await build();
-    for (const path of [
-      'index.html',
-      'apps/override/index.html',
-      'apps/override/support/index.html',
-    ]) {
+    for (const path of ['index.html', 'apps/override/index.html']) {
       const html = await readFile(join(output, path), 'utf8');
       assert.ok(html.includes('Download coming soon'));
       assert.ok(

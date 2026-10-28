@@ -22,8 +22,8 @@ blocker**. Parent setup:
    triggers deployment at `https://caschwllc.github.io/caschwllc-website/`.
 4. Verify links, assets, sitemap/canonical and 404 beneath that subpath. Privacy
    pages must not describe the owner-approved policy as draft or under review.
-   Feelory privacy states that the app is coming soon; policy pages omit the
-   public-review banner. Non-policy pages retain the site review banner.
+   Policy pages omit the public-review banner. Non-policy Override pages retain
+   the site review banner; Feelory pages have none now that it is available.
 
 The review build defaults to the repository subpath and noindex. Policy text
 approval is independent of build mode, domain approval and app release status.
@@ -155,7 +155,7 @@ curl -I https://caschwllc.org/not-a-real-page/
 Expect valid HTTPS, apex canonical, www → apex and HTTP → HTTPS redirects,
 200 public routes/assets, correct sitemap, and a real 404 response with the
 accessible custom body. Check browser mixed-content/network requests, footer
-links and Coming soon status. Recheck MX/TXT records against the saved snapshot.
+links and app availability (Feelory App Store link, Override beta download). Recheck MX/TXT records against the saved snapshot.
 
 ## Ongoing deployment
 

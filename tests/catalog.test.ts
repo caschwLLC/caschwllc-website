@@ -15,6 +15,11 @@ import {
 } from '../src/lib/catalog';
 
 const app = appSchema.parse(feelory);
+const comingSoon = appSchema.parse({
+  ...feelory,
+  status: 'coming-soon',
+  store: undefined,
+});
 
 test('Override artwork requires complete local light/dark density sets and valid social metadata', () => {
   assert.doesNotThrow(() => appSchema.parse(override));
@@ -61,11 +66,27 @@ test('Override artwork requires complete local light/dark density sets and valid
     assert.throws(() => appSchema.parse({ ...override, socialImage }));
 });
 
+test('Feelory links to its verified App Store listing', () => {
+  assert.equal(app.status, 'available');
+  assert.equal(app.presentation, 'screens');
+  assert.deepEqual('store' in app && app.store, {
+    url: 'https://apps.apple.com/us/app/feelory-app/id6819497727',
+    verifiedOn: '2026-10-28',
+  });
+  assert.deepEqual(storeAction(app), {
+    label: 'View on the App Store',
+    href: 'https://apps.apple.com/us/app/feelory-app/id6819497727',
+  });
+});
+
 test('coming soon is marketed without a download or store badge', () => {
-  assert.equal(marketedApps([app]).length, 1);
-  assert.deepEqual(storeAction(app), { label: 'Coming soon', href: null });
-  assert.equal(navigation([app])[0]?.label, null);
-  assert.deepEqual(publicRoutes([app]), [
+  assert.equal(marketedApps([comingSoon]).length, 1);
+  assert.deepEqual(storeAction(comingSoon), {
+    label: 'Coming soon',
+    href: null,
+  });
+  assert.equal(navigation([comingSoon])[0]?.label, null);
+  assert.deepEqual(publicRoutes([comingSoon]), [
     '/',
     '/privacy/',
     '/apps/feelory/',
@@ -178,7 +199,7 @@ test('drafts never enter route discovery or navigation, even when available', ()
 
 test('platform groups appear only when real marketed products span Apple and Windows', () => {
   const windows = appSchema.parse({
-    ...feelory,
+    ...comingSoon,
     slug: 'windows-tool',
     platforms: ['windows'],
   });
@@ -198,8 +219,27 @@ test('available state requires a verified platform store URL; coming soon forbid
   };
   const live = appSchema.parse({ ...feelory, status: 'available', store });
   assert.equal(storeAction(live).href, store.url);
-  assert.throws(() => appSchema.parse({ ...feelory, status: 'available' }));
-  assert.throws(() => appSchema.parse({ ...feelory, store }));
+  assert.equal(storeAction(live).label, 'View on the App Store');
+  const windowsStore = {
+    url: 'https://apps.microsoft.com/detail/ABC123',
+    verifiedOn: '2026-10-07',
+  };
+  assert.equal(
+    storeAction(
+      appSchema.parse({
+        ...feelory,
+        platforms: ['windows'],
+        store: windowsStore,
+      }),
+    ).label,
+    'View on Microsoft Store',
+  );
+  assert.throws(() =>
+    appSchema.parse({ ...feelory, status: 'available', store: undefined }),
+  );
+  assert.throws(() =>
+    appSchema.parse({ ...feelory, status: 'coming-soon', store }),
+  );
   for (const url of [
     'https://evil.test/app/id6819497727',
     'https://apps.apple.com.evil.test/us/app/feelory/id6819497727',

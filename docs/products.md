@@ -3,6 +3,7 @@
 `src/content/apps/feelory.json` and `override.json` are the marketed products.
 Availability is separate from marketing visibility. The site may show an
 unreleased product; it may not show a fake or disabled download badge.
+Feelory is `available` with an App Store listing verified on 2026-10-28.
 
 Every record declares a `presentation` and explicit `pages` for privacy,
 support and accessibility. Support is required; undeclared pages have no route
@@ -35,8 +36,11 @@ claims. Do not create speculative empty platform pages.
 For screen-led store apps, `coming-soon` forbids a store object. `available` requires a credential-free
 HTTPS listing on a platform-compatible verified store host and a valid
 verification date. Visit the public listing, verify title/publisher/region and
-actual availability, then review the catalog change. Apple ID **6819497727**
-alone is not verification, a release date, or a usable download link.
+actual availability, then review the catalog change. An app ID alone is not
+verification. Apple listings render **View on the App Store**; Microsoft Store
+listings render **View on Microsoft Store**. Feelory's listing
+`https://apps.apple.com/us/app/feelory-app/id6819497727` was verified on
+2026-10-28 (iPhone, iPad and Macs through Designed for iPad).
 
 ### Override beta DMG
 
@@ -81,7 +85,7 @@ Never publish a release as a side effect of website work.
 The available component currently renders a clear text store link. If adding
 an official badge, verify the current Apple/Microsoft license and marketing
 guidelines, retain notices and document provenance. Never draw a counterfeit
-badge. No store badges are shipped in the coming-soon site.
+badge. No official store badges are shipped.
 
 ## Navigation
 
