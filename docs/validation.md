@@ -405,5 +405,7 @@ review banner and both apps' button default/hover colors.
 Policy impact: presentation only. No collection, event fields, providers,
 hosting, retention, consent or support handling changed. `Site.astro` and
 `Reading.astro` are part of the analytics fingerprint, so the recorded approval
-digest no longer matches and needs the owner's explicit re-approval before
-production analytics can be enabled.
+digest changed; on 2026-10-28 the owner explicitly approved the new digest
+`38662f863607be1416d3cbe083d5b6006faa000ca4020d76d419ec8bfad0a03c`, which is now
+recorded in `src/content/analytics-publication.json`. Analytics behavior and
+disclosure are unchanged.
