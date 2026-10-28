@@ -8,8 +8,9 @@ No React, backend, contact forms, embedded services or analytics are introduced.
 
 ## Catalog visibility separate from release state
 
-Feelory is public marketing content but unreleased. `visibility` determines
-publication; `status` controls availability. A coming-soon page is useful,
+Feelory was marketed before release and is now available through its verified
+App Store listing. `visibility` determines publication; `status` controls
+availability. A coming-soon page is useful,
 while an inactive download badge would mislead. One shared validated contract
 feeds routes, navigation and discovery.
 
@@ -28,6 +29,6 @@ and a default-disabled production repository variable both fail closed.
 The user subsequently authorized a public review preview: a separate review
 variable and repository-subpath target allow that narrow publication with
 separate deployment gates. The owner subsequently approved policy text and
-removed its draft labeling: only app availability is Coming soon. Unknown
+removed its draft labeling; app availability is recorded separately. Unknown
 publisher/date and final-domain gates remain separate. GitHub settings
 and DNS remain owner actions. Prepared workflows are not active deployment.

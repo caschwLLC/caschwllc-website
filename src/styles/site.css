@@ -87,6 +87,7 @@
     .button {
       transition:
         background-color 180ms ease-out,
+        border-color 180ms ease-out,
         color 180ms ease-out;
     }
     .device-pair {
@@ -394,12 +395,6 @@
     min-height: 44px;
     margin-top: 0.75rem;
   }
-  .support-download {
-    margin-bottom: 2rem;
-  }
-  .support-download p {
-    margin-bottom: 1rem;
-  }
   .utility-menu-bar {
     padding-bottom: 5rem;
   }
@@ -526,6 +521,9 @@
     .showcase-copy .button {
       order: 5;
       justify-self: start;
+    }
+    .showcase-copy > .product-name + .button {
+      order: 1;
     }
     .showcase-copy > .compatibility {
       order: 6;
@@ -692,8 +690,14 @@
     font-weight: 650;
     letter-spacing: -0.035em;
   }
-  .showcase-copy > .status {
-    margin-top: 1.25rem;
+  .showcase-copy > .status,
+  .showcase-copy > .product-name + .button {
+    margin-top: 1.5rem;
+  }
+  @media (max-width: 700px) {
+    .showcase-copy > .product-name + .button {
+      margin-top: 0;
+    }
   }
   .status {
     display: inline-flex;
@@ -711,9 +715,9 @@
     align-items: center;
     gap: 1.5rem;
     justify-content: space-between;
-    background: var(--ink);
+    background: var(--button-fill, #51419c);
     color: white;
-    border: 1px solid var(--ink);
+    border: 1px solid var(--button-fill, #51419c);
     border-radius: 99px;
     padding: 0.85rem 1.5rem;
     font-weight: 600;
@@ -724,11 +728,23 @@
   }
   .utility-showcase,
   body[data-app='override'] {
-    --button-hover: #416e9c;
+    --button-fill: #416e9c;
+    --button-deep: #355d87;
+    --button-hover: #23486f;
   }
   .button:hover {
-    background: var(--button-hover, var(--accent));
+    background: var(--button-hover, #352568);
+    border-color: var(--button-hover, #352568);
     color: white;
+  }
+  .button-secondary {
+    background: transparent;
+    color: var(--button-deep, #443582);
+    border-color: currentColor;
+  }
+  .button-secondary:hover {
+    background: var(--button-fill, #51419c);
+    border-color: var(--button-fill, #51419c);
   }
   .text-link {
     font-weight: 600;

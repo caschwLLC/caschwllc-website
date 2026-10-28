@@ -1,5 +1,15 @@
 # Local validation evidence
 
+## Feelory App Store availability — 2026-10-28
+
+The owner reported that Feelory is live. The public listing
+`https://apps.apple.com/us/app/feelory-app/id6819497727` was fetched on
+2026-10-28: title Feelory App, iPhone, iPad and Mac (Designed for iPad),
+copyright caschw LLC, privacy label "Data Not Collected", consistent with the
+Feelory privacy policy. Price, ratings and reviews are not published on the site.
+The catalog records `status: available` and `verifiedOn: 2026-10-28`.
+No app build, App Store Connect change, commit, push or deployment was performed.
+
 ## Override 0.1.1 download follow-up — 2026-10-19
 
 The owner confirmed that 0.1.1 is published and requested the website version and
@@ -182,7 +192,8 @@ noindex and a banner on non-policy pages only. Policy text is owner-approved.
 Rendered policy HTML and browser checks reject policy draft/unapproved labels,
 public-review banners and review metadata in both modes; legitimate journal
 draft and correspondence review descriptions remain part of the policy.
-Feelory privacy displays the app's Coming soon notice separately.
+Coming soon apps display an availability notice on their privacy page;
+Feelory no longer does.
 The icon test compares the complete 192px PNG pixels to the unchanged genuine SVG
 layers in back-to-front order and checks the pale center. All three copied SVG
 SHA-256 hashes match the allowed Feelory icon resources. Direct image inspection

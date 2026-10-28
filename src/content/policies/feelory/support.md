@@ -1,10 +1,12 @@
 ---
 title: Feelory support
 description: Get help with Feelory, iCloud sync, backups, optional on-device AI, and problem reports.
+updatedOn: '2026-10-28'
 ---
 
 Need help with Feelory? Email [apps@caschw.com](mailto:apps@caschw.com).
-Feelory is coming soon; there is no announced release date.
+Feelory is available on the App Store for iPhone and iPad, and on compatible
+Macs through Designed for iPad.
 
 ## Accessibility
 

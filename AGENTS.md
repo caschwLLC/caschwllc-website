@@ -23,9 +23,10 @@ Astro telemetry is disabled for CI; use `ASTRO_TELEMETRY_DISABLED=1` locally.
 - One validated app catalog drives all marketed routes, navigation and sitemap.
   Draft apps must not publish. A public repository does not make draft content
   confidential: never add confidential future-product data.
-- Feelory is **Coming soon** until a public store listing is verified and a
-  verification date is recorded. No release date, inactive badge, fake download
-  affordance, pricing, ratings, reviews, award or clinical claims.
+- Feelory is **available** through its verified public App Store listing
+  (`verifiedOn` recorded in its catalog entry). Use the shared text store link,
+  never an unlicensed badge. No pricing, ratings, reviews, award or clinical
+  claims.
 - Local-first is not a claim that hosting/email providers collect nothing.
   Maintain explicit opt-in iCloud, write-only Health, optional on-device AI and
   deletion/export/backup distinctions.

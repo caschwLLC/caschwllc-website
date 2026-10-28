@@ -66,7 +66,8 @@ vendor script, even when previewing an enabled production artifact.
    production/Pages/domain approvals remain independent and unchanged.
 8. Confirm one page view and Override click in Umami Realtime on the final
    domain, with DNT/blockers off for this deliberate check. Verify `app`,
-   `version` and source page. No live App Store fixture should be published.
+   `version` and source page. Optionally confirm a Feelory `store_click`.
+   Test fixtures must not be published.
 
 To disable collection, set `UMAMI_ENABLED=false` and authorize a rebuild and
 deployment. Already deployed artifacts keep their existing behavior until
@@ -135,7 +136,8 @@ derive a precise conversion rate from the two.
 
 - Use `Site.astro` for public HTML pages and `Availability.astro` for actual
   download/store actions. This automatically inherits page and event coverage.
-  A Coming soon app has no store event or fabricated link.
+  A Coming soon app has no store event or fabricated link. Feelory's verified
+  App Store link emits `store_click` with `app: feelory`.
 - All marketed apps must declare an approved app-specific privacy policy.
 - Approved app policy pages end with `WebsitePrivacyNotice.astro` through
   `Reading.astro`: a short Web privacy section linking to the site policy.

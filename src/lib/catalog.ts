@@ -294,7 +294,13 @@ export function storeAction(app: App) {
         }
       : { label: `Beta ${release.version} · Download coming soon`, href: null };
   }
-  return app.status === 'available' && app.store
-    ? { label: 'View store listing', href: app.store.url }
-    : { label: 'Coming soon', href: null };
+  if (app.status !== 'available' || !app.store)
+    return { label: 'Coming soon', href: null };
+  return {
+    label:
+      new URL(app.store.url).hostname === 'apps.apple.com'
+        ? 'View on the App Store'
+        : 'View on Microsoft Store',
+    href: app.store.url,
+  };
 }

@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Feelory is available: its verified App Store listing replaces Coming soon on
+  product and home pages, and the Feelory review banner is removed.
+- Override support no longer repeats the download action; it links to the
+  Override page for the beta DMG.
+- Buttons use each app's colour instead of black; "Explore" links are outlined,
+  and the home store button has proper spacing below the product name.
+- Store/download buttons have stronger deep-plum and navy hover states while
+  retaining their initial app colours and the existing outlined Explore treatment.
 - Local Astro/TypeScript showroom with Feelory coming-soon presentation.
 - Privacy/support content, catalog-driven discovery and accessible 404.
 - Genuine optimized screen compositions and documented asset provenance.

@@ -244,15 +244,23 @@ for (const route of routes) {
     await expect(page.locator('footer')).not.toContainText(
       'Feelory accessibility',
     );
-    await expect(page.locator('a[href*="apps.apple.com"]')).toHaveCount(0);
+    const storeLinks = page.locator('a[href*="apps.apple.com"]');
+    if (['/', '/apps/feelory/'].includes(route)) {
+      expect(await storeLinks.count()).toBeGreaterThan(0);
+      for (const link of await storeLinks.all()) {
+        await expect(link).toHaveAttribute(
+          'href',
+          'https://apps.apple.com/us/app/feelory-app/id6819497727',
+        );
+        await expect(link).toHaveAttribute('data-analytics-app', 'feelory');
+      }
+    } else await expect(storeLinks).toHaveCount(0);
     await expect(page.locator('form, iframe')).toHaveCount(0);
     const expectedBanner =
       siteConfig().mode === 'review' && !route.endsWith('/privacy/')
         ? route.startsWith('/apps/override/')
           ? 'Public Preview -- Coming soon.'
-          : route.startsWith('/apps/feelory/')
-            ? 'Coming soon.'
-            : null
+          : null
         : null;
     if (expectedBanner)
       await expect(page.locator('.review-banner')).toHaveText(expectedBanner);
@@ -282,9 +290,8 @@ for (const route of routes) {
         /draft policy|public review|unapproved/i,
       );
       if (route === '/apps/feelory/privacy/') {
-        await expect(page.locator('.policy-availability')).toHaveText(
-          'Feelory is coming soon. This policy describes how Feelory handles your information.',
-        );
+        await expect(page.locator('.policy-availability')).toHaveCount(0);
+        await expect(page.locator('body')).not.toContainText('coming soon');
         await expect(page.locator('body')).toContainText(
           'Effective: 2026-10-19',
         );
@@ -355,18 +362,39 @@ for (const route of routes) {
   });
 }
 
-test('product button hovers match their showcase colors', async ({ page }) => {
+test('product buttons use their showcase colors', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(pathFor('/'));
+  const store = page.locator('.showcase .product-name + .button').first();
+  await expect(store).toHaveCSS('background-color', 'rgb(81, 65, 156)');
+  await store.hover();
+  await expect(store).toHaveCSS('background-color', 'rgb(53, 37, 104)');
+  await expect(store).toHaveCSS('color', 'rgb(255, 255, 255)');
   const feelory = page.getByRole('link', { name: 'Explore Feelory' });
+  await expect(feelory).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await expect(feelory).toHaveCSS('color', 'rgb(68, 53, 130)');
   await feelory.hover();
   await expect(feelory).toHaveCSS('background-color', 'rgb(81, 65, 156)');
-  const override = page.locator('.utility-showcase .button');
-  for (const button of await override.all()) {
-    await button.hover();
-    await expect(button).toHaveCSS('background-color', 'rgb(65, 110, 156)');
-    await expect(button).toHaveCSS('color', 'rgb(255, 255, 255)');
-  }
+  await expect(feelory).toHaveCSS('color', 'rgb(255, 255, 255)');
+  const explore = page.getByRole('link', { name: 'Explore Override' });
+  await expect(explore).toHaveCSS('color', 'rgb(53, 93, 135)');
+  await explore.hover();
+  await expect(explore).toHaveCSS('background-color', 'rgb(65, 110, 156)');
+  await expect(explore).toHaveCSS('color', 'rgb(255, 255, 255)');
+  const download = page.locator(
+    '.utility-showcase .button:not(.button-secondary)',
+  );
+  await expect(download).toHaveCount(1);
+  await page.mouse.move(0, 0);
+  await expect(download).toHaveCSS('background-color', 'rgb(65, 110, 156)');
+  await download.hover();
+  await expect(download).toHaveCSS('background-color', 'rgb(35, 72, 111)');
+  await page.goto(pathFor('/apps/feelory/'));
+  const productStore = page.locator('.hero-actions .button');
+  await expect(productStore).toHaveCSS('background-color', 'rgb(81, 65, 156)');
+  await productStore.hover();
+  await expect(productStore).toHaveCSS('background-color', 'rgb(53, 37, 104)');
+  await expect(productStore).toHaveCSS('color', 'rgb(255, 255, 255)');
   for (const route of [
     '/apps/override/',
     '/apps/override/support/',
@@ -374,8 +402,10 @@ test('product button hovers match their showcase colors', async ({ page }) => {
   ]) {
     await page.goto(pathFor(route));
     for (const button of await page.locator('.button').all()) {
-      await button.hover();
+      await page.mouse.move(0, 0);
       await expect(button).toHaveCSS('background-color', 'rgb(65, 110, 156)');
+      await button.hover();
+      await expect(button).toHaveCSS('background-color', 'rgb(35, 72, 111)');
       await expect(button).toHaveCSS('color', 'rgb(255, 255, 255)');
     }
   }
@@ -386,7 +416,15 @@ test('product anchors, honest availability and reduced motion', async ({
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(pathFor('/apps/feelory/'));
-  await expect(page.locator('.hero-actions')).toContainText('Coming soon');
+  await expect(
+    page
+      .locator('.hero-actions')
+      .getByRole('link', { name: 'View on the App Store' }),
+  ).toHaveAttribute(
+    'href',
+    'https://apps.apple.com/us/app/feelory-app/id6819497727',
+  );
+  await expect(page.locator('main')).not.toContainText('Coming soon');
   await page.getByRole('link', { name: 'Take a closer look' }).click();
   await expect(page).toHaveURL(/#explore$/);
   expect(
@@ -460,7 +498,10 @@ test('Override beta connects download, setup, support and permission guidance', 
   );
   await expect(
     page.getByRole('link', { name: 'Download beta 0.1.1' }),
-  ).toHaveAttribute('href', download);
+  ).toHaveCount(0);
+  await expect(
+    page.locator('.prose').getByRole('link', { name: 'Override page' }),
+  ).toHaveAttribute('href', '../');
   await expect(page.locator('main')).toContainText(
     'Quit Override from the menu bar before replacing',
   );
@@ -536,20 +577,15 @@ test('owner-confirmed app privacy and page-specific dates remain separate from w
   await expect(page.locator('.prose')).toContainText(
     'does not delete those copies',
   );
-  for (const route of [
-    '/apps/override/support/',
-    '/apps/override/accessibility/',
-  ]) {
-    await page.goto(pathFor(route));
-    await expect(page.locator('time')).toHaveAttribute(
-      'datetime',
-      '2026-10-19',
-    );
-  }
+  await page.goto(pathFor('/apps/override/support/'));
+  await expect(page.locator('time')).toHaveAttribute('datetime', '2026-10-28');
+  await expect(page.locator('a[href*="/releases/download/"]')).toHaveCount(0);
+  await page.goto(pathFor('/apps/override/accessibility/'));
+  await expect(page.locator('time')).toHaveAttribute('datetime', '2026-10-19');
   await page.goto(pathFor('/apps/feelory/accessibility/'));
   await expect(page.locator('time')).toHaveAttribute('datetime', '2026-10-12');
   await page.goto(pathFor('/apps/feelory/support/'));
-  await expect(page.locator('time')).toHaveCount(0);
+  await expect(page.locator('time')).toHaveAttribute('datetime', '2026-10-28');
 });
 
 test('Override feature chapters share Feelory’s full-width color fields', async ({

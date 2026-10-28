@@ -46,8 +46,9 @@ Web privacy link, not detailed website analytics statements.
 
 The owner explicitly approved the public policy text and directed removal of
 policy draft/review notifications on 2026-10-07. Approval is recorded separately
-in `src/content/policy-publication.json`. The app is still **Coming soon**:
-policy approval does not release it or activate download links.
+in `src/content/policy-publication.json`. Policy approval did not release the
+app or activate store links; Feelory's App Store availability was verified
+separately on 2026-10-28.
 No legal identity, effective date, postal address, universal
 deletion guarantee or artificial deletion deadline has been invented.
 
@@ -79,22 +80,25 @@ Final production also requires separately authorized `PAGES_LAUNCH_APPROVED=true
 content confirmations cannot themselves activate it. The user separately
 authorized a public **review** site at the repository Pages URL, admitted through
 `PAGES_REVIEW_APPROVED=true` in review mode. Review pages are noindex and carry a
-product-specific banner on non-policy app pages only: Override says
-**Public Preview -- Coming soon.**, and Feelory says **Coming soon.**
+banner on non-policy Override pages only: **Public Preview -- Coming soon.**
+Feelory pages have no review banner now that the app is available.
 The developer homepage has no banner and keeps its closing copy studio-wide,
 without Feelory privacy/support links. These preview labels do not change
 Override's public beta download availability.
 Privacy pages have no review banner or
-policy draft label in either build mode. The Feelory policy instead states:
-**Feelory is coming soon. This policy describes how Feelory handles your information.**
+policy draft label in either build mode. Policy pages show an availability
+notice only for Coming soon apps; Feelory's policy no longer shows one.
+Feelory support was updated on 2026-10-28 to state App Store availability.
+Override support was updated on 2026-10-28 to link to the Override page for
+the beta DMG instead of repeating the download action.
 Website privacy carries no app availability notice. Unknown publisher/date values
 remain omitted rather than invented; separate final-domain facts are unchanged.
 `check-launch.ts --review` validates only this narrow review authorization.
 
-## Out-of-scope app follow-up
+## App policy links
 
-After the approved policy correction is deployed, a separate Feelory change must expose
-`https://caschwllc.org/apps/feelory/privacy/` and
-`https://caschwllc.org/apps/feelory/support/` inside the app and in App Store
-Connect as appropriate. The website implementation does not modify Feelory.
+The owner confirmed on 2026-10-28 that Feelory's App Store privacy and support
+links point to `https://caschwllc.org/apps/feelory/privacy/` and
+`https://caschwllc.org/apps/feelory/support/`. The website implementation does
+not modify Feelory.
 Its existing privacy promise is not a substitute for an accessible full policy.

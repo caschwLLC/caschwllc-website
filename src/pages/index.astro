@@ -51,7 +51,7 @@ const href = (path: string) => localPath(path, import.meta.env.BASE_URL);
         )}
         <h3>{app.headline}</h3>
         <p>{app.summary}</p>
-        <a class="button" href={href(`/apps/${app.slug}/`)}>
+        <a class="button button-secondary" href={href(`/apps/${app.slug}/`)}>
           Explore {app.name}
           <span aria-hidden="true"> ↗</span>
         </a>

@@ -32,12 +32,8 @@ const canonical = new URL(
 const activeApp = apps.find((app) => app.slug === appSlug);
 const supportApp = activeApp;
 const reviewBanner =
-  review && !policy
-    ? activeApp?.slug === 'override'
-      ? 'Public Preview -- Coming soon.'
-      : activeApp?.slug === 'feelory'
-        ? 'Coming soon.'
-        : undefined
+  review && !policy && activeApp?.slug === 'override'
+    ? 'Public Preview -- Coming soon.'
     : undefined;
 const socialApp = appSlug ? activeApp : apps[0];
 const socialIcon = socialApp?.icon;

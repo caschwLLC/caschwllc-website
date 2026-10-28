@@ -28,13 +28,18 @@ spacing:
   gutter: 'clamp(1.25rem, 4.5vw, 5rem)'
 components:
   button-primary:
-    backgroundColor: '{colors.ink}'
+    backgroundColor: '{colors.accent}'
     textColor: '#ffffff'
     rounded: '{rounded.pill}'
     padding: '0.85rem 1.5rem'
   button-primary-hover:
-    backgroundColor: '{colors.accent}'
+    backgroundColor: '#352568'
     textColor: '#ffffff'
+  button-secondary:
+    backgroundColor: 'transparent'
+    textColor: '#443582'
+    rounded: '{rounded.pill}'
+    padding: '0.85rem 1.5rem'
 ---
 
 # Design system: caschw LLC
@@ -91,10 +96,12 @@ Paired opening screens lean ±5 degrees without changing their content.
 
 The header exposes home, marketed products and contextual support; platform
 headings are data-derived.
-Primary links use a dark pill and a directional arrow. Coming soon is a
-noninteractive outlined text status, never a disabled download button.
-Button hovers retain Feelory's purple accent (`#51419c`); Override uses the
-equivalent blue accent (`#416e9c`) on its sky showcase and product pages.
+Primary store/download links use a pill filled with the app colour and a
+directional arrow; hover visibly deepens it. Feelory uses purple (`#51419c`, hover
+`#352568`); Override uses blue (`#416e9c`, hover `#23486f`) on its sky showcase
+and product pages. Secondary "Explore" links are outlined in the deeper shade
+and fill with the app colour on hover. Coming soon is a noninteractive outlined
+text status, never a disabled download button.
 The footer links to email support and website privacy. App-specific privacy,
 support and accessibility links live on the relevant product pages. Product
 features use semantic figures, descriptions and honest synthetic-content

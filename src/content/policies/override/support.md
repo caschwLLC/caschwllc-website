@@ -1,7 +1,7 @@
 ---
 title: Override support
 description: Install the Override beta, grant window access, upgrade, uninstall, and troubleshoot window management.
-updatedOn: '2026-10-19'
+updatedOn: '2026-10-28'
 ---
 
 Override is beta software. You may encounter bugs, and some applications expose
@@ -10,7 +10,7 @@ limited window controls to macOS Accessibility. Need help? Email
 
 ## Install Override
 
-Use the linked beta DMG above when available.
+Download the beta DMG from the [Override page](../).
 
 1. Download **Override-0.1.1.dmg**.
 2. Open the DMG.

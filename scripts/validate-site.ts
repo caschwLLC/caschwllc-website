@@ -183,21 +183,15 @@ for (const route of [...routes, '/404.html']) {
       `${route}: policy status must not be confused with app availability`,
     );
     if (route === '/apps/feelory/privacy/') {
-      assert.ok(html.includes('Feelory is coming soon.'));
-      assert.ok(
-        html.includes(
-          'This policy describes how Feelory handles your information.',
-        ),
-      );
+      assert.ok(!html.includes('policy-availability'));
+      assert.ok(!html.includes('Feelory is coming soon.'));
     }
   }
   if (target.mode === 'review') {
     const expectedBanner =
       !policy && route.startsWith('/apps/override/')
         ? 'Public Preview -- Coming soon.'
-        : !policy && route.startsWith('/apps/feelory/')
-          ? 'Coming soon.'
-          : null;
+        : null;
     const banner =
       html
         .match(/<aside class="review-banner"[^>]*>(.*?)<\/aside>/s)?.[1]

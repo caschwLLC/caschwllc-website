@@ -16,9 +16,10 @@ information site, not an account service or storefront.
 
 Feelory helps with emotional literacy and personal reflection: 128 emotions in
 eight families, journaling, multiple feeling tags, quick check-ins, practice and
-insights. It is coming soon for iPhone and iPad, with compatible Macs through
-Designed for iPad. No release date, public store listing, price, rating or
-testimonial has been verified. Apple ID 6819497727 is not a verified store URL.
+insights. It is available on the App Store for iPhone and iPad, with compatible
+Macs through Designed for iPad. The public listing
+`https://apps.apple.com/us/app/feelory-app/id6819497727` was verified on
+2026-10-28. Do not publish its price, rating, review or testimonial content.
 
 Data is local by default. iCloud sync, write-only Apple Health logging and
 on-device AI are optional. Core use does not require AI. No remote AI fallback.
@@ -61,7 +62,8 @@ The user separately authorized public review at the temporary repository Pages
 URL. The parent owns publication setup; this implementation does not commit,
 push or change permissions/DNS. The owner subsequently approved the policy text and removed policy draft labels.
 That approval does not invent publisher/date facts or authorize custom-domain
-publication or store release. Feelory remains Coming soon.
+publication. Feelory's store availability was verified separately from its
+public listing on 2026-10-28.
 
 ## Accessibility
 
