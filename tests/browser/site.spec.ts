@@ -411,6 +411,88 @@ test('product buttons use their showcase colors', async ({ page }) => {
   }
 });
 
+test('every page follows the dark appearance with accessible contrast', async ({
+  page,
+}) => {
+  await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
+  for (const route of routes) {
+    await page.goto(pathFor(route));
+    await expect(page.locator('meta[name="color-scheme"]')).toHaveAttribute(
+      'content',
+      'light dark',
+    );
+    await expect(
+      page.locator('meta[name="theme-color"][media*="dark"]'),
+    ).toHaveAttribute('content', '#17181a');
+    await expect(page.locator('html')).toHaveCSS(
+      'background-color',
+      'rgb(23, 24, 26)',
+    );
+    await expect(page.locator('body')).toHaveCSS('color', 'rgb(245, 245, 242)');
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze();
+    expect(results.violations, route).toEqual([]);
+  }
+
+  await page.goto(pathFor('/'));
+  await expect(
+    page.locator('.showcase:not(.utility-showcase)').first(),
+  ).toHaveCSS('background-color', 'rgb(38, 33, 58)');
+  await expect(page.locator('.utility-showcase')).toHaveCSS(
+    'background-color',
+    'rgb(26, 38, 51)',
+  );
+  const store = page.locator('.showcase .product-name + .button').first();
+  await expect(store).toHaveCSS('background-color', 'rgb(107, 91, 201)');
+  await store.hover();
+  await expect(store).toHaveCSS('background-color', 'rgb(68, 53, 130)');
+  await expect(store).toHaveCSS('color', 'rgb(255, 255, 255)');
+  const feelory = page.getByRole('link', { name: 'Explore Feelory' });
+  await expect(feelory).toHaveCSS('color', 'rgb(200, 188, 255)');
+  await feelory.hover();
+  await expect(feelory).toHaveCSS('background-color', 'rgb(107, 91, 201)');
+  const override = page.getByRole('link', { name: 'Explore Override' });
+  await expect(override).toHaveCSS('color', 'rgb(169, 200, 234)');
+  await override.hover();
+  await expect(override).toHaveCSS('background-color', 'rgb(70, 117, 169)');
+  const download = page.locator(
+    '.utility-showcase .button:not(.button-secondary)',
+  );
+  await page.mouse.move(0, 0);
+  await expect(download).toHaveCSS('background-color', 'rgb(70, 117, 169)');
+  await download.hover();
+  await expect(download).toHaveCSS('background-color', 'rgb(43, 85, 132)');
+
+  await page.goto(pathFor('/apps/feelory/'));
+  await expect(page.locator('.ink').first()).toHaveCSS(
+    'background-color',
+    'rgb(15, 16, 18)',
+  );
+  await expect(page.locator('.mint').first()).toHaveCSS(
+    'background-color',
+    'rgb(27, 40, 33)',
+  );
+  await page.keyboard.press('Tab');
+  await expect(page.locator('.skip-link')).toBeFocused();
+  await expect(page.locator('.skip-link')).toHaveCSS(
+    'background-color',
+    'rgb(245, 245, 242)',
+  );
+  await expect(page.locator('.skip-link')).toHaveCSS(
+    'color',
+    'rgb(23, 24, 26)',
+  );
+
+  if (siteConfig().mode === 'review') {
+    await page.goto(pathFor('/apps/override/'));
+    await expect(page.locator('.review-banner')).toHaveCSS(
+      'background-color',
+      'rgb(38, 33, 58)',
+    );
+  }
+});
+
 test('product anchors, honest availability and reduced motion', async ({
   page,
 }) => {
@@ -765,7 +847,7 @@ test('Feelory accessibility page covers assistive use and adapts to viewport, te
       screenshot.evaluate((image: HTMLImageElement) => image.currentSrc),
     )
     .toContain('feelory-serenity-detail-ax5-dark.webp');
-  await expect(page.locator('body')).toHaveCSS(
+  await expect(page.locator('html')).toHaveCSS(
     'background-color',
     'rgb(23, 24, 26)',
   );

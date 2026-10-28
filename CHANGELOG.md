@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Every page now follows the device's dark appearance: near-black paper, light
+  text, deep-tinted chapter fields, brighter app-coloured buttons and matching
+  theme-color metadata, with axe contrast checks on all routes in dark mode.
 - Feelory is available: its verified App Store listing replaces Coming soon on
   product and home pages, and the Feelory review banner is removed.
 - Override support no longer repeats the download action; it links to the

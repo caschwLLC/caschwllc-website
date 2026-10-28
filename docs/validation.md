@@ -390,3 +390,20 @@ passed: type/lint clean, 19 unit/build-contract tests, built-site checks,
 untracked hostname or intercept vendor requests; no live account events were
 sent. Catalog mutation fixtures explicitly disable analytics so their intended
 content-validation failures are not preempted by the policy fingerprint guard.
+
+## Full-site dark appearance (2026-10-28)
+
+All public pages and the 404 now follow `prefers-color-scheme: dark` through
+shared CSS tokens; previously only screenshots, the Override icon and the
+accessibility page adapted. The Override dark icons already in `public/media/`
+are byte-identical to the Override repository's website export, so no new
+artwork was needed. A browser test emulates dark appearance on every route,
+checking root background/text colors, `color-scheme` and dark `theme-color`
+metadata, zero axe WCAG 2.2 AA violations, tinted chapter fields, skip link,
+review banner and both apps' button default/hover colors.
+
+Policy impact: presentation only. No collection, event fields, providers,
+hosting, retention, consent or support handling changed. `Site.astro` and
+`Reading.astro` are part of the analytics fingerprint, so the recorded approval
+digest no longer matches and needs the owner's explicit re-approval before
+production analytics can be enabled.

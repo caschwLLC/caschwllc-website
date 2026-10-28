@@ -10,6 +10,15 @@ colors:
   mint: '#e3ede5'
   sky: '#e3edf4'
   accent: '#51419c'
+  dark-paper: '#17181a'
+  dark-ink: '#f5f5f2'
+  dark-secondary: '#c4c6cb'
+  dark-line: '#4a4d55'
+  dark-lavender: '#26213a'
+  dark-mint: '#1b2821'
+  dark-sky: '#1a2633'
+  dark-accent: '#c8bcff'
+  dark-graphite: '#0f1012'
 typography:
   display:
     fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif'
@@ -59,6 +68,16 @@ chapter; mint supports reflection; sky supports practice. The dark insights
 chapter uses a graphite field with light text and an actual dark-mode capture.
 Accent is used for interactive hover/focus and reading-page links, not for
 invented app UI. Screen colors remain the genuine capture's colors.
+
+Every page follows the visitor's system appearance with no toggle or script.
+In dark appearance paper becomes near-black `#17181a`, ink `#f5f5f2` and
+secondary `#c4c6cb`; lavender, mint and sky become deep tints (`#26213a`,
+`#1b2821`, `#1a2633`) so chapters keep their identity without glare, and the
+graphite chapter deepens to `#0f1012` with a hairline edge. Store buttons lift
+to brighter fills (Feelory `#6b5bc9`, hover `#443582`; Override `#4675a9`,
+hover `#2b5584`) with white text, and outlined Explore links use light app
+tints (`#c8bcff`, `#a9c8ea`). All text keeps at least WCAG AA contrast. Pages
+declare `color-scheme: light dark` and light/dark `theme-color` values.
 
 ## Typography
 
@@ -115,7 +134,7 @@ the homepage, product page and support page. The approved native-rendered Overri
 W2 lilac-glass and gold-enamel split O icon displays at 64px, using the supplied
 64/128/192px light and dark assets at 1x/2x/3x. It has no extra rounding, effects
 or padding; its own transparent mask is preserved. Dark artwork follows the
-visitor's appearance preference without changing the existing page theme.
+visitor's appearance preference together with the page theme.
 An open menu bar definition list uses the supplied M2 currentColor glyphs and
 explains Accessibility-missing, paused, stashed and ready priority. Compact
 reading-page variants connect status to permission and troubleshooting guidance.
