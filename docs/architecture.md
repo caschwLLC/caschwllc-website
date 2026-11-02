@@ -65,6 +65,7 @@ Only a successful trusted main push can enter the separately gated production
 workflow. Production jobs never execute PR code. Settings/protections are an
 owner prerequisite, not something the code can claim to have enforced.
 
-Product facts and media come from the product domains. They arrive only
-through user-scoped `domain-collaboration` exchanges, and must meet the
-requirements in the [intake index](intake-index.md).
+Product facts and media may come from the owner or product domains, including
+through user-scoped `domain-collaboration` exchanges. The provisional
+[intake index](intake-index.md) points to current requirements; exchanges do
+not override repository boundaries or owner approval and provenance gates.
