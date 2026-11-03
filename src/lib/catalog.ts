@@ -127,6 +127,23 @@ const screensApp = appBase.extend({
   icon: z.string().regex(/^\/media\/[a-z0-9-]+\.png$/),
   hero: mediaSchema,
   secondaryHero: mediaSchema,
+  widgets: featureCopy
+    .extend({
+      phone: z
+        .object({
+          media: mediaSchema.extend({ device: z.literal('phone') }),
+          caption: z.string().min(10),
+        })
+        .strict(),
+      tablet: z
+        .object({
+          media: mediaSchema.extend({ device: z.literal('tablet') }),
+          caption: z.string().min(10),
+        })
+        .strict(),
+    })
+    .strict()
+    .optional(),
   features: z
     .array(
       featureCopy
@@ -231,6 +248,9 @@ export function appMedia(app: App): Media[] {
         app.hero,
         app.secondaryHero,
         ...app.features.map((feature) => feature.media),
+        ...(app.widgets
+          ? [app.widgets.phone.media, app.widgets.tablet.media]
+          : []),
       ]
     : [];
 }

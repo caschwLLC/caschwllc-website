@@ -70,14 +70,15 @@ icon artwork are used here. The recaptured screenshots came from
 `docs/assets/app-store/`. No app code, real journal writing, internal planning
 documents or model response transcripts are included.
 
-## Captures
+## Feelory captures
 
-The approved source set contains 28 PNGs: seven scenes each for iPhone/iPad in
-light/dark appearance. The captures are from iPhone 18 Pro and iPad Pro
-13-inch. This site uses iPhone captures except for the iPad reflection; the
-matching dark capture is selected when the visitor prefers dark appearance.
-SHA-256 source hashes, relative names, natural dimensions and output bytes are
-recorded in
+The approved Feelory handoff contains 20 PNGs from source revision
+`bfe41e1739dc1341a4ed924235c88f885b514d68`, captured on 2026-11-03. It includes
+seven refreshed app scenes for iPhone in light and dark plus the iPad
+reflection in both appearances, two Serenity AX5 captures, an installed
+iPhone Large Feeling of the Day widget, and installed iPad Extra Large widget
+captures; both device widgets have light and dark variants. Device dimensions, source-relative names, SHA-256
+hashes, and generated output sizes are recorded in
 [`public/media/manifest.json`](../public/media/manifest.json).
 
 | Site name         | Light source                 | Dark source                 | Natural dimensions |
@@ -90,47 +91,41 @@ recorded in
 | phone-wheel       | iphone/light/06-wheel.png    | iphone/dark/06-wheel.png    | 1206 × 2622        |
 | phone-emotion     | iphone/light/07-emotion.png  | iphone/dark/07-emotion.png  | 1206 × 2622        |
 
+The widget captures show Feeling of the Day installed on a Home Screen, not a
+gallery preview. The iPhone images show the Large widget in light and dark appearance. The iPad
+images show the largest Extra Large widget in light and dark appearance.
+Only Apple stock apps and Feelory appear on the Home Screen, and the Feelory
+icon is owner-approved. The featured emotion is synthetic, date-deterministic
+catalog content, not the user's current feeling or journal-based
+personalization; tapping it opens that emotion's detail page. The iPad dark
+capture includes a subtle rounded status-time background from the simulator.
+
+The AX5 pair is the Serenity emotion detail at the largest accessibility text
+size, captured on iPhone at 1206 × 2622. It demonstrates text wrapping only,
+not VoiceOver, Voice Control, or contrast behavior.
+
 Reflection text, multiple tags, check-ins and chart data are synthetic fixture
 content. The AI sparkle/dashed tag styling demonstrates a **saved AI-tag
 provenance fixture**, not output observed from a live model during the capture.
 Visible site captions and alt text preserve this distinction. Product AI copy
 describes optional on-device behavior without suggesting the fixture is proof
-of live inference.
+of live inference. The refreshed journal, Insights, Explore and emotion detail
+captures show the floating tab bar over lower screen content; the screenshots
+are preserved as captured without retouching or compositing.
 
 `scripts/prepare-media.mjs` reads only the listed screenshot files, then resizes
 and encodes without cropping, retouching, changing screen features or
 compositing fake UI. iPhone variants: 320/640/960px; iPad: 480/960/1440px. WebP
-quality 82, natural proportions preserved. Originals are not stored here.
-Reproduction requires a separately authorized copy of the approved screenshot
-directory:
+quality 82, natural proportions preserved. AX5 images are resized to 620px
+wide. Originals are not stored here. Reproduction requires the separately
+authorized handoff staged in the same relative structure:
 
 ```sh
-node scripts/prepare-media.mjs /approved/Feelory/docs/assets/app-store
+node scripts/prepare-media.mjs /approved/feelory-handoff/docs/assets/app-store
 ```
 
 The Feelory icon artwork is unchanged by the screenshot preparation script.
 Review resulting source hashes before accepting changed media.
-
-## Accessibility illustration
-
-The optional AX5 illustration comes from the owner-authorized light and dark
-simulator captures
-`feelory-serenity-detail-ax5-light.png` and
-`feelory-serenity-detail-ax5-dark.png` in the approved
-`website-a11y-candidate` session artifact directory. The raw screenshots were
-captured on iPhone 18 Pro at 1206 × 2622, with synthetic bundled catalog
-phrases and an empty in-memory store; they contain no journal entries or
-account data. Each was resized proportionally to 620 × 1348 and encoded as
-WebP without cropping or retouching. The page selects the matching appearance
-using `prefers-color-scheme`.
-
-| Source appearance | Source SHA-256                                                     | Website file                             | Output bytes |
-| ----------------- | ------------------------------------------------------------------ | ---------------------------------------- | ------------ |
-| Light             | `d38899bb95428d03062feda2c76b6854ef0826e0be74403f38b1f081499d13a7` | `feelory-serenity-detail-ax5-light.webp` | 54,298       |
-| Dark              | `0db23a0c05e669c61df6a5cf82c1f3b64d075c2bce6842e770e9d0958e43d23f` | `feelory-serenity-detail-ax5-dark.webp`  | 53,816       |
-
-The screenshot demonstrates larger-text wrapping only. It is not evidence of
-VoiceOver, Voice Control, or contrast behavior.
 
 ## Icon
 
@@ -165,7 +160,7 @@ not an unrestricted reuse license.
 
 ## Budgets
 
-The 42 WebP files total 1,978,964 bytes. File sizes are recorded in the manifest
+The responsive Feelory WebP files and their sizes are recorded in the manifest
 and checked by the site validator. The default 640px two-screen hero and each
 larger responsive variant remain below the 500,000-byte combined hero ceiling.
 The build validates every recorded file size, metadata/proportion, and budget.

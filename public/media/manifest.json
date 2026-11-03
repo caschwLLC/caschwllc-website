@@ -2,336 +2,460 @@
   {
     "name": "phone-journal",
     "source": "iphone/light/01-journal.png",
-    "sha256": "e956eccbce6d333caaca30a0dc6ba82b436e299fe51ca97af60a511507e9374c",
+    "sha256": "1707714d44115ccceb026ad7fe7e8447a0717a516397c8cf82360502067280a8",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-journal-320.webp",
         "width": 320,
-        "bytes": 23168
+        "bytes": 24046
       },
       {
         "file": "phone-journal-640.webp",
         "width": 640,
-        "bytes": 54568
+        "bytes": 56864
       },
       {
         "file": "phone-journal-960.webp",
         "width": 960,
-        "bytes": 88440
+        "bytes": 92332
       }
     ]
   },
   {
     "name": "phone-journal-dark",
     "source": "iphone/dark/01-journal.png",
-    "sha256": "284c92f476e031c68c3d383d3bd2b4aaf51c8ce99eec113fe2ad1023f112fcf2",
+    "sha256": "50f978c626b8ce03a6a2a4e847a7e90ba0ef4223d530a648a79ee079d6ebbdad",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-journal-dark-320.webp",
         "width": 320,
-        "bytes": 23604
+        "bytes": 24472
       },
       {
         "file": "phone-journal-dark-640.webp",
         "width": 640,
-        "bytes": 54982
+        "bytes": 57078
       },
       {
         "file": "phone-journal-dark-960.webp",
         "width": 960,
-        "bytes": 88646
+        "bytes": 92434
       }
     ]
   },
   {
     "name": "tablet-reflection",
     "source": "ipad/light/02-reflection.png",
-    "sha256": "8984bfae646dc8d3eeba4d0d7996a8b7a56857491c4b168603cff35f02b97b2c",
+    "sha256": "0c21554ff134d76f5ae8ea81fc82d8585f977c7f10a0ead25013c918179ca4e0",
     "width": 2064,
     "height": 2752,
     "outputs": [
       {
         "file": "tablet-reflection-480.webp",
         "width": 480,
-        "bytes": 18848
+        "bytes": 19030
       },
       {
         "file": "tablet-reflection-960.webp",
         "width": 960,
-        "bytes": 51978
+        "bytes": 52564
       },
       {
         "file": "tablet-reflection-1440.webp",
         "width": 1440,
-        "bytes": 88280
+        "bytes": 88364
       }
     ]
   },
   {
     "name": "tablet-reflection-dark",
     "source": "ipad/dark/02-reflection.png",
-    "sha256": "91324d23be4be1aaa758cf2b1fc277235a6c675a092c5e4d20394cb310654665",
+    "sha256": "95861403a8e7ba59b9645e9094562b76901169bf09f45ff14526a886317f7570",
     "width": 2064,
     "height": 2752,
     "outputs": [
       {
         "file": "tablet-reflection-dark-480.webp",
         "width": 480,
-        "bytes": 19174
+        "bytes": 19320
       },
       {
         "file": "tablet-reflection-dark-960.webp",
         "width": 960,
-        "bytes": 52312
+        "bytes": 52924
       },
       {
         "file": "tablet-reflection-dark-1440.webp",
         "width": 1440,
-        "bytes": 88800
+        "bytes": 88152
       }
     ]
   },
   {
     "name": "phone-insights",
     "source": "iphone/light/03-insights.png",
-    "sha256": "036f6819c1bd37ccab4c38d0c53f84e3f880a7e40ee1e0dc36ddb20a6646a97f",
+    "sha256": "0cff347753d16239a3c9d6a1ff68dae0b6f0547352feb5ddfbd95b710e60f55d",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-insights-320.webp",
         "width": 320,
-        "bytes": 14878
+        "bytes": 16434
       },
       {
         "file": "phone-insights-640.webp",
         "width": 640,
-        "bytes": 36700
+        "bytes": 40212
       },
       {
         "file": "phone-insights-960.webp",
         "width": 960,
-        "bytes": 58636
+        "bytes": 62660
       }
     ]
   },
   {
     "name": "phone-insights-dark",
     "source": "iphone/dark/03-insights.png",
-    "sha256": "502ad10d3341e761e5494c90fd7f786a4f8d12e1ebb779e5c3542eca74e4a1f5",
+    "sha256": "fc114bd1cc36d03cc06055d5bfda0fd3c925e5984bf9ddffb37c5bc2613edcea",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-insights-dark-320.webp",
         "width": 320,
-        "bytes": 15638
+        "bytes": 17014
       },
       {
         "file": "phone-insights-dark-640.webp",
         "width": 640,
-        "bytes": 37888
+        "bytes": 41066
       },
       {
         "file": "phone-insights-dark-960.webp",
         "width": 960,
-        "bytes": 60116
+        "bytes": 64428
       }
     ]
   },
   {
     "name": "phone-practice",
     "source": "iphone/light/04-practice.png",
-    "sha256": "60ce50492b3b938389d7d1c94a0d84387d6d6b89740e3097c156f137fa4e5957",
+    "sha256": "e21ba16b73d968d71125f09d07710ca72927b1068b708a7a496f173ed65ac2d4",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-practice-320.webp",
         "width": 320,
-        "bytes": 11310
+        "bytes": 10686
       },
       {
         "file": "phone-practice-640.webp",
         "width": 640,
-        "bytes": 26298
+        "bytes": 25142
       },
       {
         "file": "phone-practice-960.webp",
         "width": 960,
-        "bytes": 41508
+        "bytes": 38958
       }
     ]
   },
   {
     "name": "phone-practice-dark",
     "source": "iphone/dark/04-practice.png",
-    "sha256": "6abc42e52f1b9a4bbca3bd3d240142f351bc40e2d82125e74749df1f9da29e96",
+    "sha256": "98f51d4c78e3b6d303aadc17d7134982e28d7498f758e5857d50b3bc18312ea9",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-practice-dark-320.webp",
         "width": 320,
-        "bytes": 11602
+        "bytes": 10902
       },
       {
         "file": "phone-practice-dark-640.webp",
         "width": 640,
-        "bytes": 27174
+        "bytes": 25994
       },
       {
         "file": "phone-practice-dark-960.webp",
         "width": 960,
-        "bytes": 42298
+        "bytes": 40180
       }
     ]
   },
   {
     "name": "phone-explore",
     "source": "iphone/light/05-explore.png",
-    "sha256": "2b4dca5b21d8f7d2826ca7be3812316f89b48b4c3fa26a56428d2ffeb44f9c45",
+    "sha256": "d24044563f03190c971dbb2b189aa9700c8a28aec48275b0139cd57b179f2885",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-explore-320.webp",
         "width": 320,
-        "bytes": 22122
+        "bytes": 23056
       },
       {
         "file": "phone-explore-640.webp",
         "width": 640,
-        "bytes": 53606
+        "bytes": 55014
       },
       {
         "file": "phone-explore-960.webp",
         "width": 960,
-        "bytes": 84958
+        "bytes": 87714
       }
     ]
   },
   {
     "name": "phone-explore-dark",
     "source": "iphone/dark/05-explore.png",
-    "sha256": "04db6b136a4e8fb47d20832ade2b67fa9fdd8e26ec9a8d6d34373823f4e79601",
+    "sha256": "7c2183f8a7c62e879a11f836192c35dd970faa21491f6a7b1d6cdf6174cd36bc",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-explore-dark-320.webp",
         "width": 320,
-        "bytes": 22542
+        "bytes": 23224
       },
       {
         "file": "phone-explore-dark-640.webp",
         "width": 640,
-        "bytes": 53900
+        "bytes": 55006
       },
       {
         "file": "phone-explore-dark-960.webp",
         "width": 960,
-        "bytes": 84580
+        "bytes": 86532
       }
     ]
   },
   {
     "name": "phone-wheel",
     "source": "iphone/light/06-wheel.png",
-    "sha256": "64a56df09a6ab8b541564293dbad3493f5f5641a49fe9560893b1206b85cc0c2",
+    "sha256": "ab2005a7f26e0a63e3934d1f641129accf9d965e171f3ddb774b4d644262eaed",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-wheel-320.webp",
         "width": 320,
-        "bytes": 17096
+        "bytes": 17712
       },
       {
         "file": "phone-wheel-640.webp",
         "width": 640,
-        "bytes": 38072
+        "bytes": 39926
       },
       {
         "file": "phone-wheel-960.webp",
         "width": 960,
-        "bytes": 60626
+        "bytes": 62436
       }
     ]
   },
   {
     "name": "phone-wheel-dark",
     "source": "iphone/dark/06-wheel.png",
-    "sha256": "0429fca90bca1b3e3defe98a28f9dcde5b9849516ead191edf911b01f1a74eb3",
+    "sha256": "140ba357c505dfa7b0872b509bea8eb53b45a45b431410ca6d70dc910dbf36d6",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-wheel-dark-320.webp",
         "width": 320,
-        "bytes": 17030
+        "bytes": 17662
       },
       {
         "file": "phone-wheel-dark-640.webp",
         "width": 640,
-        "bytes": 38336
+        "bytes": 39880
       },
       {
         "file": "phone-wheel-dark-960.webp",
         "width": 960,
-        "bytes": 61240
+        "bytes": 62440
       }
     ]
   },
   {
     "name": "phone-emotion",
     "source": "iphone/light/07-emotion.png",
-    "sha256": "f4c65cdf8f7f6b4c4f30004d2d602802c5bbb6402aab48b1e7971ff97f318780",
+    "sha256": "dfeadb18dd94c42942b17e9dbe553d58f97a738981b1542508d27826a6f693bc",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-emotion-320.webp",
         "width": 320,
-        "bytes": 25528
+        "bytes": 24996
       },
       {
         "file": "phone-emotion-640.webp",
         "width": 640,
-        "bytes": 63890
+        "bytes": 61940
       },
       {
         "file": "phone-emotion-960.webp",
         "width": 960,
-        "bytes": 102960
+        "bytes": 99562
       }
     ]
   },
   {
     "name": "phone-emotion-dark",
     "source": "iphone/dark/07-emotion.png",
-    "sha256": "722a1e807a93de29c59136a6d2350b779f150a22d91182f42ee42aef2a43fd6d",
+    "sha256": "87876b7ca5843078adc63b8f65ea5964510d8ad1058fa35c30cfad87aeb2346c",
     "width": 1206,
     "height": 2622,
     "outputs": [
       {
         "file": "phone-emotion-dark-320.webp",
         "width": 320,
-        "bytes": 26166
+        "bytes": 25476
       },
       {
         "file": "phone-emotion-dark-640.webp",
         "width": 640,
-        "bytes": 65072
+        "bytes": 63560
       },
       {
         "file": "phone-emotion-dark-960.webp",
         "width": 960,
-        "bytes": 104394
+        "bytes": 100828
+      }
+    ]
+  },
+  {
+    "name": "phone-widget",
+    "source": "iphone/light/08-widget-iphone.png",
+    "sha256": "07fb44b085338d6d71ccc14eb20cc98bcb164fa3cac68c6503a45800d18b7e57",
+    "width": 1206,
+    "height": 2622,
+    "outputs": [
+      {
+        "file": "phone-widget-320.webp",
+        "width": 320,
+        "bytes": 23338
+      },
+      {
+        "file": "phone-widget-640.webp",
+        "width": 640,
+        "bytes": 54710
+      },
+      {
+        "file": "phone-widget-960.webp",
+        "width": 960,
+        "bytes": 91870
+      }
+    ]
+  },
+  {
+    "name": "phone-widget-dark",
+    "source": "iphone/dark/08-widget-iphone.png",
+    "sha256": "2a779c016190e35578b4779fab12ef6b9e5c786d8e8d70af64028908bad409e2",
+    "width": 1206,
+    "height": 2622,
+    "outputs": [
+      {
+        "file": "phone-widget-dark-320.webp",
+        "width": 320,
+        "bytes": 22308
+      },
+      {
+        "file": "phone-widget-dark-640.webp",
+        "width": 640,
+        "bytes": 51992
+      },
+      {
+        "file": "phone-widget-dark-960.webp",
+        "width": 960,
+        "bytes": 83028
+      }
+    ]
+  },
+  {
+    "name": "tablet-widget",
+    "source": "ipad/light/09-widget-ipad.png",
+    "sha256": "2e3f79ff05e3e4e10cf94c9550e0b957b3890fd1e62a18d14f97f1924013f233",
+    "width": 2064,
+    "height": 2752,
+    "outputs": [
+      {
+        "file": "tablet-widget-480.webp",
+        "width": 480,
+        "bytes": 21914
+      },
+      {
+        "file": "tablet-widget-960.webp",
+        "width": 960,
+        "bytes": 56262
+      },
+      {
+        "file": "tablet-widget-1440.webp",
+        "width": 1440,
+        "bytes": 100984
+      }
+    ]
+  },
+  {
+    "name": "tablet-widget-dark",
+    "source": "ipad/dark/09-widget-ipad.png",
+    "sha256": "e4e9c031c6e3b19acab857dd878610a9596ea3992b5dc77a3a888a1b2eed1ab1",
+    "width": 2064,
+    "height": 2752,
+    "outputs": [
+      {
+        "file": "tablet-widget-dark-480.webp",
+        "width": 480,
+        "bytes": 20928
+      },
+      {
+        "file": "tablet-widget-dark-960.webp",
+        "width": 960,
+        "bytes": 52446
+      },
+      {
+        "file": "tablet-widget-dark-1440.webp",
+        "width": 1440,
+        "bytes": 88356
+      }
+    ]
+  },
+  {
+    "name": "feelory-serenity-detail-ax5-light",
+    "source": "iphone/light/serenity-detail-ax5.png",
+    "sha256": "44c8e24e6275cec839963918176de4c103c02f9aa3539f74ffc6995048a62ea3",
+    "width": 1206,
+    "height": 2622,
+    "outputs": [
+      {
+        "file": "feelory-serenity-detail-ax5-light.webp",
+        "width": 620,
+        "bytes": 39528
+      }
+    ]
+  },
+  {
+    "name": "feelory-serenity-detail-ax5-dark",
+    "source": "iphone/dark/serenity-detail-ax5.png",
+    "sha256": "49bbb1efde6969c506655882e8b9cd6636d2cbe7ad541cdd1626c73b87978f43",
+    "width": 1206,
+    "height": 2622,
+    "outputs": [
+      {
+        "file": "feelory-serenity-detail-ax5-dark.webp",
+        "width": 620,
+        "bytes": 40736
       }
     ]
   }

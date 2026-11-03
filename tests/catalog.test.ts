@@ -21,6 +21,54 @@ const comingSoon = appSchema.parse({
   store: undefined,
 });
 
+test('widget showcase validates both device captures and includes them in media checks', () => {
+  const phoneMedia = {
+    ...feelory.hero,
+    name: 'phone-widget',
+    darkName: 'phone-widget-dark',
+  };
+  const tabletMedia = {
+    ...feelory.secondaryHero,
+    name: 'tablet-widget',
+    darkName: 'tablet-widget-dark',
+  };
+  const widgets = {
+    title: 'A feeling to carry into your day.',
+    paragraphs: ['Keep Feeling of the Day on your Home Screen.'],
+    phone: {
+      media: phoneMedia,
+      caption: 'Feeling of the Day on iPhone.',
+    },
+    tablet: {
+      media: tabletMedia,
+      caption: 'Feeling of the Day on iPad.',
+    },
+  };
+  const withoutWidgets = appSchema.parse({ ...feelory, widgets: undefined });
+  const withWidgets = appSchema.parse({ ...feelory, widgets });
+  assert.equal(
+    appMedia(withWidgets).length,
+    appMedia(withoutWidgets).length + 2,
+  );
+  assert.deepEqual(
+    appMedia(withWidgets)
+      .filter((media) => media.name.includes('widget'))
+      .map((media) => media.name),
+    ['phone-widget', 'tablet-widget'],
+  );
+  for (const invalid of [
+    { ...widgets, phone: undefined },
+    { ...widgets, tablet: undefined },
+    { ...widgets, tablet: { ...widgets.tablet, media: feelory.hero } },
+    { ...widgets, phone: { ...widgets.phone, media: feelory.secondaryHero } },
+    { ...widgets, phone: { ...widgets.phone, caption: '' } },
+    { ...widgets, title: '' },
+    { ...widgets, paragraphs: [] },
+    { ...widgets, unexpected: true },
+  ])
+    assert.throws(() => appSchema.parse({ ...feelory, widgets: invalid }));
+});
+
 test('Override artwork requires complete local light/dark density sets and valid social metadata', () => {
   assert.doesNotThrow(() => appSchema.parse(override));
   assert.doesNotThrow(() =>
