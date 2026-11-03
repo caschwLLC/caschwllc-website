@@ -34,6 +34,34 @@
     "width": 2064,
     "height": 2752
   },
+  "widgets": {
+    "title": "A featured feeling to explore today.",
+    "paragraphs": [
+      "Keep a feeling from Feelory’s emotion catalog on your Home Screen, then tap to explore its details."
+    ],
+    "phone": {
+      "media": {
+        "name": "phone-widget",
+        "darkName": "phone-widget-dark",
+        "alt": "Feelory’s Feeling of the Day Large widget on an iPhone Home Screen with Apple stock apps.",
+        "device": "phone",
+        "width": 1206,
+        "height": 2622
+      },
+      "caption": "Feeling of the Day on the iPhone Home Screen. Tap the widget to explore the featured emotion."
+    },
+    "tablet": {
+      "media": {
+        "name": "tablet-widget",
+        "darkName": "tablet-widget-dark",
+        "alt": "Feelory’s Feeling of the Day Extra Large widget on an iPad Home Screen with Apple stock apps.",
+        "device": "tablet",
+        "width": 2064,
+        "height": 2752
+      },
+      "caption": "Feeling of the Day in the largest iPad widget size."
+    }
+  },
   "features": [
     {
       "title": "Notice patterns, not scores.",

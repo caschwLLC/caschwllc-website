@@ -24,6 +24,10 @@ const selected = [
   ['phone-wheel-dark', 'iphone/dark/06-wheel.png'],
   ['phone-emotion', 'iphone/light/07-emotion.png'],
   ['phone-emotion-dark', 'iphone/dark/07-emotion.png'],
+  ['phone-widget', 'iphone/light/08-widget-iphone.png'],
+  ['phone-widget-dark', 'iphone/dark/08-widget-iphone.png'],
+  ['tablet-widget', 'ipad/light/09-widget-ipad.png'],
+  ['tablet-widget-dark', 'ipad/dark/09-widget-ipad.png'],
 ];
 
 let previous = [];
@@ -60,6 +64,31 @@ for (const [name, path] of selected) {
     width: metadata.width,
     height: metadata.height,
     outputs,
+  });
+}
+
+for (const [appearance, path] of [
+  ['light', 'iphone/light/serenity-detail-ax5.png'],
+  ['dark', 'iphone/dark/serenity-detail-ax5.png'],
+]) {
+  const name = `feelory-serenity-detail-ax5-${appearance}`;
+  const input = await readFile(join(source, path));
+  const metadata = await sharp(input).metadata();
+  if (!metadata.width || !metadata.height)
+    throw new Error(`Missing screenshot dimensions: ${path}`);
+  const file = `${name}.webp`;
+  const output = await sharp(input)
+    .resize({ width: 620, withoutEnlargement: true })
+    .webp({ quality: 82 })
+    .toBuffer();
+  await writeFile(`public/media/${file}`, output);
+  manifest.push({
+    name,
+    source: path,
+    sha256: createHash('sha256').update(input).digest('hex'),
+    width: metadata.width,
+    height: metadata.height,
+    outputs: [{ file, width: 620, bytes: output.length }],
   });
 }
 

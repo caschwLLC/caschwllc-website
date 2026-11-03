@@ -9,7 +9,7 @@ import { render } from 'astro:content';
 import OverrideMenuBarStates from '../../../components/OverrideMenuBarStates.astro';
 
 const voiceControlVerified = false;
-const lastUpdated = '2026-10-12';
+const lastUpdated = '2026-11-03';
 
 export async function getStaticPaths() {
   return (await getApps())
@@ -126,7 +126,7 @@ const Content = content?.Content;
                 src={href('/media/feelory-serenity-detail-ax5-light.webp')}
                 width="620"
                 height="1348"
-                alt="Feelory’s Serenity detail screen at the largest text size, showing two example phrases in large text."
+                alt="Feelory’s Serenity detail screen at the largest accessibility text size, with its definition wrapping across lines."
                 loading="lazy"
                 decoding="async"
               />

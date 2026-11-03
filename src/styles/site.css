@@ -292,6 +292,16 @@
   .feature.reverse figure {
     order: 1;
   }
+  .widget-showcase .feature-copy {
+    max-width: 48rem;
+  }
+  .widget-screens {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+    align-items: center;
+    gap: clamp(2rem, 7vw, 7rem);
+    margin-top: 3rem;
+  }
   .closing {
     display: flex;
     gap: 3rem;
@@ -629,7 +639,8 @@
     }
     .studio-note,
     .privacy-feature,
-    .feature-inner {
+    .feature-inner,
+    .widget-screens {
       grid-template-columns: 1fr;
       gap: 2.75rem;
     }

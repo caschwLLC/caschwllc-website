@@ -67,6 +67,26 @@ const href = (path: string) => localPath(path, import.meta.env.BASE_URL);
       </section>
     ))}
   </div>
+  {app.widgets && (
+    <section class="feature mint widget-showcase" aria-labelledby="widgets">
+      <div class="wrap">
+        <div class="feature-copy">
+          <h2 id="widgets">{app.widgets.title}</h2>
+          {app.widgets.paragraphs.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+        <div class="widget-screens">
+          {[app.widgets.phone, app.widgets.tablet].map((capture) => (
+            <figure>
+              <Device media={capture.media} />
+              <figcaption>{capture.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
   <section class="privacy-feature wrap">
     <h2>
       Your reflections

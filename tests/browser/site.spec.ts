@@ -6,6 +6,51 @@ import { readFile } from 'node:fs/promises';
 const pathFor = (path: string) => localPath(path, siteConfig().base);
 
 for (const colorScheme of ['light', 'dark'] as const) {
+  test(`Feelory ${colorScheme} widget section preserves full device captures`, async ({
+    page,
+  }, testInfo) => {
+    await page.emulateMedia({ colorScheme, reducedMotion: 'reduce' });
+    await page.goto(pathFor('/apps/feelory/'));
+    const section = page.locator('.widget-showcase');
+    await expect(section.getByRole('heading', { level: 2 })).toHaveCount(1);
+    await expect(section.locator('figure')).toHaveCount(2);
+    for (const device of ['phone', 'tablet']) {
+      const image = section.locator(`.${device} img`);
+      await image.scrollIntoViewIfNeeded();
+      await expect
+        .poll(() => image.evaluate((img: HTMLImageElement) => img.currentSrc))
+        .toContain(
+          colorScheme === 'dark'
+            ? `${device}-widget-dark-`
+            : `${device}-widget-`,
+        );
+      await expect(image).toHaveJSProperty('complete', true);
+      const dimensions = await image.evaluate((img: HTMLImageElement) => ({
+        naturalRatio: img.naturalWidth / img.naturalHeight,
+        declaredRatio:
+          Number(img.getAttribute('width')) /
+          Number(img.getAttribute('height')),
+        renderedRatio:
+          img.getBoundingClientRect().width /
+          img.getBoundingClientRect().height,
+      }));
+      expect(dimensions.naturalRatio).toBeCloseTo(dimensions.declaredRatio, 2);
+      expect(dimensions.renderedRatio).toBeCloseTo(dimensions.declaredRatio, 2);
+    }
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth > window.innerWidth,
+      ),
+    ).toBe(false);
+    if (process.env.CAPTURE_VISUAL_REVIEW === '1')
+      await section.screenshot({
+        path: testInfo.outputPath(`feelory-widgets-${colorScheme}.png`),
+        animations: 'disabled',
+      });
+  });
+}
+
+for (const colorScheme of ['light', 'dark'] as const) {
   for (const deviceScaleFactor of [1, 2, 3]) {
     test(`Override ${colorScheme} artwork selects exact ${deviceScaleFactor}x source`, async ({
       browser,
@@ -665,7 +710,7 @@ test('owner-confirmed app privacy and page-specific dates remain separate from w
   await page.goto(pathFor('/apps/override/accessibility/'));
   await expect(page.locator('time')).toHaveAttribute('datetime', '2026-10-19');
   await page.goto(pathFor('/apps/feelory/accessibility/'));
-  await expect(page.locator('time')).toHaveAttribute('datetime', '2026-10-12');
+  await expect(page.locator('time')).toHaveAttribute('datetime', '2026-11-03');
   await page.goto(pathFor('/apps/feelory/support/'));
   await expect(page.locator('time')).toHaveAttribute('datetime', '2026-10-28');
 });
@@ -729,7 +774,7 @@ test('Feelory marketing and support describe current features and screenshot var
   page,
 }) => {
   await page.goto(pathFor('/apps/feelory/'));
-  await expect(page.locator('.device img')).toHaveCount(7);
+  await expect(page.locator('.device img')).toHaveCount(9);
   await expect(page.locator('main')).toContainText(
     '128 emotions across eight families',
   );
@@ -816,9 +861,9 @@ test('Feelory accessibility page covers assistive use and adapts to viewport, te
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Feelory accessibility',
   );
-  await expect(page.locator('time')).toHaveAttribute('datetime', '2026-10-12');
+  await expect(page.locator('time')).toHaveAttribute('datetime', '2026-11-03');
   await expect(page.locator('.a11y-updated')).toContainText(
-    'Last updated: 2026-10-12',
+    'Last updated: 2026-11-03',
   );
   await expect(page.locator('main')).toContainText('VoiceOver');
   await expect(page.locator('main')).toContainText('Dynamic Type');
